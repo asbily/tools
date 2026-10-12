@@ -83,3 +83,13 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Accessible focus rings */
+:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+.dark :focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}

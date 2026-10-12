@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FileText,
   Type,
@@ -81,6 +81,8 @@ import {
   HardDrive,
   Star,
   ArrowRight,
+  Share2,
+  Check,
   LucideIcon
 } from 'lucide-react';
 import { ToolItem } from '../types';
@@ -172,6 +174,7 @@ interface ToolCardProps {
   onOpen: (tool: ToolItem) => void;
   isFavorite: boolean;
   onToggleFavorite: (toolId: string) => void;
+  onShowToast?: (text: string) => void;
 }
 
 export const ToolCard: React.FC<ToolCardProps> = ({
@@ -179,43 +182,80 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   onOpen,
   isFavorite,
   onToggleFavorite,
+  onShowToast,
 }) => {
   const IconComponent = ICON_MAP[tool.iconName] || FileText;
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  const handleCopyLink = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}${window.location.pathname}#tool=${tool.id}`;
+    navigator.clipboard.writeText(url);
+    setCopiedLink(true);
+    if (onShowToast) {
+      onShowToast(`Link copied: ${tool.name}`);
+    }
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
 
   return (
     <div
       onClick={() => onOpen(tool)}
-      className="group relative border border-neutral-200 dark:border-neutral-800 rounded-xl p-5 bg-white dark:bg-neutral-950 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all cursor-pointer flex flex-col justify-between hover:shadow-xs"
+      className="group relative border border-neutral-200/90 dark:border-neutral-800/90 rounded-2xl p-5 bg-white dark:bg-[#0E0E10] hover:border-neutral-900 dark:hover:border-neutral-400 transition-all duration-200 cursor-pointer flex flex-col justify-between hover:shadow-lg hover:-translate-y-0.5 overflow-hidden"
     >
-      <div>
+      {/* Ambient background hover glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-neutral-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+
+      <div className="relative z-10">
         {/* Top Header */}
-        <div className="flex items-start justify-between gap-2 mb-3">
-          <div className="w-10 h-10 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center text-neutral-800 dark:text-neutral-200 group-hover:scale-105 transition">
+        <div className="flex items-start justify-between gap-2 mb-3.5">
+          <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center text-neutral-800 dark:text-neutral-200 group-hover:scale-105 group-hover:border-neutral-400 dark:group-hover:border-neutral-600 transition shadow-xs">
             <IconComponent className="w-5 h-5" />
           </div>
 
           <div className="flex items-center gap-1">
             <button
+              onClick={handleCopyLink}
+              className="p-1.5 rounded-lg text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
+              title="Copy link to this tool"
+              aria-label="Copy tool link"
+            >
+              {copiedLink ? (
+                <Check className="w-3.5 h-3.5 text-emerald-500" />
+              ) : (
+                <Share2 className="w-3.5 h-3.5" />
+              )}
+            </button>
+
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 onToggleFavorite(tool.id);
+                if (onShowToast) {
+                  onShowToast(isFavorite ? `Removed from favorites` : `Saved to favorites`);
+                }
               }}
-              className="p-1.5 rounded-md text-neutral-400 hover:text-amber-500 transition"
-              title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              className="p-1.5 rounded-lg text-neutral-400 hover:text-amber-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
+              title={isFavorite ? 'Remove from favorites' : 'Save to favorites'}
+              aria-label="Toggle favorite"
             >
               <Star
-                className={`w-4 h-4 ${
-                  isFavorite ? 'text-amber-500 fill-amber-500' : ''
+                className={`w-3.5 h-3.5 transition-transform ${
+                  isFavorite ? 'text-amber-500 fill-amber-500 scale-110' : ''
                 }`}
               />
             </button>
           </div>
         </div>
 
-        {/* Title & Category */}
-        <div className="text-[11px] font-semibold tracking-wider uppercase text-neutral-400 mb-1">
-          {tool.categoryLabel}
+        {/* Metadata line */}
+        <div className="flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-neutral-400 dark:text-neutral-500 mb-1.5">
+          <span>{tool.categoryLabel}</span>
+          <span>·</span>
+          <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Browser Native</span>
         </div>
+
+        {/* Title */}
         <h3 className="font-bold text-base text-[#111111] dark:text-neutral-100 group-hover:text-black dark:group-hover:text-white transition line-clamp-1">
           {tool.name}
         </h3>
@@ -224,12 +264,28 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2 line-clamp-2 leading-relaxed">
           {tool.shortDesc}
         </p>
+
+        {/* Tags preview */}
+        {tool.tags && tool.tags.length > 0 && (
+          <div className="flex items-center gap-1.5 mt-3 flex-wrap">
+            {tool.tags.slice(0, 2).map((tag) => (
+              <span
+                key={tag}
+                className="text-[10px] text-neutral-500 dark:text-neutral-400 px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Action Footer */}
-      <div className="pt-4 mt-4 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-between text-xs font-semibold text-neutral-800 dark:text-neutral-200">
-        <span>Open Tool</span>
-        <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition text-neutral-400 group-hover:text-black dark:group-hover:text-white" />
+      <div className="relative z-10 pt-4 mt-4 border-t border-neutral-100 dark:border-neutral-900 flex items-center justify-between text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+        <span className="group-hover:underline">Launch Tool</span>
+        <div className="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-400 group-hover:bg-neutral-900 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition">
+          <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition" />
+        </div>
       </div>
     </div>
   );

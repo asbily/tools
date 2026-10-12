@@ -14,7 +14,8 @@ import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
 import { LegalModal } from './components/LegalModal';
 import { AdSlot } from './components/AdSlot';
-import { Sparkles, Clock, Star } from 'lucide-react';
+import { ToastContainer, ToastMessage } from './components/Toast';
+import { Sparkles, Clock, Star, Trash2, ArrowRight } from 'lucide-react';
 
 export default function App() {
   const [activeTool, setActiveTool] = useState<ToolItem | null>(null);
@@ -23,6 +24,19 @@ export default function App() {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
   const [legalModalTab, setLegalModalTab] = useState<'about' | 'privacy' | 'terms' | 'disclaimer' | 'faq' | 'contact'>('about');
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  const showToast = (text: string, type: 'success' | 'info' | 'error' = 'success') => {
+    const id = `${Date.now()}-${Math.random()}`;
+    setToasts((prev) => [...prev, { id, text, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 2800);
+  };
+
+  const dismissToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   // Favorites in LocalStorage
   const [favorites, setFavorites] = useState<string[]>(() => {
@@ -81,10 +95,13 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Global keyboard shortcut '/' to open search modal
+  // Global keyboard shortcut '/' or Cmd+K / Ctrl+K to open search modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.key === '/' || (e.ctrlKey && e.key === 'k')) && !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) {
+      if (
+        (e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) &&
+        !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)
+      ) {
         e.preventDefault();
         setIsSearchModalOpen(true);
       }
@@ -102,6 +119,12 @@ export default function App() {
     });
   };
 
+  const clearRecentlyUsed = () => {
+    setRecentlyUsed([]);
+    localStorage.removeItem('asbily_recent');
+    showToast('Recently used history cleared', 'info');
+  };
+
   const toggleFavorite = (toolId: string) => {
     setFavorites((prev) => {
       const updated = prev.includes(toolId) ? prev.filter((id) => id !== toolId) : [...prev, toolId];
@@ -115,6 +138,13 @@ export default function App() {
     setActiveTool(tool);
     addRecentlyUsed(tool.id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleQuickToolClick = (toolId: string) => {
+    const tool = TOOLS.find((t) => t.id === toolId);
+    if (tool) {
+      handleOpenTool(tool);
+    }
   };
 
   const handleBackToHome = () => {
@@ -175,7 +205,10 @@ export default function App() {
           favSection?.scrollIntoView({ behavior: 'smooth' });
         }}
         darkMode={darkMode}
-        onToggleDarkMode={() => setDarkMode(!darkMode)}
+        onToggleDarkMode={() => {
+          setDarkMode(!darkMode);
+          showToast(!darkMode ? 'Dark mode enabled' : 'Light mode enabled', 'info');
+        }}
         onOpenLegal={handleOpenLegal}
         selectedCategory={selectedCategory}
         onSelectCategory={(cat) => {
@@ -195,6 +228,7 @@ export default function App() {
             onToggleFavorite={toggleFavorite}
             onSelectTool={handleOpenTool}
             favorites={favorites}
+            onShowToast={showToast}
           />
         ) : (
           <div className="space-y-12">
@@ -205,6 +239,7 @@ export default function App() {
               selectedCategory={selectedCategory}
               onSelectCategory={setSelectedCategory}
               totalToolsCount={TOOLS.length}
+              onQuickToolClick={handleQuickToolClick}
             />
 
             <div className="max-w-7xl mx-auto px-3 sm:px-6 space-y-12 w-full max-w-full overflow-hidden">
@@ -214,11 +249,13 @@ export default function App() {
               {/* Favorites Section if any & no search query */}
               {!searchQuery && selectedCategory === 'all' && favoriteToolItems.length > 0 && (
                 <section id="favorites-section" className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-800 dark:text-neutral-200">
-                      Your Favorite Utilities ({favoriteToolItems.length})
-                    </h2>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                      <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-800 dark:text-neutral-200">
+                        Your Favorite Utilities ({favoriteToolItems.length})
+                      </h2>
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {favoriteToolItems.slice(0, 4).map((tool) => (
@@ -228,6 +265,7 @@ export default function App() {
                         onOpen={handleOpenTool}
                         isFavorite={true}
                         onToggleFavorite={toggleFavorite}
+                        onShowToast={showToast}
                       />
                     ))}
                   </div>
@@ -237,21 +275,35 @@ export default function App() {
               {/* Recently Used Section if any & no search query */}
               {!searchQuery && selectedCategory === 'all' && recentToolItems.length > 0 && (
                 <section className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-neutral-400" />
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-800 dark:text-neutral-200">
-                      Recently Used ({recentToolItems.length})
-                    </h2>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-neutral-400" />
+                      <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-800 dark:text-neutral-200">
+                        Recently Used ({recentToolItems.length})
+                      </h2>
+                    </div>
+                    <button
+                      onClick={clearRecentlyUsed}
+                      className="text-xs text-neutral-400 hover:text-rose-500 transition flex items-center gap-1 cursor-pointer"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      <span>Clear</span>
+                    </button>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                     {recentToolItems.map((tool) => (
                       <div
                         key={tool.id}
                         onClick={() => handleOpenTool(tool)}
-                        className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:border-neutral-400 dark:hover:border-neutral-600 transition cursor-pointer bg-white dark:bg-neutral-950 flex flex-col justify-between"
+                        className="group p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl hover:border-neutral-900 dark:hover:border-neutral-400 transition cursor-pointer bg-white dark:bg-[#0E0E10] flex flex-col justify-between shadow-2xs hover:shadow-sm"
                       >
-                        <div className="text-xs font-semibold line-clamp-1">{tool.name}</div>
-                        <div className="text-[10px] text-neutral-400 uppercase mt-2">{tool.categoryLabel}</div>
+                        <div className="text-xs font-semibold line-clamp-1 group-hover:underline">
+                          {tool.name}
+                        </div>
+                        <div className="text-[10px] text-neutral-400 uppercase tracking-wider mt-2 flex items-center justify-between">
+                          <span>{tool.categoryLabel}</span>
+                          <ArrowRight className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition" />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -308,6 +360,7 @@ export default function App() {
                           onOpen={handleOpenTool}
                           isFavorite={favorites.includes(tool.id)}
                           onToggleFavorite={toggleFavorite}
+                          onShowToast={showToast}
                         />
 
                         {/* In-Between Ad 1: Clean responsive banner divider after 6 tools */}
@@ -361,7 +414,7 @@ export default function App() {
         }}
       />
 
-      {/* Global Instant Search Modal */}
+      {/* Global Command Palette / Search Modal */}
       <SearchModal
         isOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
@@ -375,6 +428,9 @@ export default function App() {
         isOpen={isLegalModalOpen}
         onClose={() => setIsLegalModalOpen(false)}
       />
+
+      {/* Interactive Micro Toast Notifications */}
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
 }
