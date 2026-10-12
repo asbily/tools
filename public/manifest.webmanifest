@@ -1,0 +1,17 @@
+{
+  "name": "Asbily Free Tools",
+  "short_name": "Asbily Tools",
+  "description": "Free Tools. Simple Solutions. All-in-one free online tools platform by Asbily Platforms.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "/asbily.svg",
+      "sizes": "120x120 192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

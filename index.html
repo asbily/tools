@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T9972RSGEB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-T9972RSGEB');
+    </script>
+
+    <!-- Adsterra Social Bar (High CPM across all devices) -->
+    <script src="https://pl30617019.profitableratecpmnetwork.com/57/1d/01/571d016879fe00d66259005b58cedf09.js"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Asbily Free Tools — Free Tools. Simple Solutions.</title>
+    <meta name="description" content="All-in-one free online tools platform for text manipulation, social media hashtag generators, developer utilities, SEO checkers, client-side image compression, PDF documents, and productivity tools by Asbily Platforms." />
+    <meta name="keywords" content="Asbily Free Tools, free online tools, hashtag generator, json formatter, image compressor, pdf tools, qr code generator, word counter, password generator, bangla text tools" />
+    <meta name="author" content="Asbily Platforms" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://asbily.com/tools" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Asbily Free Tools — Free Tools. Simple Solutions." />
+    <meta property="og:description" content="Fast, private, client-side free online utilities for creators, students, developers, and businesses." />
+    <meta property="og:image" content="/asbily.svg" />
+    <meta property="og:site_name" content="Asbily Platforms" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Asbily Free Tools — Free Tools. Simple Solutions." />
+    <meta name="twitter:description" content="Fast, private, client-side free online utilities for creators, students, developers, and businesses." />
+    <meta name="twitter:image" content="/asbily.svg" />
+
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/svg+xml" href="/asbily.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#111111" />
+  </head>
+  <body class="bg-[#FFFFFF] text-[#111111] antialiased selection:bg-[#111111] selection:text-white min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch((err) => {
+            console.log('SW registration skipped:', err);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

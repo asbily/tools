@@ -1,0 +1,11 @@
+{
+  "name": "Asbily Free Tools",
+  "description": "Free Tools. Simple Solutions. All-in-one free online tools platform for text, social media, developer utilities, SEO, images, PDF, security, calculators, and productivity by Asbily Platforms.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
