@@ -189,11 +189,14 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 
   const handleCopyLink = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const url = `${window.location.origin}${window.location.pathname}#tool=${tool.id}`;
+    const origin = window.location.origin.includes('localhost') || window.location.origin.includes('run.app')
+      ? window.location.origin
+      : 'https://tools.asbily.com';
+    const url = `${origin}/${tool.category}/${tool.id}`;
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     if (onShowToast) {
-      onShowToast(`Link copied: ${tool.name}`);
+      onShowToast(`Link copied: ${url}`);
     }
     setTimeout(() => setCopiedLink(false), 2000);
   };

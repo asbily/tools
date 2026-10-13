@@ -1,0 +1,8 @@
+# robots.txt for Asbily Free Tools
+# Domain: https://tools.asbily.com
+
+User-agent: *
+Allow: /
+
+# Canonical Sitemap with 100% priority coverage
+Sitemap: https://tools.asbily.com/sitemap.xml

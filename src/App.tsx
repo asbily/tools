@@ -74,26 +74,97 @@ export default function App() {
     }
   }, [darkMode]);
 
-  // Handle URL hash on initial load
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith('#tool=')) {
-        const id = hash.replace('#tool=', '');
-        const found = TOOLS.find((t) => t.id === id);
-        if (found) {
-          setActiveTool(found);
-          addRecentlyUsed(found.id);
-        }
-      } else if (!hash) {
-        setActiveTool(null);
-      }
-    };
+  // Parse route from URL pathname & hash
+  const syncRouteFromUrl = () => {
+    const pathname = window.location.pathname.replace(/^\/|\/$/g, '');
+    const segments = pathname.split('/').filter(Boolean);
+    const hash = window.location.hash;
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    // Check legacy hash first: #tool=some-id
+    if (hash && hash.startsWith('#tool=')) {
+      const toolId = hash.replace('#tool=', '');
+      const tool = TOOLS.find((t) => t.id === toolId);
+      if (tool) {
+        setActiveTool(tool);
+        setSelectedCategory(tool.category);
+        addRecentlyUsed(tool.id);
+        const cleanPath = `/${tool.category}/${tool.id}`;
+        if (window.location.pathname !== cleanPath) {
+          window.history.replaceState(null, '', cleanPath);
+        }
+        return;
+      }
+    }
+
+    // Pattern 1: /category/toolId  (e.g., /text/word-counter)
+    if (segments.length >= 2) {
+      const catSegment = segments[0];
+      const toolSegment = segments[1];
+      const tool = TOOLS.find((t) => t.id === toolSegment);
+      if (tool) {
+        setActiveTool(tool);
+        setSelectedCategory(tool.category);
+        addRecentlyUsed(tool.id);
+        return;
+      }
+    }
+
+    // Pattern 2: /category  (e.g., /text, /developer, /qr) OR /toolId (shortcut)
+    if (segments.length === 1) {
+      const segment = segments[0];
+      const isCategory = CATEGORIES.some((c) => c.id === segment);
+      if (isCategory) {
+        setSelectedCategory(segment as ToolCategory);
+        setActiveTool(null);
+        return;
+      }
+
+      // Check if it's a direct tool ID
+      const tool = TOOLS.find((t) => t.id === segment);
+      if (tool) {
+        setActiveTool(tool);
+        setSelectedCategory(tool.category);
+        addRecentlyUsed(tool.id);
+        // Normalize URL to /category/toolId
+        window.history.replaceState(null, '', `/${tool.category}/${tool.id}`);
+        return;
+      }
+    }
+
+    // Root homepage
+    setActiveTool(null);
+    setSelectedCategory('all');
+  };
+
+  // Sync on initial load and handle browser back/forward buttons (popstate)
+  useEffect(() => {
+    syncRouteFromUrl();
+    window.addEventListener('popstate', syncRouteFromUrl);
+    return () => window.removeEventListener('popstate', syncRouteFromUrl);
   }, []);
+
+  // Update dynamic page title & canonical URL tag
+  useEffect(() => {
+    let pageTitle = 'Asbily Free Tools — Free Tools. Simple Solutions.';
+    let canonicalPath = '/';
+
+    if (activeTool) {
+      pageTitle = `${activeTool.name} — Free Online Tool | Asbily`;
+      canonicalPath = `/${activeTool.category}/${activeTool.id}`;
+    } else if (selectedCategory && selectedCategory !== 'all') {
+      const cat = CATEGORIES.find((c) => c.id === selectedCategory);
+      pageTitle = `${cat?.name || selectedCategory} — Free Online Tools | Asbily`;
+      canonicalPath = `/${selectedCategory}`;
+    }
+
+    document.title = pageTitle;
+
+    // Keep canonical link synchronized with 100% domain priority on https://tools.asbily.com
+    const canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (canonicalEl) {
+      canonicalEl.setAttribute('href', `https://tools.asbily.com${canonicalPath}`);
+    }
+  }, [activeTool, selectedCategory]);
 
   // Global keyboard shortcut '/' or Cmd+K / Ctrl+K to open search modal
   useEffect(() => {
@@ -133,11 +204,26 @@ export default function App() {
     });
   };
 
+  // Open tool with clean /category/tool-name URL
   const handleOpenTool = (tool: ToolItem) => {
-    window.location.hash = `#tool=${tool.id}`;
+    const newPath = `/${tool.category}/${tool.id}`;
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
     setActiveTool(tool);
+    setSelectedCategory(tool.category);
     addRecentlyUsed(tool.id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Select category with clean /category URL
+  const handleSelectCategory = (cat: ToolCategory) => {
+    const newPath = cat === 'all' ? '/' : `/${cat}`;
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
+    setActiveTool(null);
+    setSelectedCategory(cat);
   };
 
   const handleQuickToolClick = (toolId: string) => {
@@ -148,7 +234,10 @@ export default function App() {
   };
 
   const handleBackToHome = () => {
-    window.location.hash = '';
+    const newPath = selectedCategory !== 'all' ? `/${selectedCategory}` : '/';
+    if (window.location.pathname !== newPath) {
+      window.history.pushState(null, '', newPath);
+    }
     setActiveTool(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -211,10 +300,7 @@ export default function App() {
         }}
         onOpenLegal={handleOpenLegal}
         selectedCategory={selectedCategory}
-        onSelectCategory={(cat) => {
-          setActiveTool(null);
-          setSelectedCategory(cat);
-        }}
+        onSelectCategory={handleSelectCategory}
         onHomeClick={handleBackToHome}
       />
 
@@ -237,7 +323,7 @@ export default function App() {
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
               selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
+              onSelectCategory={handleSelectCategory}
               totalToolsCount={TOOLS.length}
               onQuickToolClick={handleQuickToolClick}
             />
@@ -408,8 +494,7 @@ export default function App() {
       <Footer
         onOpenLegal={handleOpenLegal}
         onSelectCategory={(cat) => {
-          setActiveTool(null);
-          setSelectedCategory(cat);
+          handleSelectCategory(cat);
           window.scrollTo({ top: 300, behavior: 'smooth' });
         }}
       />
