@@ -16,6 +16,10 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "all"
         }
       ]
     },
@@ -33,24 +37,28 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "all"
         }
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!sitemap|robots).*\\.(?:html|js|css|json)$|^[^.]+$)",
       "headers": [
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
         }
       ]
     }
   ],
   "rewrites": [
+    {
+      "source": "/sitemap_index.xml",
+      "destination": "/sitemap.xml"
+    },
     {
       "source": "/((?!.*\\.[\\w]+$).*)",
       "destination": "/index.html"

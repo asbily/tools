@@ -1,8 +1,29 @@
 # robots.txt for Asbily Free Tools
-# Domain: https://tools.asbily.com
+# Host & Domain: https://tools.asbily.com
+# 100% Public Crawl & Indexing Authorization
 
 User-agent: *
 Allow: /
 
-# Canonical Sitemap with 100% priority coverage
+# Google Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Mobile
+Allow: /
+
+# Bing, Yahoo & DuckDuckGo
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Canonical XML Sitemap
 Sitemap: https://tools.asbily.com/sitemap.xml

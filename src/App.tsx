@@ -13,6 +13,7 @@ import { ToolView } from './components/ToolView';
 import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
 import { LegalModal } from './components/LegalModal';
+import { SitemapView } from './components/SitemapView';
 import { AdSlot } from './components/AdSlot';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { Sparkles, Clock, Star, Trash2, ArrowRight } from 'lucide-react';
@@ -20,6 +21,7 @@ import { Sparkles, Clock, Star, Trash2, ArrowRight } from 'lucide-react';
 export default function App() {
   const [activeTool, setActiveTool] = useState<ToolItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<ToolCategory>('all');
+  const [isSitemapOpen, setIsSitemapOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
@@ -96,12 +98,21 @@ export default function App() {
       }
     }
 
+    // Pattern 0: /sitemap (Public Interactive HTML Sitemap)
+    if (segments.length === 1 && segments[0] === 'sitemap') {
+      setIsSitemapOpen(true);
+      setActiveTool(null);
+      setSelectedCategory('all');
+      return;
+    }
+
     // Pattern 1: /category/toolId  (e.g., /text/word-counter)
     if (segments.length >= 2) {
       const catSegment = segments[0];
       const toolSegment = segments[1];
       const tool = TOOLS.find((t) => t.id === toolSegment);
       if (tool) {
+        setIsSitemapOpen(false);
         setActiveTool(tool);
         setSelectedCategory(tool.category);
         addRecentlyUsed(tool.id);
@@ -114,6 +125,7 @@ export default function App() {
       const segment = segments[0];
       const isCategory = CATEGORIES.some((c) => c.id === segment);
       if (isCategory) {
+        setIsSitemapOpen(false);
         setSelectedCategory(segment as ToolCategory);
         setActiveTool(null);
         return;
@@ -122,6 +134,7 @@ export default function App() {
       // Check if it's a direct tool ID
       const tool = TOOLS.find((t) => t.id === segment);
       if (tool) {
+        setIsSitemapOpen(false);
         setActiveTool(tool);
         setSelectedCategory(tool.category);
         addRecentlyUsed(tool.id);
@@ -132,6 +145,7 @@ export default function App() {
     }
 
     // Root homepage
+    setIsSitemapOpen(false);
     setActiveTool(null);
     setSelectedCategory('all');
   };
@@ -148,7 +162,10 @@ export default function App() {
     let pageTitle = 'Asbily Free Tools — Free Tools. Simple Solutions.';
     let canonicalPath = '/';
 
-    if (activeTool) {
+    if (isSitemapOpen) {
+      pageTitle = 'Public Sitemap & SEO Directory — Asbily Free Tools';
+      canonicalPath = '/sitemap';
+    } else if (activeTool) {
       pageTitle = `${activeTool.name} — Free Online Tool | Asbily`;
       canonicalPath = `/${activeTool.category}/${activeTool.id}`;
     } else if (selectedCategory && selectedCategory !== 'all') {
@@ -164,7 +181,7 @@ export default function App() {
     if (canonicalEl) {
       canonicalEl.setAttribute('href', `https://tools.asbily.com${canonicalPath}`);
     }
-  }, [activeTool, selectedCategory]);
+  }, [activeTool, selectedCategory, isSitemapOpen]);
 
   // Global keyboard shortcut '/' or Cmd+K / Ctrl+K to open search modal
   useEffect(() => {
@@ -210,6 +227,7 @@ export default function App() {
     if (window.location.pathname !== newPath) {
       window.history.pushState(null, '', newPath);
     }
+    setIsSitemapOpen(false);
     setActiveTool(tool);
     setSelectedCategory(tool.category);
     addRecentlyUsed(tool.id);
@@ -222,6 +240,7 @@ export default function App() {
     if (window.location.pathname !== newPath) {
       window.history.pushState(null, '', newPath);
     }
+    setIsSitemapOpen(false);
     setActiveTool(null);
     setSelectedCategory(cat);
   };
@@ -238,6 +257,16 @@ export default function App() {
     if (window.location.pathname !== newPath) {
       window.history.pushState(null, '', newPath);
     }
+    setIsSitemapOpen(false);
+    setActiveTool(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenSitemap = () => {
+    if (window.location.pathname !== '/sitemap') {
+      window.history.pushState(null, '', '/sitemap');
+    }
+    setIsSitemapOpen(true);
     setActiveTool(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -302,11 +331,22 @@ export default function App() {
         selectedCategory={selectedCategory}
         onSelectCategory={handleSelectCategory}
         onHomeClick={handleBackToHome}
+        onOpenSitemap={handleOpenSitemap}
       />
 
       {/* Main Content Area */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
-        {activeTool ? (
+        {isSitemapOpen ? (
+          <SitemapView
+            onBackToHome={handleBackToHome}
+            onOpenTool={handleOpenTool}
+            onSelectCategory={(catId) => {
+              setIsSitemapOpen(false);
+              handleSelectCategory(catId as ToolCategory);
+            }}
+            onShowToast={showToast}
+          />
+        ) : activeTool ? (
           <ToolView
             tool={activeTool}
             onBack={handleBackToHome}
@@ -497,6 +537,7 @@ export default function App() {
           handleSelectCategory(cat);
           window.scrollTo({ top: 300, behavior: 'smooth' });
         }}
+        onOpenSitemap={handleOpenSitemap}
       />
 
       {/* Global Command Palette / Search Modal */}

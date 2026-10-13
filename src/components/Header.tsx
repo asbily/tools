@@ -14,6 +14,7 @@ interface HeaderProps {
   selectedCategory: ToolCategory;
   onSelectCategory: (cat: ToolCategory) => void;
   onHomeClick: () => void;
+  onOpenSitemap?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -26,6 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
   selectedCategory,
   onSelectCategory,
   onHomeClick,
+  onOpenSitemap,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
@@ -345,6 +347,25 @@ export const Header: React.FC<HeaderProps> = ({
                     <Mail className="w-3 h-3 text-neutral-400" />
                     <span>Contact</span>
                   </button>
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      onOpenSitemap?.();
+                    }}
+                    className="text-left hover:text-black dark:hover:text-white py-1 flex items-center gap-1.5 transition cursor-pointer text-emerald-600 dark:text-emerald-400 font-medium"
+                  >
+                    <FileText className="w-3 h-3 text-emerald-500" />
+                    <span>Sitemap Hub</span>
+                  </button>
+                  <a
+                    href="/robots.txt"
+                    target="_blank"
+                    rel="noopener"
+                    className="text-left hover:text-black dark:hover:text-white py-1 flex items-center gap-1.5 transition text-neutral-600 dark:text-neutral-400"
+                  >
+                    <Shield className="w-3 h-3 text-neutral-400" />
+                    <span>Robots.txt</span>
+                  </a>
                 </div>
                 <div className="text-[10px] text-neutral-400 pt-2 border-t border-neutral-200/50 dark:border-neutral-800/50 flex items-center justify-between">
                   <span>© {new Date().getFullYear()} Asbily Platforms</span>

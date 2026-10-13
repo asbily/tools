@@ -35,6 +35,17 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Never intercept or cache sitemap or robots or xml files so crawlers always get direct live files
+  const reqUrl = new URL(event.request.url);
+  if (
+    reqUrl.pathname === '/sitemap.xml' ||
+    reqUrl.pathname === '/robots.txt' ||
+    reqUrl.pathname.endsWith('.xml') ||
+    reqUrl.pathname.endsWith('.txt')
+  ) {
+    return;
+  }
+
   // Network-First for HTML/Navigation to prevent users getting stuck on old cached versions
   if (event.request.mode === 'navigate' || event.request.destination === 'document') {
     event.respondWith(
