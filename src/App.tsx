@@ -157,30 +157,51 @@ export default function App() {
     return () => window.removeEventListener('popstate', syncRouteFromUrl);
   }, []);
 
-  // Update dynamic page title & canonical URL tag
+  // Update dynamic page title & canonical URL tag with 100% domain priority
   useEffect(() => {
     let pageTitle = 'Asbily Free Tools — Free Tools. Simple Solutions.';
+    let pageDesc = 'All-in-one free online tools platform for text manipulation, social media hashtag generators, developer utilities, SEO checkers, client-side image compression, PDF documents, and productivity tools by Asbily Platforms.';
     let canonicalPath = '/';
 
     if (isSitemapOpen) {
       pageTitle = 'Public Sitemap & SEO Directory — Asbily Free Tools';
+      pageDesc = 'Explore the complete public sitemap, URL index, and robots crawling architecture for all 83+ tools on Asbily Free Tools.';
       canonicalPath = '/sitemap';
     } else if (activeTool) {
       pageTitle = `${activeTool.name} — Free Online Tool | Asbily`;
+      pageDesc = `${activeTool.shortDesc} 100% client-side, private, and free online utility.`;
       canonicalPath = `/${activeTool.category}/${activeTool.id}`;
     } else if (selectedCategory && selectedCategory !== 'all') {
       const cat = CATEGORIES.find((c) => c.id === selectedCategory);
       pageTitle = `${cat?.name || selectedCategory} — Free Online Tools | Asbily`;
+      pageDesc = `${cat?.description || 'Browse free online tools'}. Fast, private, browser-based utilities with zero server upload.`;
       canonicalPath = `/${selectedCategory}`;
     }
 
     document.title = pageTitle;
 
     // Keep canonical link synchronized with 100% domain priority on https://tools.asbily.com
+    const fullCanonicalUrl = `https://tools.asbily.com${canonicalPath}`;
     const canonicalEl = document.querySelector('link[rel="canonical"]');
     if (canonicalEl) {
-      canonicalEl.setAttribute('href', `https://tools.asbily.com${canonicalPath}`);
+      canonicalEl.setAttribute('href', fullCanonicalUrl);
     }
+
+    // Dynamic Meta Description
+    const descEl = document.querySelector('meta[name="description"]');
+    if (descEl) {
+      descEl.setAttribute('content', pageDesc);
+    }
+
+    // OpenGraph dynamic synchronization
+    const ogTitleEl = document.querySelector('meta[property="og:title"]');
+    if (ogTitleEl) ogTitleEl.setAttribute('content', pageTitle);
+
+    const ogDescEl = document.querySelector('meta[property="og:description"]');
+    if (ogDescEl) ogDescEl.setAttribute('content', pageDesc);
+
+    const ogUrlEl = document.querySelector('meta[property="og:url"]');
+    if (ogUrlEl) ogUrlEl.setAttribute('content', fullCanonicalUrl);
   }, [activeTool, selectedCategory, isSitemapOpen]);
 
   // Global keyboard shortcut '/' or Cmd+K / Ctrl+K to open search modal

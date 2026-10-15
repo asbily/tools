@@ -252,21 +252,22 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         </div>
 
         {/* Metadata line */}
-        <div className="flex items-center justify-between gap-1.5 mb-2 flex-wrap">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-neutral-400 dark:text-neutral-500">
+        <div className="flex items-center justify-between gap-1.5 mb-2 text-[11px] font-semibold text-neutral-400 dark:text-neutral-500">
+          <div className="flex items-center gap-1.5 tracking-wider uppercase">
             <span>{tool.categoryLabel}</span>
-            <span>·</span>
-            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">100% Client-Side</span>
+            <span aria-hidden="true" className="opacity-40">·</span>
+            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium normal-case">Browser-safe</span>
           </div>
 
           {tool.popular && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200/60 dark:border-amber-800/60">
-              <Sparkles className="w-2.5 h-2.5" /> Popular
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+              <Sparkles className="w-3 h-3 text-amber-500 fill-amber-500" />
+              <span>Popular</span>
             </span>
           )}
           {tool.isNew && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/60 dark:border-indigo-800/60">
-              New
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-indigo-600 dark:text-indigo-400">
+              <span>New</span>
             </span>
           )}
         </div>
@@ -283,14 +284,12 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 
         {/* Tags preview */}
         {tool.tags && tool.tags.length > 0 && (
-          <div className="flex items-center gap-1.5 mt-3 flex-wrap">
-            {tool.tags.slice(0, 2).map((tag) => (
-              <span
-                key={tag}
-                className="text-[10px] text-neutral-500 dark:text-neutral-400 px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50"
-              >
-                #{tag}
-              </span>
+          <div className="flex items-center gap-1.5 mt-3 text-[10px] text-neutral-400 dark:text-neutral-500 font-mono">
+            {tool.tags.slice(0, 3).map((tag, idx) => (
+              <React.Fragment key={tag}>
+                {idx > 0 && <span aria-hidden="true" className="opacity-30">/</span>}
+                <span>#{tag}</span>
+              </React.Fragment>
             ))}
           </div>
         )}

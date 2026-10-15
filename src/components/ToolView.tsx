@@ -150,13 +150,16 @@ export const ToolView: React.FC<ToolViewProps> = ({
 
       {/* Tool Header Banner */}
       <div className="space-y-3 w-full max-w-full overflow-hidden">
-        <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-          <span className="px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800/60">
-            {tool.categoryLabel}
-          </span>
-          <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 lowercase font-normal">
+        <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 tracking-wider uppercase">
+          <span>{tool.categoryLabel}</span>
+          <span aria-hidden="true" className="opacity-40">·</span>
+          <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium normal-case">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            100% Client-Side Safe
+            100% Client-Side Private
+          </span>
+          <span aria-hidden="true" className="opacity-40">·</span>
+          <span className="font-mono text-neutral-400 dark:text-neutral-500 normal-case">
+            /{tool.category}/{tool.id}
           </span>
         </div>
         <h1 className="text-2xl sm:text-4xl font-extrabold text-[#111111] dark:text-neutral-100 tracking-tight">

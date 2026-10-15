@@ -138,20 +138,42 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Global Search Bar Trigger (Desktop) */}
-          <div className="hidden md:flex flex-1 max-w-md mx-4">
+          <div className="hidden md:flex flex-1 max-w-md mx-4 items-center gap-3">
             <button
               onClick={onSearchClick}
               className="w-full flex items-center justify-between px-3.5 py-2 text-xs text-neutral-400 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:border-neutral-300 dark:hover:border-neutral-700 transition cursor-pointer"
             >
               <span className="flex items-center gap-2">
                 <Search className="w-3.5 h-3.5 text-neutral-400" />
-                <span>Search 40+ free browser tools...</span>
+                <span>Search 80+ free browser tools...</span>
               </span>
               <kbd className="px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded text-neutral-500">
                 /
               </kbd>
             </button>
           </div>
+
+          {/* Desktop Direct Nav Links */}
+          <nav className="hidden lg:flex items-center gap-1.5 text-xs font-medium text-neutral-600 dark:text-neutral-400 mr-2">
+            <button
+              onClick={handleHomeSelect}
+              className="px-2.5 py-1.5 rounded-lg hover:text-black dark:hover:text-white transition cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900"
+            >
+              All Tools
+            </button>
+            {onOpenSitemap && (
+              <button
+                onClick={() => {
+                  onOpenSitemap();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="px-2.5 py-1.5 rounded-lg hover:text-black dark:hover:text-white transition cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 flex items-center gap-1"
+              >
+                <FileText className="w-3.5 h-3.5 opacity-60" />
+                <span>Sitemap</span>
+              </button>
+            )}
+          </nav>
 
           {/* Right Action Icons */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, ShieldCheck, Zap, WifiOff, Sparkles, Flame, CheckCircle } from 'lucide-react';
+import { Search, ShieldCheck, Zap, WifiOff, Sparkles, Flame, CheckCircle, ArrowLeft, ChevronRight, Grid } from 'lucide-react';
 import { CATEGORIES, TOOLS } from '../data/toolsData';
 import { ToolCategory } from '../types';
 
@@ -26,6 +26,8 @@ export const Hero: React.FC<HeroProps> = ({
     return TOOLS.filter((t) => t.category === catId).length;
   };
 
+  const currentCategory = CATEGORIES.find((c) => c.id === selectedCategory);
+
   const popularShortcuts = [
     { id: 'hashtag-generator', label: 'Hashtag Generator' },
     { id: 'json-formatter', label: 'JSON Formatter' },
@@ -34,8 +36,10 @@ export const Hero: React.FC<HeroProps> = ({
     { id: 'password-generator', label: 'Password Gen' },
   ];
 
+  const isSpecificCategory = selectedCategory !== 'all' && currentCategory;
+
   return (
-    <div className="relative w-full max-w-full overflow-hidden border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0B0B0C] transition-colors py-12 sm:py-16">
+    <div className="relative w-full max-w-full overflow-hidden border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0B0B0C] transition-colors py-10 sm:py-14">
       {/* Subtle modern dot-grid ambient background */}
       <div
         className="absolute inset-0 opacity-[0.035] dark:opacity-[0.07] pointer-events-none"
@@ -46,23 +50,63 @@ export const Hero: React.FC<HeroProps> = ({
       />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-6 w-full max-w-full overflow-hidden">
-        {/* Brand Tagline Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800 text-xs text-neutral-700 dark:text-neutral-300 bg-neutral-50 dark:bg-neutral-900/80 shadow-xs">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="font-semibold text-[#111111] dark:text-white">{totalToolsCount}+ Essential Web Utilities</span>
-          <span className="text-neutral-400">·</span>
-          <span className="text-neutral-500 dark:text-neutral-400">100% Free Forever</span>
-        </div>
+        {isSpecificCategory ? (
+          /* Dedicated Category Hub Header */
+          <div className="space-y-4">
+            {/* Breadcrumb */}
+            <nav className="inline-flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 font-medium pb-1">
+              <button
+                onClick={() => onSelectCategory('all')}
+                className="hover:text-black dark:hover:text-white transition flex items-center gap-1 cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>All Categories</span>
+              </button>
+              <ChevronRight className="w-3.5 h-3.5 opacity-40" />
+              <span className="text-neutral-900 dark:text-neutral-100 font-semibold">
+                {currentCategory.name}
+              </span>
+            </nav>
 
-        {/* Hero Title */}
-        <div className="space-y-3">
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#111111] dark:text-white leading-[1.1]">
-            Free Tools. <span className="underline decoration-neutral-300 dark:decoration-neutral-700 decoration-wavy decoration-1 underline-offset-8">Simple Solutions.</span>
-          </h1>
-          <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed pt-1">
-            Engineered for developers, designers, creators, and students. Completely browser-based, zero server logs, instant execution with privacy by design.
-          </p>
-        </div>
+            {/* Category Title & Badge */}
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+                <span className="font-mono text-emerald-600 dark:text-emerald-400">tools.asbily.com/{currentCategory.id}</span>
+                <span>·</span>
+                <span>{getCategoryCount(currentCategory.id)} Utilities</span>
+                <span>·</span>
+                <span>100% Client-Side</span>
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-[#111111] dark:text-white leading-[1.15]">
+                {currentCategory.name}
+              </h1>
+              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+                {currentCategory.description}. Private, instant, browser-based utilities with zero server upload.
+              </p>
+            </div>
+          </div>
+        ) : (
+          /* Homepage Main Hero */
+          <>
+            {/* Brand Tagline */}
+            <div className="inline-flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400 font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="font-semibold text-[#111111] dark:text-white">{totalToolsCount}+ Essential Web Utilities</span>
+              <span>·</span>
+              <span>100% Free Forever</span>
+            </div>
+
+            {/* Hero Title */}
+            <div className="space-y-3">
+              <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#111111] dark:text-white leading-[1.1]">
+                Free Tools. <span className="underline decoration-neutral-300 dark:decoration-neutral-700 decoration-wavy decoration-1 underline-offset-8">Simple Solutions.</span>
+              </h1>
+              <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed pt-1">
+                Engineered for developers, designers, creators, and students. Completely browser-based, zero server logs, instant execution with privacy by design.
+              </p>
+            </div>
+          </>
+        )}
 
         {/* Big Search Input with shortcut hint */}
         <div className="max-w-2xl mx-auto relative pt-2">
@@ -72,7 +116,11 @@ export const Hero: React.FC<HeroProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search tools (e.g. hashtag, json, pdf, image, password, age)..."
+              placeholder={
+                isSpecificCategory
+                  ? `Search in ${currentCategory.name} (or global)...`
+                  : 'Search tools (e.g. hashtag, json, pdf, image, password, age)...'
+              }
               className="w-full pl-12 pr-24 py-4 bg-transparent text-sm text-[#111111] dark:text-white placeholder:text-neutral-400 focus:outline-none"
             />
             <div className="absolute right-3 flex items-center gap-1.5">
