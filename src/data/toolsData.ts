@@ -753,6 +753,17 @@ export const TOOLS: ToolItem[] = [
     popular: true,
   },
   {
+    id: 'product-payment-qr',
+    name: 'Product & Payment QR Code Generator',
+    shortDesc: 'Add product details, quantities, amounts, tax/discount, and generate instant payment QR codes with bKash, Nagad, UPI, Bank & digital bills.',
+    category: 'qr',
+    categoryLabel: 'QR & Barcodes',
+    iconName: 'Receipt',
+    tags: ['payment qr', 'product qr', 'bkash qr', 'nagad qr', 'upi qr', 'digital bill', 'scan to pay', 'invoice qr', 'taka qr'],
+    popular: true,
+    isNew: true,
+  },
+  {
     id: 'barcode-generator',
     name: 'Barcode Generator (Code 128 / EAN)',
     shortDesc: 'Create scan-ready 1D barcodes in Code 128, EAN-13, and Code 39 standards with high-res PNG export.',

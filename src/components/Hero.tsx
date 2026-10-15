@@ -29,11 +29,11 @@ export const Hero: React.FC<HeroProps> = ({
   const currentCategory = CATEGORIES.find((c) => c.id === selectedCategory);
 
   const popularShortcuts = [
+    { id: 'product-payment-qr', label: 'Payment QR' },
     { id: 'hashtag-generator', label: 'Hashtag Generator' },
     { id: 'json-formatter', label: 'JSON Formatter' },
     { id: 'image-compressor', label: 'Image Compressor' },
     { id: 'qr-generator', label: 'QR Generator' },
-    { id: 'password-generator', label: 'Password Gen' },
   ];
 
   const isSpecificCategory = selectedCategory !== 'all' && currentCategory;

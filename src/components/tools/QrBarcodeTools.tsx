@@ -28,12 +28,15 @@ import {
   Palette
 } from 'lucide-react';
 
+import { ProductPaymentQrTool } from './ProductPaymentQrTool';
+
 interface QrToolProps {
   toolId: string;
 }
 
 export const QrBarcodeTools: React.FC<QrToolProps> = ({ toolId }) => {
   if (toolId === 'qr-generator') return <QrGeneratorTool />;
+  if (toolId === 'product-payment-qr') return <ProductPaymentQrTool />;
   if (toolId === 'barcode-generator') return <BarcodeGeneratorTool />;
   if (toolId === 'qr-scanner') return <QrScannerTool />;
 
