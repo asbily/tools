@@ -814,14 +814,28 @@ const QrScannerTool: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animFrameRef = useRef<number | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const scanningRef = useRef(false);
+
+  const stopCamera = () => {
+    scanningRef.current = false;
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    }
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current);
+      animFrameRef.current = null;
+    }
+    setScanning(false);
+  };
 
   // Scan frame from video feed continuously
   const scanVideoFrame = () => {
-    if (!videoRef.current || !canvasRef.current || !scanning) return;
+    if (!videoRef.current || !canvasRef.current || !scanningRef.current) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+    if (video.readyState >= video.HAVE_ENOUGH_DATA && video.videoWidth > 0) {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext('2d');
@@ -829,7 +843,7 @@ const QrScannerTool: React.FC = () => {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const code = jsQR(imageData.data, imageData.width, imageData.height, {
-          inversionAttempts: 'dontInvert',
+          inversionAttempts: 'attemptBoth',
         });
 
         if (code && code.data) {
@@ -855,32 +869,20 @@ const QrScannerTool: React.FC = () => {
         videoRef.current.setAttribute('playsinline', 'true');
         await videoRef.current.play();
       }
+      scanningRef.current = true;
       setScanning(true);
+      animFrameRef.current = requestAnimationFrame(scanVideoFrame);
     } catch (err: any) {
+      stopCamera();
       setCameraError(err.message || 'Camera permission denied or camera device unavailable');
     }
   };
 
-  const stopCamera = () => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((t) => t.stop());
-      streamRef.current = null;
-    }
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-      animFrameRef.current = null;
-    }
-    setScanning(false);
-  };
-
   useEffect(() => {
-    if (scanning) {
-      animFrameRef.current = requestAnimationFrame(scanVideoFrame);
-    }
     return () => {
       stopCamera();
     };
-  }, [scanning]);
+  }, []);
 
   // Handle uploaded image file
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

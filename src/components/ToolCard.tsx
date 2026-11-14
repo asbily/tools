@@ -97,6 +97,15 @@ import {
   Keyboard,
   AudioLines,
   Video,
+  FileSignature,
+  Package,
+  Scale,
+  Car,
+  Utensils,
+  BellRing,
+  ClipboardList,
+  BarChart3,
+  Wallet,
   LucideIcon,
 } from 'lucide-react';
 import { ToolItem } from '../types';
@@ -195,6 +204,15 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Keyboard,
   AudioLines,
   Video,
+  FileSignature,
+  Package,
+  Scale,
+  Car,
+  Utensils,
+  BellRing,
+  ClipboardList,
+  BarChart3,
+  Wallet,
 };
 
 interface ToolCardProps {

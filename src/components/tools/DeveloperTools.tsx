@@ -452,14 +452,52 @@ const CsvJsonTool: React.FC<{
   const [csvText, setCsvText] = useState("id,name,role,department\n1,Alex Rivera,Tech Lead,Engineering\n2,Sofia Chen,Designer,Product\n3,Liam Vance,Writer,Marketing");
   const [jsonText, setJsonText] = useState('[\n  {"id":"1","name":"Alex Rivera","role":"Tech Lead","department":"Engineering"},\n  {"id":"2","name":"Sofia Chen","role":"Designer","department":"Product"}\n]');
 
+  const parseCsvRows = (input: string): string[][] => {
+    const rows: string[][] = [];
+    let row: string[] = [];
+    let field = '';
+    let inQuotes = false;
+    const normalized = input.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+    for (let i = 0; i < normalized.length; i++) {
+      const ch = normalized[i];
+      if (inQuotes) {
+        if (ch === '"' && normalized[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else if (ch === '"') {
+          inQuotes = false;
+        } else {
+          field += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+        } else if (ch === ',') {
+          row.push(field.trim());
+          field = '';
+        } else if (ch === '\n') {
+          row.push(field.trim());
+          if (row.some((cell) => cell !== '')) rows.push(row);
+          row = [];
+          field = '';
+        } else {
+          field += ch;
+        }
+      }
+    }
+    row.push(field.trim());
+    if (row.some((cell) => cell !== '')) rows.push(row);
+    return rows;
+  };
+
   const convertedJson = useMemo(() => {
     if (direction !== 'csv-to-json') return '';
     try {
-      const lines = csvText.trim().split('\n');
-      if (lines.length < 2) return '[]';
-      const headers = lines[0].split(',').map((h) => h.trim().replace(/^"|"$/g, ''));
-      const rows = lines.slice(1).map((line) => {
-        const values = line.split(',').map((v) => v.trim().replace(/^"|"$/g, ''));
+      const parsed = parseCsvRows(csvText.trim());
+      if (parsed.length < 2) return '[]';
+      const headers = parsed[0];
+      const rows = parsed.slice(1).map((values) => {
         const obj: Record<string, string> = {};
         headers.forEach((h, i) => {
           obj[h] = values[i] !== undefined ? values[i] : '';
@@ -477,12 +515,20 @@ const CsvJsonTool: React.FC<{
     try {
       const arr = JSON.parse(jsonText);
       if (!Array.isArray(arr) || arr.length === 0) return '';
-      const headers = Object.keys(arr[0]);
-      const csvRows = [headers.join(',')];
+      const headerSet = new Set<string>();
+      arr.forEach((item) => {
+        if (item && typeof item === 'object') {
+          Object.keys(item).forEach((k) => headerSet.add(k));
+        }
+      });
+      const headers = Array.from(headerSet);
+      const escapeCsv = (raw: string) =>
+        /[",\n\r]/.test(raw) ? `"${raw.replace(/"/g, '""')}"` : raw;
+      const csvRows = [headers.map(escapeCsv).join(',')];
       for (const item of arr) {
         const row = headers.map((h) => {
-          const val = String(item[h] ?? '');
-          return val.includes(',') ? `"${val}"` : val;
+          const val = item?.[h] === undefined || item?.[h] === null ? '' : String(item[h]);
+          return escapeCsv(val);
         });
         csvRows.push(row.join(','));
       }
@@ -579,17 +625,23 @@ const XmlYamlTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = 
   const xmlOutput = useMemo(() => {
     try {
       const obj = JSON.parse(jsonInput);
-      const toXml = (o: any, root = 'root'): string => {
-        let xml = `<${root}>\n`;
-        for (const [k, v] of Object.entries(o)) {
-          if (typeof v === 'object' && v !== null) {
-            xml += `  ${toXml(v, k)}\n`;
-          } else {
-            xml += `  <${k}>${v}</${k}>\n`;
-          }
+      const escapeXml = (str: string) =>
+        str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      const safeTag = (tag: string) => tag.replace(/[^a-zA-Z0-9_-]/g, '_') || 'item';
+
+      const toXml = (val: any, tagName = 'root', pad = ''): string => {
+        const t = safeTag(tagName);
+        if (Array.isArray(val)) {
+          const inner = val.map((el) => toXml(el, 'item', `${pad}  `)).join('\n');
+          return `${pad}<${t}>\n${inner}\n${pad}</${t}>`;
         }
-        xml += `</${root}>`;
-        return xml;
+        if (typeof val === 'object' && val !== null) {
+          const entries = Object.entries(val);
+          if (entries.length === 0) return `${pad}<${t} />`;
+          const inner = entries.map(([k, v]) => toXml(v, k, `${pad}  `)).join('\n');
+          return `${pad}<${t}>\n${inner}\n${pad}</${t}>`;
+        }
+        return `${pad}<${t}>${escapeXml(String(val ?? ''))}</${t}>`;
       };
       return toXml(obj);
     } catch {
@@ -600,19 +652,31 @@ const XmlYamlTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = 
   const yamlOutput = useMemo(() => {
     try {
       const obj = JSON.parse(jsonInput);
-      const toYaml = (o: any, indent = 0): string => {
-        let res = '';
+      const toYaml = (val: any, indent = 0): string => {
         const spaces = ' '.repeat(indent);
-        for (const [k, v] of Object.entries(o)) {
-          if (typeof v === 'object' && v !== null) {
-            res += `${spaces}${k}:\n${toYaml(v, indent + 2)}`;
-          } else {
-            res += `${spaces}${k}: ${v}\n`;
-          }
+        if (Array.isArray(val)) {
+          return val
+            .map((item) => {
+              if (typeof item === 'object' && item !== null) {
+                return `${spaces}-\n${toYaml(item, indent + 2)}`;
+              }
+              return `${spaces}- ${String(item)}\n`;
+            })
+            .join('');
         }
-        return res;
+        if (typeof val === 'object' && val !== null) {
+          return Object.entries(val)
+            .map(([k, v]) => {
+              if (typeof v === 'object' && v !== null) {
+                return `${spaces}${k}:\n${toYaml(v, indent + 2)}`;
+              }
+              return `${spaces}${k}: ${String(v)}\n`;
+            })
+            .join('');
+        }
+        return `${spaces}${String(val)}\n`;
       };
-      return toYaml(obj);
+      return toYaml(obj).trimEnd();
     } catch {
       return '# Invalid JSON Input';
     }
@@ -674,25 +738,29 @@ const SqlFormatterTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
 
   const formattedSql = useMemo(() => {
     if (!sql.trim()) return '';
+    const literals: string[] = [];
+    let masked = sql.replace(/'(?:''|[^'])*'|"(?:""|[^"])*"/g, (match) => {
+      literals.push(match);
+      return `__SQL_LIT_${literals.length - 1}__`;
+    });
+
     const keywords = [
       'SELECT', 'FROM', 'WHERE', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'FULL JOIN', 'JOIN',
-      'ON', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'UNION', 'UNION ALL',
-      'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE FROM', 'AND', 'OR', 'AS', 'IN', 'DISTINCT'
+      'ON', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'UNION ALL', 'UNION',
+      'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE FROM', 'AND', 'OR', 'AS', 'IN', 'DISTINCT', 'DESC', 'ASC'
     ];
 
-    let formatted = sql;
     keywords.forEach((kw) => {
       const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-      formatted = formatted.replace(regex, kw);
+      masked = masked.replace(regex, kw);
     });
 
-    // Break lines before main clauses
-    const breakClauses = ['FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'LEFT JOIN', 'INNER JOIN', 'JOIN', 'SET', 'VALUES'];
+    const breakClauses = ['FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'FULL JOIN', 'JOIN', 'SET', 'VALUES', 'UNION ALL', 'UNION'];
     breakClauses.forEach((cl) => {
-      formatted = formatted.replace(new RegExp(`\\s+(${cl})\\b`, 'g'), '\n$1');
+      masked = masked.replace(new RegExp(`\\s+(${cl})\\b`, 'g'), '\n$1');
     });
 
-    return formatted;
+    return masked.replace(/__SQL_LIT_(\d+)__/g, (_, i) => literals[Number(i)] || '');
   }, [sql]);
 
   return (
@@ -1297,22 +1365,44 @@ const NumberBaseTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) =
 // Component: API & cURL Request Builder
 // -------------------------------------------------------------
 const CurlBuilderTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = ({ onCopy, copied }) => {
-  const [method, setMethod] = useState<'GET' | 'POST' | 'PUT' | 'DELETE'>('POST');
+  const [method, setMethod] = useState<'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'>('POST');
   const [url, setUrl] = useState('https://api.example.com/v1/items');
   const [headers, setHeaders] = useState('Content-Type: application/json\nAuthorization: Bearer token123');
   const [body, setBody] = useState('{\n  "title": "New Item",\n  "published": true\n}');
+  const [snippetMode, setSnippetMode] = useState<'curl' | 'fetch'>('curl');
+
+  const parsedHeaders = useMemo(() => {
+    return headers
+      .split('\n')
+      .map((h) => h.trim())
+      .filter(Boolean);
+  }, [headers]);
 
   const curlCommand = useMemo(() => {
     let cmd = `curl -X ${method} "${url}"`;
-    const hLines = headers.split('\n').filter((h) => h.trim());
-    hLines.forEach((h) => {
-      cmd += ` \\\n  -H "${h.trim()}"`;
+    parsedHeaders.forEach((h) => {
+      cmd += ` \\\n  -H "${h}"`;
     });
     if (['POST', 'PUT', 'PATCH'].includes(method) && body.trim()) {
       cmd += ` \\\n  -d '${body.replace(/\n/g, '')}'`;
     }
     return cmd;
-  }, [method, url, headers, body]);
+  }, [method, url, parsedHeaders, body]);
+
+  const fetchSnippet = useMemo(() => {
+    const headerObj: Record<string, string> = {};
+    parsedHeaders.forEach((h) => {
+      const idx = h.indexOf(':');
+      if (idx > 0) headerObj[h.slice(0, idx).trim()] = h.slice(idx + 1).trim();
+    });
+    const opts: Record<string, any> = { method, headers: headerObj };
+    if (['POST', 'PUT', 'PATCH'].includes(method) && body.trim()) {
+      opts.body = body.trim();
+    }
+    return `const response = await fetch("${url}", ${JSON.stringify(opts, null, 2)});\nconst data = await response.json();`;
+  }, [method, url, parsedHeaders, body]);
+
+  const activeSnippet = snippetMode === 'curl' ? curlCommand : fetchSnippet;
 
   return (
     <div className="space-y-6">
@@ -1321,12 +1411,13 @@ const CurlBuilderTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
           <label className="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1.5">Method</label>
           <select
             value={method}
-            onChange={(e) => setMethod(e.target.value as any)}
+            onChange={(e) => setMethod(e.target.value as 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE')}
             className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-sm font-semibold"
           >
             <option value="GET">GET</option>
             <option value="POST">POST</option>
             <option value="PUT">PUT</option>
+            <option value="PATCH">PATCH</option>
             <option value="DELETE">DELETE</option>
           </select>
         </div>
@@ -1363,18 +1454,36 @@ const CurlBuilderTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
       </div>
 
       <div>
-        <label className="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1.5">cURL Snippet</label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Generated Request Snippet</label>
+          <div className="flex gap-1.5">
+            {(['curl', 'fetch'] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => setSnippetMode(mode)}
+                className={`px-2.5 py-1 rounded text-[11px] font-semibold border transition ${
+                  snippetMode === mode
+                    ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
+                    : 'border-neutral-200 dark:border-neutral-800 text-neutral-500'
+                }`}
+              >
+                {mode === 'curl' ? 'cURL' : 'JS fetch()'}
+              </button>
+            ))}
+          </div>
+        </div>
         <pre className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-900 text-neutral-100 font-mono text-xs overflow-x-auto">
-          {curlCommand}
+          {activeSnippet}
         </pre>
       </div>
 
       <button
-        onClick={() => onCopy(curlCommand)}
+        onClick={() => onCopy(activeSnippet)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
         {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
-        Copy cURL Command
+        Copy {snippetMode === 'curl' ? 'cURL Command' : 'fetch() Snippet'}
       </button>
     </div>
   );
@@ -1385,10 +1494,105 @@ const CurlBuilderTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
 // -------------------------------------------------------------
 const MarkdownEditorTool: React.FC<{
   onCopy: (t: string) => void;
-  onDownload: (c: string, f: string) => void;
+  onDownload: (c: string, f: string, t?: string) => void;
   copied: boolean;
 }> = ({ onCopy, onDownload, copied }) => {
-  const [md, setMd] = useState('# Asbily Free Tools\n\nWelcome to **Asbily Free Tools**, a suite of modern client-side utilities.\n\n### Key Features:\n- 100% Private (Runs in Browser)\n- Minimal Clean UI\n- High Performance\n\n```json\n{\n  "offline": true\n}\n```\n');
+  const [md, setMd] = useState('# Asbily Free Tools\n\nWelcome to **Asbily Free Tools**, a suite of modern *client-side* utilities using `zero` server storage.\n\n> Built for creators, developers, and teams.\n\n### Key Features:\n- 100% Private (Runs in Browser)\n- Minimal Clean UI\n- High Performance\n\n```json\n{\n  "offline": true\n}\n```\n');
+
+  const escapeHtml = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  const renderInline = (text: string): React.ReactNode[] => {
+    const tokens = text.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g);
+    return tokens.map((tok, idx) => {
+      if (tok.startsWith('`') && tok.endsWith('`')) {
+        return <code key={idx} className="px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 font-mono text-xs">{tok.slice(1, -1)}</code>;
+      }
+      if (tok.startsWith('**') && tok.endsWith('**')) {
+        return <strong key={idx} className="font-bold text-[#000000] dark:text-[#FFFFFF]">{tok.slice(2, -2)}</strong>;
+      }
+      if (tok.startsWith('*') && tok.endsWith('*')) {
+        return <em key={idx} className="italic">{tok.slice(1, -1)}</em>;
+      }
+      const linkMatch = tok.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      if (linkMatch) {
+        const href = /^https?:\/\//i.test(linkMatch[2]) ? linkMatch[2] : '#';
+        return <a key={idx} href={href} target="_blank" rel="noopener noreferrer" className="underline font-medium">{linkMatch[1]}</a>;
+      }
+      return tok;
+    });
+  };
+
+  const renderedBlocks = useMemo(() => {
+    const lines = md.split('\n');
+    const nodes: React.ReactNode[] = [];
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      if (line.trim().startsWith('```')) {
+        const codeLines: string[] = [];
+        i++;
+        while (i < lines.length && !lines[i].trim().startsWith('```')) {
+          codeLines.push(lines[i]);
+          i++;
+        }
+        nodes.push(
+          <pre key={`code-${i}`} className="p-3 my-2 rounded-lg bg-neutral-900 text-neutral-100 font-mono text-xs overflow-x-auto">
+            <code>{codeLines.join('\n')}</code>
+          </pre>
+        );
+      } else if (line.startsWith('### ')) {
+        nodes.push(<h3 key={i} className="text-base font-semibold mt-3 mb-1.5">{renderInline(line.slice(4))}</h3>);
+      } else if (line.startsWith('## ')) {
+        nodes.push(<h2 key={i} className="text-lg font-bold mt-4 mb-2">{renderInline(line.slice(3))}</h2>);
+      } else if (line.startsWith('# ')) {
+        nodes.push(<h1 key={i} className="text-xl font-bold mb-2">{renderInline(line.slice(2))}</h1>);
+      } else if (line.startsWith('> ')) {
+        nodes.push(<blockquote key={i} className="border-l-2 border-neutral-400 pl-3 italic text-neutral-600 dark:text-neutral-300 my-2">{renderInline(line.slice(2))}</blockquote>);
+      } else if (line.trim() === '---') {
+        nodes.push(<hr key={i} className="my-3 border-neutral-200 dark:border-neutral-800" />);
+      } else if (line.startsWith('- ') || line.startsWith('* ')) {
+        nodes.push(<li key={i} className="ml-4 list-disc">{renderInline(line.slice(2))}</li>);
+      } else if (line.trim() === '') {
+        nodes.push(<div key={i} className="h-2" />);
+      } else {
+        nodes.push(<p key={i} className="mb-1.5 leading-relaxed">{renderInline(line)}</p>);
+      }
+      i++;
+    }
+    return nodes;
+  }, [md]);
+
+  const htmlExport = useMemo(() => {
+    const inlineHtml = (t: string) =>
+      escapeHtml(t)
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2">$1</a>');
+
+    const lines = md.split('\n');
+    const out: string[] = [];
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i];
+      if (l.trim().startsWith('```')) {
+        const buf: string[] = [];
+        i++;
+        while (i < lines.length && !lines[i].trim().startsWith('```')) {
+          buf.push(escapeHtml(lines[i]));
+          i++;
+        }
+        out.push(`<pre><code>${buf.join('\n')}</code></pre>`);
+      } else if (l.startsWith('### ')) out.push(`<h3>${inlineHtml(l.slice(4))}</h3>`);
+      else if (l.startsWith('## ')) out.push(`<h2>${inlineHtml(l.slice(3))}</h2>`);
+      else if (l.startsWith('# ')) out.push(`<h1>${inlineHtml(l.slice(2))}</h1>`);
+      else if (l.startsWith('> ')) out.push(`<blockquote>${inlineHtml(l.slice(2))}</blockquote>`);
+      else if (l.trim() === '---') out.push('<hr />');
+      else if (l.startsWith('- ') || l.startsWith('* ')) out.push(`<li>${inlineHtml(l.slice(2))}</li>`);
+      else if (l.trim() !== '') out.push(`<p>${inlineHtml(l)}</p>`);
+    }
+    return out.join('\n');
+  }, [md]);
 
   return (
     <div className="space-y-6">
@@ -1404,19 +1608,13 @@ const MarkdownEditorTool: React.FC<{
         </div>
         <div>
           <label className="block text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1.5">Rendered Preview</label>
-          <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900 min-h-[300px] text-sm prose dark:prose-invert">
-            {md.split('\n').map((line, i) => {
-              if (line.startsWith('# ')) return <h1 key={i} className="text-xl font-bold mb-2">{line.replace('# ', '')}</h1>;
-              if (line.startsWith('### ')) return <h3 key={i} className="text-base font-semibold mb-2">{line.replace('### ', '')}</h3>;
-              if (line.startsWith('- ')) return <li key={i} className="ml-4 list-disc">{line.replace('- ', '')}</li>;
-              if (line.trim() === '') return <br key={i} />;
-              return <p key={i} className="mb-2">{line.replace(/\*\*(.*?)\*\*/g, '$1')}</p>;
-            })}
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900 min-h-[300px] text-sm text-neutral-800 dark:text-neutral-200">
+            {renderedBlocks}
           </div>
         </div>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <button
           onClick={() => onCopy(md)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
@@ -1425,11 +1623,25 @@ const MarkdownEditorTool: React.FC<{
           Copy Markdown
         </button>
         <button
-          onClick={() => onDownload(md, 'document.md')}
+          onClick={() => onCopy(htmlExport)}
+          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+        >
+          <Copy className="w-4 h-4" />
+          Copy HTML
+        </button>
+        <button
+          onClick={() => onDownload(md, 'document.md', 'text/markdown')}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
           <Download className="w-4 h-4" />
           Download .md
+        </button>
+        <button
+          onClick={() => onDownload(htmlExport, 'document.html', 'text/html')}
+          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+        >
+          <Download className="w-4 h-4" />
+          Download .html
         </button>
       </div>
     </div>

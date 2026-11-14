@@ -26,16 +26,49 @@ export const StudentTools: React.FC<StudentToolProps> = ({ toolId }) => {
 // -------------------------------------------------------------
 // Component: GPA & CGPA Calculator
 // -------------------------------------------------------------
-const GpaCalculatorTool: React.FC = () => {
-  const [courses, setCourses] = useState([
-    { name: 'Data Structures', credits: 3, grade: 4.0 },
-    { name: 'Linear Algebra', credits: 3, grade: 3.75 },
-    { name: 'Technical Writing', credits: 2, grade: 3.5 },
-    { name: 'Physics Lab', credits: 1, grade: 4.0 },
-  ]);
+const DEFAULT_COURSES = [
+  { name: 'Data Structures', credits: 3, grade: 4.0 },
+  { name: 'Linear Algebra', credits: 3, grade: 3.75 },
+  { name: 'Technical Writing', credits: 2, grade: 3.5 },
+  { name: 'Physics Lab', credits: 1, grade: 4.0 },
+];
 
-  const [priorCredits, setPriorCredits] = useState(30);
-  const [priorCgpa, setPriorCgpa] = useState(3.6);
+const GpaCalculatorTool: React.FC = () => {
+  const [courses, setCourses] = useState<{ name: string; credits: number; grade: number }[]>(() => {
+    try {
+      const saved = localStorage.getItem('asbily_gpa_courses');
+      return saved ? JSON.parse(saved) : DEFAULT_COURSES;
+    } catch {
+      return DEFAULT_COURSES;
+    }
+  });
+
+  const [priorCredits, setPriorCredits] = useState(() => {
+    try {
+      const s = localStorage.getItem('asbily_gpa_prior_credits');
+      return s !== null ? Number(s) : 30;
+    } catch {
+      return 30;
+    }
+  });
+  const [priorCgpa, setPriorCgpa] = useState(() => {
+    try {
+      const s = localStorage.getItem('asbily_gpa_prior_cgpa');
+      return s !== null ? Number(s) : 3.6;
+    } catch {
+      return 3.6;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('asbily_gpa_courses', JSON.stringify(courses));
+      localStorage.setItem('asbily_gpa_prior_credits', String(priorCredits));
+      localStorage.setItem('asbily_gpa_prior_cgpa', String(priorCgpa));
+    } catch {
+      // ignore storage quota errors
+    }
+  }, [courses, priorCredits, priorCgpa]);
 
   const addCourse = () => {
     setCourses((prev) => [...prev, { name: 'New Course', credits: 3, grade: 3.75 }]);
@@ -80,46 +113,48 @@ const GpaCalculatorTool: React.FC = () => {
 
       <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden divide-y divide-neutral-200 dark:divide-neutral-800">
         {courses.map((c, idx) => (
-          <div key={idx} className="p-3 bg-white dark:bg-neutral-950 flex items-center gap-3">
+          <div key={idx} className="p-3 bg-white dark:bg-neutral-950 flex flex-col sm:flex-row sm:items-center gap-3">
             <input
               type="text"
               value={c.name}
               onChange={(e) => updateCourse(idx, 'name', e.target.value)}
               placeholder="Course title"
-              className="flex-1 p-1.5 border rounded text-xs"
+              className="w-full sm:flex-1 p-1.5 border rounded text-xs"
             />
-            <div className="flex items-center gap-1">
-              <span className="text-xs text-neutral-400">Credits:</span>
-              <input
-                type="number"
-                min={1}
-                max={6}
-                value={c.credits}
-                onChange={(e) => updateCourse(idx, 'credits', parseFloat(e.target.value) || 0)}
-                className="w-14 p-1.5 border rounded text-xs text-center"
-              />
+            <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3">
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-neutral-400">Credits:</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={6}
+                  value={c.credits}
+                  onChange={(e) => updateCourse(idx, 'credits', parseFloat(e.target.value) || 0)}
+                  className="w-14 p-1.5 border rounded text-xs text-center"
+                />
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-neutral-400">Grade:</span>
+                <select
+                  value={c.grade}
+                  onChange={(e) => updateCourse(idx, 'grade', parseFloat(e.target.value))}
+                  className="p-1.5 border rounded text-xs"
+                >
+                  <option value={4.0}>A+ / A (4.00)</option>
+                  <option value={3.75}>A- (3.75)</option>
+                  <option value={3.5}>B+ (3.50)</option>
+                  <option value={3.25}>B (3.25)</option>
+                  <option value={3.0}>B- (3.00)</option>
+                  <option value={2.75}>C+ (2.75)</option>
+                  <option value={2.5}>C (2.50)</option>
+                  <option value={2.25}>D (2.25)</option>
+                  <option value={0.0}>F (0.00)</option>
+                </select>
+              </div>
+              <button onClick={() => removeCourse(idx)} className="p-1 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
+                <Trash2 className="w-4 h-4" />
+              </button>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-xs text-neutral-400">Grade:</span>
-              <select
-                value={c.grade}
-                onChange={(e) => updateCourse(idx, 'grade', parseFloat(e.target.value))}
-                className="p-1.5 border rounded text-xs"
-              >
-                <option value={4.0}>A+ / A (4.00)</option>
-                <option value={3.75}>A- (3.75)</option>
-                <option value={3.5}>B+ (3.50)</option>
-                <option value={3.25}>B (3.25)</option>
-                <option value={3.0}>B- (3.00)</option>
-                <option value={2.75}>C+ (2.75)</option>
-                <option value={2.5}>C (2.50)</option>
-                <option value={2.25}>D (2.25)</option>
-                <option value={0.0}>F (0.00)</option>
-              </select>
-            </div>
-            <button onClick={() => removeCourse(idx)} className="p-1 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
-              <Trash2 className="w-4 h-4" />
-            </button>
           </div>
         ))}
       </div>
@@ -204,16 +239,34 @@ const ExamPercentageTool: React.FC = () => {
 // -------------------------------------------------------------
 // Component: Digital Flashcards
 // -------------------------------------------------------------
+const DEFAULT_FLASHCARDS = [
+  { question: 'What is the time complexity of quicksort average case?', answer: 'O(n log n)' },
+  { question: 'What does ACID stand for in database management?', answer: 'Atomicity, Consistency, Isolation, Durability' },
+  { question: 'What is the purpose of DNS?', answer: 'Translates human-readable domain names into IP addresses' },
+];
+
 const FlashcardsTool: React.FC = () => {
-  const [deck, setDeck] = useState([
-    { question: 'What is the time complexity of quicksort average case?', answer: 'O(n log n)' },
-    { question: 'What does ACID stand for in database management?', answer: 'Atomicity, Consistency, Isolation, Durability' },
-    { question: 'What is the purpose of DNS?', answer: 'Translates human-readable domain names into IP addresses' },
-  ]);
+  const [deck, setDeck] = useState<{ question: string; answer: string }[]>(() => {
+    try {
+      const saved = localStorage.getItem('asbily_flashcards');
+      const parsed = saved ? JSON.parse(saved) : null;
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_FLASHCARDS;
+    } catch {
+      return DEFAULT_FLASHCARDS;
+    }
+  });
   const [currentIdx, setCurrentIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [newQ, setNewQ] = useState('');
   const [newA, setNewA] = useState('');
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('asbily_flashcards', JSON.stringify(deck));
+    } catch {
+      // ignore storage errors
+    }
+  }, [deck]);
 
   const current = deck[currentIdx] || deck[0];
 
@@ -225,6 +278,29 @@ const FlashcardsTool: React.FC = () => {
   const prevCard = () => {
     setFlipped(false);
     setCurrentIdx((prev) => (prev - 1 + deck.length) % deck.length);
+  };
+
+  const shuffleDeck = () => {
+    setFlipped(false);
+    setDeck((prev) => {
+      const copy = [...prev];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    });
+    setCurrentIdx(0);
+  };
+
+  const deleteCurrentCard = () => {
+    if (deck.length <= 1) return;
+    setFlipped(false);
+    setDeck((prev) => {
+      const next = prev.filter((_, i) => i !== currentIdx);
+      setCurrentIdx((idx) => Math.min(idx, next.length - 1));
+      return next;
+    });
   };
 
   const addCard = () => {
@@ -255,10 +331,20 @@ const FlashcardsTool: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex justify-center gap-3">
-        <button onClick={prevCard} className="px-4 py-2 border rounded-lg text-xs font-semibold">Previous</button>
-        <button onClick={() => setFlipped(!flipped)} className="px-4 py-2 border rounded-lg text-xs font-semibold bg-neutral-100 dark:bg-neutral-800">Flip Card</button>
-        <button onClick={nextCard} className="px-4 py-2 border rounded-lg text-xs font-semibold">Next Card</button>
+      <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+        <button onClick={prevCard} className="px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs font-semibold">Previous</button>
+        <button onClick={() => setFlipped(!flipped)} className="px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs font-semibold bg-neutral-100 dark:bg-neutral-800">Flip Card</button>
+        <button onClick={nextCard} className="px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs font-semibold">Next Card</button>
+        <button onClick={shuffleDeck} className="px-3 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs font-semibold inline-flex items-center gap-1">
+          <RefreshCw className="w-3.5 h-3.5" /> Shuffle
+        </button>
+        <button
+          onClick={deleteCurrentCard}
+          disabled={deck.length <= 1}
+          className="px-3 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs font-semibold inline-flex items-center gap-1 disabled:opacity-40"
+        >
+          <Trash2 className="w-3.5 h-3.5" /> Delete
+        </button>
       </div>
 
       <div className="border-t border-neutral-200 dark:border-neutral-800 pt-6">

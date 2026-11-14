@@ -177,7 +177,7 @@ const CaseConverterTool: React.FC<{
   const [input, setInput] = useState('');
 
   const toTitleCase = (str: string) =>
-    str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
 
   const toCamelCase = (str: string) => {
     return str
@@ -665,6 +665,7 @@ const LoremIpsumTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
   const [count, setCount] = useState(3);
   const [type, setType] = useState<'paragraphs' | 'sentences' | 'words'>('paragraphs');
   const [startWithLorem, setStartWithLorem] = useState(true);
+  const [seed, setSeed] = useState(0);
 
   const LOREM_WORDS = [
     'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
@@ -701,7 +702,8 @@ const LoremIpsumTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
     if (type === 'words') {
       const res = [];
       for (let i = 0; i < count; i++) {
-        res.push(LOREM_WORDS[i % LOREM_WORDS.length]);
+        const idx = startWithLorem && i < 2 ? i : (i + seed * 7) % LOREM_WORDS.length;
+        res.push(LOREM_WORDS[startWithLorem && i < 5 ? i : idx]);
       }
       return res.join(' ');
     }
@@ -724,7 +726,7 @@ const LoremIpsumTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
       full = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' + full;
     }
     return full;
-  }, [count, type, startWithLorem]);
+  }, [count, type, startWithLorem, seed]);
 
   return (
     <div className="space-y-6">
@@ -770,13 +772,21 @@ const LoremIpsumTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
         className="w-full p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-neutral-800 dark:text-neutral-200 text-sm leading-relaxed"
       />
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <button
           onClick={() => onCopy(generated)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
           {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Dummy Text
+        </button>
+        <button
+          type="button"
+          onClick={() => setSeed((s) => s + 1)}
+          className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium hover:opacity-90 transition cursor-pointer"
+        >
+          <RotateCcw className="w-4 h-4" />
+          Regenerate
         </button>
       </div>
     </div>

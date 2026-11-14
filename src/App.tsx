@@ -15,7 +15,6 @@ import { SavedToolsView } from './components/SavedToolsView';
 import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
 import { LegalModal } from './components/LegalModal';
-import { SitemapView } from './components/SitemapView';
 import { AdSlot } from './components/AdSlot';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { Sparkles, Clock, Star, Trash2, ArrowRight } from 'lucide-react';
@@ -23,7 +22,6 @@ import { Sparkles, Clock, Star, Trash2, ArrowRight } from 'lucide-react';
 export default function App() {
   const [activeTool, setActiveTool] = useState<ToolItem | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<ToolCategory>('all');
-  const [isSitemapOpen, setIsSitemapOpen] = useState(false);
   const [isSavedPage, setIsSavedPage] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
@@ -98,7 +96,6 @@ export default function App() {
       const tool = TOOLS.find((t) => t.id === toolId);
       if (tool) {
         setIsSavedPage(false);
-        setIsSitemapOpen(false);
         setActiveTool(tool);
         setSelectedCategory(tool.category);
         addRecentlyUsed(tool.id);
@@ -113,21 +110,11 @@ export default function App() {
     // /saved or /favorites -> Dedicated Saved Tools page
     if (segments.length === 1 && (segments[0] === 'saved' || segments[0] === 'favorites')) {
       setIsSavedPage(true);
-      setIsSitemapOpen(false);
       setActiveTool(null);
       setSelectedCategory('all');
       if (segments[0] === 'favorites') {
         window.history.replaceState(null, '', '/saved');
       }
-      return;
-    }
-
-    // /sitemap -> Public Interactive Directory
-    if (segments.length === 1 && segments[0] === 'sitemap') {
-      setIsSavedPage(false);
-      setIsSitemapOpen(true);
-      setActiveTool(null);
-      setSelectedCategory('all');
       return;
     }
 
@@ -137,7 +124,6 @@ export default function App() {
       const tool = TOOLS.find((t) => t.id === toolSegment);
       if (tool) {
         setIsSavedPage(false);
-        setIsSitemapOpen(false);
         setActiveTool(tool);
         setSelectedCategory(tool.category);
         addRecentlyUsed(tool.id);
@@ -151,7 +137,6 @@ export default function App() {
       const isCategory = CATEGORIES.some((c) => c.id === segment);
       if (isCategory) {
         setIsSavedPage(false);
-        setIsSitemapOpen(false);
         setSelectedCategory(segment as ToolCategory);
         setActiveTool(null);
         return;
@@ -160,7 +145,6 @@ export default function App() {
       const tool = TOOLS.find((t) => t.id === segment);
       if (tool) {
         setIsSavedPage(false);
-        setIsSitemapOpen(false);
         setActiveTool(tool);
         setSelectedCategory(tool.category);
         addRecentlyUsed(tool.id);
@@ -171,7 +155,6 @@ export default function App() {
 
     // Root homepage
     setIsSavedPage(false);
-    setIsSitemapOpen(false);
     setActiveTool(null);
     setSelectedCategory('all');
   };
@@ -193,10 +176,6 @@ export default function App() {
       pageTitle = 'Saved & Starred Tools — Asbily Free Tools';
       pageDesc = 'Your personal bookmarked collection of free client-side tools organized in one place.';
       canonicalPath = '/saved';
-    } else if (isSitemapOpen) {
-      pageTitle = 'Public Sitemap & Directory — Asbily Free Tools';
-      pageDesc = `Explore the complete public sitemap and URL index for all ${TOOLS.length} tools on Asbily Free Tools.`;
-      canonicalPath = '/sitemap';
     } else if (activeTool) {
       pageTitle = `${activeTool.name} — Free Online Tool | Asbily`;
       pageDesc = `${activeTool.shortDesc} 100% client-side, private, and free online utility.`;
@@ -225,7 +204,7 @@ export default function App() {
 
     const ogUrlEl = document.querySelector('meta[property="og:url"]');
     if (ogUrlEl) ogUrlEl.setAttribute('content', fullCanonicalUrl);
-  }, [activeTool, selectedCategory, isSitemapOpen, isSavedPage]);
+  }, [activeTool, selectedCategory, isSavedPage]);
 
   // Global keyboard shortcut '/' or Cmd+K / Ctrl+K
   useEffect(() => {
@@ -268,7 +247,6 @@ export default function App() {
       window.history.pushState(null, '', newPath);
     }
     setIsSavedPage(false);
-    setIsSitemapOpen(false);
     setActiveTool(tool);
     setSelectedCategory(tool.category);
     addRecentlyUsed(tool.id);
@@ -281,7 +259,6 @@ export default function App() {
       window.history.pushState(null, '', newPath);
     }
     setIsSavedPage(false);
-    setIsSitemapOpen(false);
     setActiveTool(null);
     setSelectedCategory(cat);
   };
@@ -296,7 +273,6 @@ export default function App() {
       window.history.pushState(null, '', '/');
     }
     setIsSavedPage(false);
-    setIsSitemapOpen(false);
     setActiveTool(null);
     setSelectedCategory('all');
     setSearchQuery('');
@@ -309,7 +285,6 @@ export default function App() {
       window.history.pushState(null, '', newPath);
     }
     setIsSavedPage(false);
-    setIsSitemapOpen(false);
     setActiveTool(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -319,17 +294,6 @@ export default function App() {
       window.history.pushState(null, '', '/saved');
     }
     setIsSavedPage(true);
-    setIsSitemapOpen(false);
-    setActiveTool(null);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleOpenSitemap = () => {
-    if (window.location.pathname !== '/sitemap') {
-      window.history.pushState(null, '', '/sitemap');
-    }
-    setIsSavedPage(false);
-    setIsSitemapOpen(true);
     setActiveTool(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -367,11 +331,9 @@ export default function App() {
 
   const currentViewKey = isSavedPage
     ? 'saved'
-    : isSitemapOpen
-      ? 'sitemap'
-      : activeTool
-        ? `tool-${activeTool.id}`
-        : 'home';
+    : activeTool
+      ? `tool-${activeTool.id}`
+      : 'home';
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFFFF] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] transition-colors selection:bg-[#000000] selection:text-[#FFFFFF] overflow-x-clip w-full max-w-full">
@@ -389,7 +351,6 @@ export default function App() {
         selectedCategory={selectedCategory}
         onSelectCategory={handleSelectCategory}
         onHomeClick={handleGoHome}
-        onOpenSitemap={handleOpenSitemap}
         isSavedPage={isSavedPage}
       />
 
@@ -410,16 +371,6 @@ export default function App() {
                 onOpenTool={handleOpenTool}
                 onToggleFavorite={toggleFavorite}
                 onClearAllFavorites={clearAllFavorites}
-                onShowToast={showToast}
-              />
-            ) : isSitemapOpen ? (
-              <SitemapView
-                onBackToHome={handleGoHome}
-                onOpenTool={handleOpenTool}
-                onSelectCategory={(catId) => {
-                  setIsSitemapOpen(false);
-                  handleSelectCategory(catId as ToolCategory);
-                }}
                 onShowToast={showToast}
               />
             ) : activeTool ? (
@@ -604,10 +555,13 @@ export default function App() {
                         </button>
                         <button
                           type="button"
-                          onClick={handleOpenSitemap}
+                          onClick={() => {
+                            handleSelectCategory('business');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
                           className="px-4 py-2.5 rounded-xl border border-white/20 text-[#FFFFFF] text-xs font-semibold hover:bg-white/10 transition cursor-pointer"
                         >
-                          Browse Full Directory
+                          Explore Business & Daily Tools
                         </button>
                       </div>
                     </section>
@@ -627,7 +581,6 @@ export default function App() {
           handleSelectCategory(cat);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        onOpenSitemap={handleOpenSitemap}
       />
 
       <SearchModal

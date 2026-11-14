@@ -415,6 +415,24 @@ const OgPreviewTool: React.FC = () => {
             className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm"
           />
         </div>
+        <div className="md:col-span-2">
+          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Meta / OG Description</label>
+          <input
+            type="text"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm"
+          />
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">OG Image URL (1200×630 recommended)</label>
+          <input
+            type="url"
+            value={imgUrl}
+            onChange={(e) => setImgUrl(e.target.value)}
+            className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm font-mono"
+          />
+        </div>
       </div>
 
       <div className="max-w-xl mx-auto border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden bg-white dark:bg-neutral-950 shadow-sm">
@@ -453,7 +471,9 @@ const CanonicalHreflangTool: React.FC<{ onCopy: (t: string) => void; copied: boo
   const tags = useMemo(() => {
     let out = `<!-- Canonical URL -->\n<link rel="canonical" href="${baseUrl}" />\n\n<!-- Multi-Language Alternates (hreflang) -->\n`;
     languages.forEach((l) => {
-      out += `<link rel="alternate" hreflang="${l.code}" href="${l.url}" />\n`;
+      if (l.code.trim() && l.url.trim()) {
+        out += `<link rel="alternate" hreflang="${l.code.trim()}" href="${l.url.trim()}" />\n`;
+      }
     });
     return out;
   }, [baseUrl, languages]);
@@ -470,13 +490,51 @@ const CanonicalHreflangTool: React.FC<{ onCopy: (t: string) => void; copied: boo
         />
       </div>
 
-      <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900 font-mono text-xs">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-semibold text-neutral-500 uppercase">Alternate Language URLs (hreflang)</label>
+          <button
+            type="button"
+            onClick={() => setLanguages((p) => [...p, { code: 'fr', url: 'https://asbily.com/fr/tools' }])}
+            className="text-xs px-2.5 py-1 border border-neutral-200 dark:border-neutral-800 rounded font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-900 cursor-pointer"
+          >
+            + Add Locale
+          </button>
+        </div>
+        {languages.map((l, idx) => (
+          <div key={idx} className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              value={l.code}
+              onChange={(e) => setLanguages((p) => p.map((item, i) => (i === idx ? { ...item, code: e.target.value } : item)))}
+              placeholder="en / bn / x-default"
+              className="sm:w-32 p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-xs font-mono"
+            />
+            <input
+              type="url"
+              value={l.url}
+              onChange={(e) => setLanguages((p) => p.map((item, i) => (i === idx ? { ...item, url: e.target.value } : item)))}
+              placeholder="https://..."
+              className="flex-1 p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-xs font-mono"
+            />
+            <button
+              type="button"
+              onClick={() => setLanguages((p) => p.filter((_, i) => i !== idx))}
+              className="px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900 font-mono text-xs overflow-x-auto">
         <pre className="whitespace-pre-wrap text-[#000000] dark:text-[#FFFFFF]">{tags}</pre>
       </div>
 
       <button
         onClick={() => onCopy(tags)}
-        className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+        className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition cursor-pointer"
       >
         {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Canonical & Hreflang Tags

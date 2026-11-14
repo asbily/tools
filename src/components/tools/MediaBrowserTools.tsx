@@ -40,7 +40,7 @@ export const MediaBrowserTools: React.FC<MediaToolProps> = ({ toolId }) => {
   if (toolId === 'text-to-speech') return <TextToSpeechTool />;
   if (toolId === 'speech-to-text') return <SpeechToTextTool onCopy={copyText} copied={copied} />;
   if (toolId === 'device-inspector') return <DeviceInspectorTool onCopy={copyText} copied={copied} />;
-  if (toolId === 'storage-viewer') return <StorageViewerTool onCopy={copyText} />;
+  if (toolId === 'storage-viewer') return <StorageViewerTool />;
   if (toolId === 'voice-recorder') return <VoiceRecorderTool />;
   if (toolId === 'screen-recorder') return <ScreenRecorderTool />;
 
@@ -604,9 +604,10 @@ const DeviceInspectorTool: React.FC<{ onCopy: (t: string) => void; copied: boole
 // -------------------------------------------------------------
 // Component: Storage & Cache Quota Inspector
 // -------------------------------------------------------------
-const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) => {
+const StorageViewerTool: React.FC = () => {
   const [estimate, setEstimate] = useState<{ usedMb: number; quotaMb: number; percent: number } | null>(null);
   const [localItems, setLocalItems] = useState<{ key: string; sizeKb: number; value: string }[]>([]);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   const loadStorage = () => {
     // Storage quota estimate
@@ -650,10 +651,9 @@ const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }
   };
 
   const clearAllLocal = () => {
-    if (confirm('Clear all localStorage items stored on this domain?')) {
-      localStorage.clear();
-      loadStorage();
-    }
+    localStorage.clear();
+    setConfirmClear(false);
+    loadStorage();
   };
 
   return (
@@ -695,19 +695,36 @@ const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }
               <RefreshCw className="w-3.5 h-3.5" />
             </button>
             {localItems.length > 0 && (
-              <button
-                onClick={clearAllLocal}
-                className="px-2.5 py-1 text-xs font-semibold text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 rounded-lg transition"
-              >
-                Clear All
-              </button>
+              confirmClear ? (
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={clearAllLocal}
+                    className="px-2.5 py-1 text-xs font-bold bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg cursor-pointer"
+                  >
+                    Confirm Clear
+                  </button>
+                  <button
+                    onClick={() => setConfirmClear(false)}
+                    className="px-2 py-1 text-xs border border-neutral-300 dark:border-neutral-700 rounded-lg cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setConfirmClear(true)}
+                  className="px-2.5 py-1 text-xs font-semibold text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 rounded-lg transition cursor-pointer"
+                >
+                  Clear All
+                </button>
+              )
             )}
           </div>
         </div>
 
         {localItems.length > 0 ? (
-          <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden bg-[#FFFFFF] dark:bg-[#090909]">
-            <table className="w-full text-left text-xs">
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-x-auto bg-[#FFFFFF] dark:bg-[#090909]">
+            <table className="w-full text-left text-xs min-w-[480px]">
               <thead className="bg-[#F6F6F6] dark:bg-[#050505] border-b border-neutral-200 dark:border-neutral-800 text-neutral-500 font-semibold uppercase">
                 <tr>
                   <th className="p-3">Key Name</th>

@@ -15,6 +15,7 @@ import { BusinessProductivityTools } from './tools/BusinessProductivityTools';
 import { QrBarcodeTools } from './tools/QrBarcodeTools';
 import { MediaBrowserTools } from './tools/MediaBrowserTools';
 import { ThreeDTools } from './tools/ThreeDTools';
+import { DailyLifeTools } from './tools/DailyLifeTools';
 import { ToolCard } from './ToolCard';
 import { AdSlot } from './AdSlot';
 
@@ -82,6 +83,8 @@ export const ToolView: React.FC<ToolViewProps> = ({
       case 'business':
       case 'productivity':
         return <BusinessProductivityTools toolId={tool.id} />;
+      case 'daily':
+        return <DailyLifeTools toolId={tool.id} />;
       case 'qr':
         return <QrBarcodeTools toolId={tool.id} />;
       case '3d':

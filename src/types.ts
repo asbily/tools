@@ -11,6 +11,7 @@ export type ToolCategory =
   | 'calculator'
   | 'student'
   | 'business'
+  | 'daily'
   | 'productivity'
   | 'qr'
   | 'media';

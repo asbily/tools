@@ -14,7 +14,6 @@ interface HeaderProps {
   selectedCategory: ToolCategory;
   onSelectCategory: (cat: ToolCategory) => void;
   onHomeClick: () => void;
-  onOpenSitemap?: () => void;
   isSavedPage?: boolean;
 }
 
@@ -28,7 +27,6 @@ export const Header: React.FC<HeaderProps> = ({
   selectedCategory,
   onSelectCategory,
   onHomeClick,
-  onOpenSitemap,
   isSavedPage = false,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -190,6 +188,24 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               type="button"
+              onClick={() => handleCategorySelect('business')}
+              className={`hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                !isSavedPage && selectedCategory === 'business' ? 'text-[#000000] dark:text-[#FFFFFF] font-semibold' : ''
+              }`}
+            >
+              Business
+            </button>
+            <button
+              type="button"
+              onClick={() => handleCategorySelect('daily')}
+              className={`hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                !isSavedPage && selectedCategory === 'daily' ? 'text-[#000000] dark:text-[#FFFFFF] font-semibold' : ''
+              }`}
+            >
+              Daily Life
+            </button>
+            <button
+              type="button"
               onClick={handleFavoritesSelect}
               className={`inline-flex items-center gap-1.5 hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 isSavedPage ? 'text-[#000000] dark:text-[#FFFFFF] font-semibold' : ''
@@ -198,18 +214,6 @@ export const Header: React.FC<HeaderProps> = ({
               <Star className={`w-3.5 h-3.5 ${favoritesCount > 0 ? 'text-[#000000] fill-[#000000] dark:text-[#FFFFFF] dark:fill-[#FFFFFF]' : ''}`} />
               <span>Saved ({favoritesCount})</span>
             </button>
-            {onOpenSitemap && (
-              <button
-                type="button"
-                onClick={() => {
-                  onOpenSitemap();
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="hover:text-[#000000] dark:hover:text-[#FFFFFF] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-              >
-                Directory
-              </button>
-            )}
           </nav>
 
           {/* Zone 3: Quick Actions & Drawer */}
@@ -382,24 +386,6 @@ export const Header: React.FC<HeaderProps> = ({
                   <button type="button" onClick={() => handleLegalSelect('contact')} className="text-left hover:text-[#000000] dark:hover:text-[#FFFFFF] py-1 flex items-center gap-1.5 transition cursor-pointer">
                     <Mail className="w-3 h-3 text-neutral-400" /><span>Contact</span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      onOpenSitemap?.();
-                    }}
-                    className="text-left hover:text-[#000000] dark:hover:text-[#FFFFFF] py-1 flex items-center gap-1.5 transition cursor-pointer text-[#000000] dark:text-[#FFFFFF] font-medium"
-                  >
-                    <FileText className="w-3 h-3" /><span>Sitemap Hub</span>
-                  </button>
-                  <a
-                    href="/robots.txt"
-                    target="_blank"
-                    rel="noopener"
-                    className="text-left hover:text-[#000000] dark:hover:text-[#FFFFFF] py-1 flex items-center gap-1.5 transition text-neutral-600 dark:text-neutral-400"
-                  >
-                    <Shield className="w-3 h-3 text-neutral-400" /><span>Robots.txt</span>
-                  </a>
                 </div>
                 <div className="text-[11px] text-neutral-500 pt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
                   <span>© {new Date().getFullYear()} Asbily Platforms</span>

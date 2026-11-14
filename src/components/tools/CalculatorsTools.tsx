@@ -51,7 +51,7 @@ const ScientificCalcTool: React.FC = () => {
       .replace(/×/g, '*')
       .replace(/÷/g, '/')
       .replace(/π/g, `${Math.PI}`)
-      .replace(/e/g, `${Math.E}`);
+      .replace(/\be\b/g, `${Math.E}`);
 
     let pos = 0;
     const peek = () => sanitized[pos];
@@ -108,11 +108,22 @@ const ScientificCalcTool: React.FC = () => {
       let res = parseFactor();
       while (pos < sanitized.length) {
         while (peek() === ' ') get();
-        if (peek() === '*' || peek() === '/') {
+        if (peek() === '*' || peek() === '/' || peek() === '%') {
           const op = get();
-          const next = parseFactor();
-          if (op === '*') res *= next;
-          else if (op === '/') res = next !== 0 ? res / next : 0;
+          if (op === '%') {
+            while (peek() === ' ') get();
+            const nextCh = peek();
+            if (nextCh && /[0-9.(]|sin|cos|tan|sqrt|log|ln/.test(sanitized.slice(pos))) {
+              const next = parseFactor();
+              res = next !== 0 ? res % next : NaN;
+            } else {
+              res = res / 100;
+            }
+          } else {
+            const next = parseFactor();
+            if (op === '*') res *= next;
+            else if (op === '/') res = next !== 0 ? res / next : NaN;
+          }
         } else if (peek() === '^') {
           get();
           res = Math.pow(res, parseFactor());
@@ -152,6 +163,10 @@ const ScientificCalcTool: React.FC = () => {
       if (!expr.trim()) return;
       try {
         const resVal = safeEvaluate(expr);
+        if (!Number.isFinite(resVal) || Number.isNaN(resVal)) {
+          setResult('Error');
+          return;
+        }
         const resStr = String(Number(resVal.toFixed(8)));
         setResult(resStr);
         setHistory((prev) => [{ expr, res: resStr }, ...prev.slice(0, 9)]);
@@ -162,6 +177,23 @@ const ScientificCalcTool: React.FC = () => {
       setExpr((prev) => prev + val);
     }
   };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (/^[0-9.()^%]$/.test(e.key)) handlePress(e.key);
+      else if (e.key === '+') handlePress('+');
+      else if (e.key === '-') handlePress('-');
+      else if (e.key === '*') handlePress('×');
+      else if (e.key === '/') { e.preventDefault(); handlePress('÷'); }
+      else if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); handlePress('='); }
+      else if (e.key === 'Backspace') handlePress('DEL');
+      else if (e.key === 'Escape') handlePress('C');
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [expr]);
 
   const copyResult = () => {
     navigator.clipboard.writeText(result);

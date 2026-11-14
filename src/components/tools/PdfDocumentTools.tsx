@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { jsPDF } from 'jspdf';
-import { Download, Upload, Plus, Trash2, FileText, Check, Receipt } from 'lucide-react';
+import { Download, Upload, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { PdfMergeSplitTool, PdfInspectorProTool, ResumeBuilderTool } from './PdfProTools';
 
 interface PdfToolProps {
@@ -24,6 +24,7 @@ export const PdfDocumentTools: React.FC<PdfToolProps> = ({ toolId }) => {
 // -------------------------------------------------------------
 const ImagesToPdfTool: React.FC = () => {
   const [images, setImages] = useState<{ id: string; url: string; file: File }[]>([]);
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
   const [generating, setGenerating] = useState(false);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,10 +35,25 @@ const ImagesToPdfTool: React.FC = () => {
       file: f,
     }));
     setImages((prev) => [...prev, ...newItems]);
+    e.target.value = '';
   };
 
   const removeImg = (id: string) => {
-    setImages((prev) => prev.filter((i) => i.id !== id));
+    setImages((prev) => {
+      const target = prev.find((i) => i.id === id);
+      if (target) URL.revokeObjectURL(target.url);
+      return prev.filter((i) => i.id !== id);
+    });
+  };
+
+  const moveImg = (idx: number, dir: -1 | 1) => {
+    setImages((prev) => {
+      const nextIdx = idx + dir;
+      if (nextIdx < 0 || nextIdx >= prev.length) return prev;
+      const copy = [...prev];
+      [copy[idx], copy[nextIdx]] = [copy[nextIdx], copy[idx]];
+      return copy;
+    });
   };
 
   const generatePdf = async () => {
@@ -45,7 +61,7 @@ const ImagesToPdfTool: React.FC = () => {
     setGenerating(true);
 
     try {
-      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const doc = new jsPDF({ orientation, unit: 'mm', format: 'a4' });
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
 
@@ -53,28 +69,33 @@ const ImagesToPdfTool: React.FC = () => {
         if (i > 0) doc.addPage();
         const item = images[i];
 
-        // Load image onto canvas to get standard data URL
         const img = new Image();
         img.src = item.url;
-        await new Promise((resolve) => {
-          img.onload = resolve;
+        await new Promise<void>((resolve, reject) => {
+          img.onload = () => resolve();
+          img.onerror = () => reject(new Error('Failed to load image'));
         });
 
-        // Fit within margins
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || img.width || 800;
+        canvas.height = img.naturalHeight || img.height || 600;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) continue;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.92);
+
         const margin = 10;
         const maxW = pageWidth - margin * 2;
         const maxH = pageHeight - margin * 2;
-
-        let w = img.width;
-        let h = img.height;
-        const ratio = Math.min(maxW / w, maxH / h);
-        w = w * ratio;
-        h = h * ratio;
-
+        const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+        const w = canvas.width * ratio;
+        const h = canvas.height * ratio;
         const x = (pageWidth - w) / 2;
         const y = (pageHeight - h) / 2;
 
-        doc.addImage(img, 'JPEG', x, y, w, h);
+        doc.addImage(jpegDataUrl, 'JPEG', x, y, w, h);
       }
 
       doc.save('combined-images.pdf');
@@ -88,11 +109,21 @@ const ImagesToPdfTool: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <label className="px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 inline-flex items-center gap-2">
-          <Upload className="w-4 h-4" />
-          Add Images
-          <input type="file" multiple accept="image/*" onChange={handleUpload} className="hidden" />
-        </label>
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 inline-flex items-center gap-2">
+            <Upload className="w-4 h-4" />
+            Add Images
+            <input type="file" multiple accept="image/*" onChange={handleUpload} className="hidden" />
+          </label>
+          <select
+            value={orientation}
+            onChange={(e) => setOrientation(e.target.value as 'portrait' | 'landscape')}
+            className="px-3 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs font-medium bg-white dark:bg-neutral-950"
+          >
+            <option value="portrait">A4 Portrait</option>
+            <option value="landscape">A4 Landscape</option>
+          </select>
+        </div>
 
         {images.length > 0 && (
           <button
@@ -115,13 +146,33 @@ const ImagesToPdfTool: React.FC = () => {
           {images.map((img, idx) => (
             <div key={img.id} className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-2 bg-[#F6F6F6] dark:bg-[#090909] relative group">
               <div className="h-36 flex items-center justify-center overflow-hidden rounded bg-[#FFFFFF] dark:bg-[#050505]">
-                <img src={img.url} alt={`Upload ${idx}`} className="max-h-full max-w-full object-contain" />
+                <img src={img.url} alt={`Upload ${idx + 1}`} className="max-h-full max-w-full object-contain" />
               </div>
               <div className="flex items-center justify-between text-xs text-neutral-500 mt-2 px-1">
                 <span>Page {idx + 1}</span>
-                <button onClick={() => removeImg(img.id)} className="text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => moveImg(idx, -1)}
+                    disabled={idx === 0}
+                    title="Move Left"
+                    className="p-0.5 text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF] disabled:opacity-30"
+                  >
+                    <ArrowUp className="w-3.5 h-3.5 -rotate-90" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveImg(idx, 1)}
+                    disabled={idx === images.length - 1}
+                    title="Move Right"
+                    className="p-0.5 text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF] disabled:opacity-30"
+                  >
+                    <ArrowDown className="w-3.5 h-3.5 -rotate-90" />
+                  </button>
+                  <button type="button" onClick={() => removeImg(img.id)} title="Remove" className="p-0.5 text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -140,15 +191,26 @@ const TextToPdfTool: React.FC = () => {
   const [fontSize, setFontSize] = useState(12);
 
   const downloadPdf = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const pageHeight = doc.internal.pageSize.getHeight();
     doc.setFontSize(18);
-    doc.text(title, 20, 20);
+    doc.text(title || 'Document', 20, 20);
 
     doc.setFontSize(fontSize);
-    const splitLines = doc.splitTextToSize(content, 170);
-    doc.text(splitLines, 20, 35);
+    const splitLines: string[] = doc.splitTextToSize(content, 170);
+    const lineHeight = Math.max(5, fontSize * 0.48);
+    let y = 34;
 
-    doc.save(`${title.toLowerCase().replace(/\s+/g, '-')}.pdf`);
+    for (const line of splitLines) {
+      if (y > pageHeight - 20) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(line, 20, y);
+      y += lineHeight;
+    }
+
+    doc.save(`${(title || 'document').toLowerCase().replace(/\s+/g, '-')}.pdf`);
   };
 
   return (
@@ -223,6 +285,7 @@ const InvoiceGeneratorTool: React.FC = () => {
 
   const [taxPercent, setTaxPercent] = useState(5);
   const [discount, setDiscount] = useState(0);
+  const [paymentNotes, setPaymentNotes] = useState('Bank Transfer / bKash / Nagad — Payment due within 15 days.');
 
   const addItem = () => {
     setItems((prev) => [...prev, { desc: 'Consulting Service', qty: 1, price: 100 }]);
@@ -289,13 +352,22 @@ const InvoiceGeneratorTool: React.FC = () => {
     // Items rows
     y += 14;
     items.forEach((item) => {
+      if (y > 265) {
+        doc.addPage();
+        y = 20;
+      }
       doc.setTextColor(50, 50, 50);
-      doc.text(item.desc, 18, y);
+      doc.text(item.desc.slice(0, 52), 18, y);
       doc.text(String(item.qty), 122, y);
       doc.text(`${currency}${item.price}`, 142, y);
-      doc.text(`${currency}${item.qty * item.price}`, 172, y);
+      doc.text(`${currency}${(item.qty * item.price).toFixed(2)}`, 172, y);
       y += 8;
     });
+
+    if (y > 235) {
+      doc.addPage();
+      y = 20;
+    }
 
     // Summary
     y += 10;
@@ -321,6 +393,14 @@ const InvoiceGeneratorTool: React.FC = () => {
     doc.setTextColor(17, 17, 17);
     doc.text(`Total Due:`, 140, y);
     doc.text(`${currency}${total.toFixed(2)}`, 172, y);
+
+    if (paymentNotes.trim()) {
+      y += 14;
+      doc.setFontSize(9);
+      doc.setTextColor(90, 90, 90);
+      const noteLines = doc.splitTextToSize(`Payment Instructions: ${paymentNotes}`, 182);
+      doc.text(noteLines, 14, y);
+    }
 
     doc.save(`${invoiceNum.toLowerCase()}.pdf`);
   };
@@ -378,7 +458,7 @@ const InvoiceGeneratorTool: React.FC = () => {
         </div>
         <div className="p-4 space-y-2">
           {items.map((item, idx) => (
-            <div key={idx} className="flex items-center gap-2">
+            <div key={idx} className="flex flex-col sm:flex-row sm:items-center gap-2 p-2.5 sm:p-0 border sm:border-0 border-neutral-200 dark:border-neutral-800 rounded-lg">
               <input
                 type="text"
                 placeholder="Item description"
@@ -386,31 +466,42 @@ const InvoiceGeneratorTool: React.FC = () => {
                 onChange={(e) => updateItem(idx, 'desc', e.target.value)}
                 className="flex-1 p-2 border border-neutral-200 dark:border-neutral-800 rounded text-xs"
               />
-              <input
-                type="number"
-                placeholder="Qty"
-                value={item.qty}
-                onChange={(e) => updateItem(idx, 'qty', parseInt(e.target.value) || 0)}
-                className="w-16 p-2 border border-neutral-200 dark:border-neutral-800 rounded text-xs text-center"
-              />
-              <input
-                type="number"
-                placeholder="Price"
-                value={item.price}
-                onChange={(e) => updateItem(idx, 'price', parseFloat(e.target.value) || 0)}
-                className="w-24 p-2 border border-neutral-200 dark:border-neutral-800 rounded text-xs"
-              />
-              <div className="w-24 text-xs font-mono font-bold text-right px-2">
-                {currency}{(item.qty * item.price).toFixed(2)}
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  placeholder="Qty"
+                  value={item.qty}
+                  onChange={(e) => updateItem(idx, 'qty', parseInt(e.target.value) || 0)}
+                  className="w-16 p-2 border border-neutral-200 dark:border-neutral-800 rounded text-xs text-center"
+                />
+                <input
+                  type="number"
+                  placeholder="Price"
+                  value={item.price}
+                  onChange={(e) => updateItem(idx, 'price', parseFloat(e.target.value) || 0)}
+                  className="w-24 p-2 border border-neutral-200 dark:border-neutral-800 rounded text-xs"
+                />
+                <div className="flex-1 sm:w-24 text-xs font-mono font-bold text-right px-2">
+                  {currency}{(item.qty * item.price).toFixed(2)}
+                </div>
+                <button onClick={() => removeItem(idx)} className="p-2 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
-              <button onClick={() => removeItem(idx)} className="p-2 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
-                <Trash2 className="w-4 h-4" />
-              </button>
             </div>
           ))}
         </div>
-        <div className="p-4 bg-[#F6F6F6] dark:bg-[#090909] border-t border-neutral-200 dark:border-neutral-800 flex justify-end">
-          <div className="w-64 space-y-1.5 text-xs">
+        <div className="p-4 bg-[#F6F6F6] dark:bg-[#090909] border-t border-neutral-200 dark:border-neutral-800 grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+          <div>
+            <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Payment Instructions / Notes</label>
+            <textarea
+              rows={2}
+              value={paymentNotes}
+              onChange={(e) => setPaymentNotes(e.target.value)}
+              className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-xs"
+            />
+          </div>
+          <div className="w-full sm:w-64 sm:ml-auto space-y-1.5 text-xs">
             <div className="flex justify-between">
               <span>Subtotal:</span>
               <span className="font-mono">{currency}{subtotal.toFixed(2)}</span>
@@ -449,6 +540,7 @@ const QuotationGeneratorTool: React.FC = () => {
   const [quoteNum, setQuoteNum] = useState('QT-2026-042');
   const [projectTitle, setProjectTitle] = useState('Enterprise Platform Modernization');
   const [client, setClient] = useState('Nexus Retail Group');
+  const [currency, setCurrency] = useState('$');
   const [amount, setAmount] = useState('4500');
   const [validity, setValidity] = useState('30 Days');
   const [scope, setScope] = useState('1. Architecture design and cloud migration.\n2. Automated CI/CD pipeline setup.\n3. Security auditing and load testing.');
@@ -456,6 +548,7 @@ const QuotationGeneratorTool: React.FC = () => {
   const downloadQuote = () => {
     const doc = new jsPDF();
     doc.setFontSize(22);
+    doc.setTextColor(0, 0, 0);
     doc.text('PROJECT QUOTATION', 14, 22);
 
     doc.setFontSize(10);
@@ -467,14 +560,22 @@ const QuotationGeneratorTool: React.FC = () => {
     doc.setFontSize(14);
     doc.setTextColor(17, 17, 17);
     doc.text(`Project: ${projectTitle}`, 14, 56);
-    doc.text(`Total Estimate: $${amount}`, 14, 64);
+    doc.text(`Total Estimate: ${currency}${amount}`, 14, 64);
 
     doc.setFontSize(11);
     doc.text('Scope of Work:', 14, 78);
     doc.setFontSize(10);
     doc.setTextColor(60, 60, 60);
-    const lines = doc.splitTextToSize(scope, 170);
-    doc.text(lines, 14, 86);
+    const lines: string[] = doc.splitTextToSize(scope, 170);
+    let y = 86;
+    for (const line of lines) {
+      if (y > 275) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(line, 14, y);
+      y += 5.5;
+    }
 
     doc.save(`${quoteNum.toLowerCase()}.pdf`);
   };
@@ -491,7 +592,28 @@ const QuotationGeneratorTool: React.FC = () => {
           <input type="text" value={client} onChange={(e) => setClient(e.target.value)} className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm" />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Estimated Budget ($)</label>
+          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Validity Period</label>
+          <input type="text" value={validity} onChange={(e) => setValidity(e.target.value)} className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm" />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="sm:col-span-1">
+          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Project Title</label>
+          <input type="text" value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm" />
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Currency</label>
+          <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm">
+            <option value="$">USD ($)</option>
+            <option value="৳">BDT (৳)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="₹">INR (₹)</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Estimated Budget ({currency})</label>
           <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 text-sm" />
         </div>
       </div>

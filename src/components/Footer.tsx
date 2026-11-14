@@ -1,14 +1,12 @@
 import React from 'react';
-import { ShieldCheck, FileText, Bot, ExternalLink, Globe } from 'lucide-react';
-import { TOOLS } from '../data/toolsData';
+import { ShieldCheck, Globe } from 'lucide-react';
 
 interface FooterProps {
   onOpenLegal: (tab: 'about' | 'privacy' | 'terms' | 'disclaimer' | 'faq' | 'contact') => void;
   onSelectCategory: (cat: any) => void;
-  onOpenSitemap?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory, onOpenSitemap }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory }) => {
   return (
     <footer className="border-t border-white/10 bg-[#050505] text-[#FFFFFF] mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -78,49 +76,41 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory, o
             </ul>
           </div>
 
-          {/* Sitemaps & Public SEO Architecture */}
+          {/* Business & Daily Suites */}
           <div>
             <div className="text-xs font-semibold text-[#FFFFFF] uppercase tracking-wider mb-3">
-              <span>Public Sitemap & Robots</span>
+              Business & Everyday
             </div>
             <ul className="space-y-2 text-xs text-neutral-400">
               <li>
-                <button
-                  type="button"
-                  onClick={onOpenSitemap}
-                  className="hover:text-[#FFFFFF] transition flex items-center gap-1.5 font-medium text-[#EDEDED] cursor-pointer"
-                >
-                  <FileText className="w-3.5 h-3.5 text-[#FFFFFF]" />
-                  <span>Interactive HTML Sitemap Hub</span>
+                <button type="button" onClick={() => onSelectCategory('business')} className="hover:text-[#FFFFFF] transition cursor-pointer">
+                  Business, Payroll & Inventory
                 </button>
               </li>
               <li>
-                <a
-                  href="/sitemap.xml"
-                  target="_blank"
-                  rel="noopener"
-                  className="hover:text-[#FFFFFF] transition flex items-center gap-1.5"
-                >
-                  <span>XML Sitemap (/sitemap.xml)</span>
-                  <span className="text-[10px] font-mono text-[#EDEDED]">· {TOOLS.length} Tools</span>
-                  <ExternalLink className="w-3 h-3 opacity-60" />
-                </a>
+                <button type="button" onClick={() => onSelectCategory('daily')} className="hover:text-[#FFFFFF] transition cursor-pointer">
+                  Everyday Life, Land & Khata
+                </button>
               </li>
               <li>
-                <a
-                  href="/robots.txt"
-                  target="_blank"
-                  rel="noopener"
-                  className="hover:text-[#FFFFFF] transition flex items-center gap-1.5"
-                >
-                  <Bot className="w-3.5 h-3.5 text-neutral-400" />
-                  <span>Robots.txt (/robots.txt)</span>
-                  <span className="text-[10px] font-mono text-[#EDEDED]">· Allow: /</span>
-                  <ExternalLink className="w-3 h-3 opacity-60" />
-                </a>
+                <button type="button" onClick={() => onSelectCategory('calculator')} className="hover:text-[#FFFFFF] transition cursor-pointer">
+                  Finance & Scientific Calculators
+                </button>
               </li>
-              <li className="pt-1 text-[11px] text-neutral-500 leading-relaxed">
-                Googlebot & Bingbot 100% crawl authorized with clean URL routing.
+              <li>
+                <button type="button" onClick={() => onSelectCategory('productivity')} className="hover:text-[#FFFFFF] transition cursor-pointer">
+                  Productivity & Time Tracking
+                </button>
+              </li>
+              <li>
+                <button type="button" onClick={() => onSelectCategory('qr')} className="hover:text-[#FFFFFF] transition cursor-pointer">
+                  QR, Barcode & Payment Stands
+                </button>
+              </li>
+              <li>
+                <button type="button" onClick={() => onSelectCategory('media')} className="hover:text-[#FFFFFF] transition cursor-pointer">
+                  Audio, Media & Diagnostics
+                </button>
               </li>
             </ul>
           </div>
@@ -183,10 +173,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory, o
           </div>
           <div className="flex items-center gap-4 text-[11px]">
             <span>100% Client-Side · Zero Data Stored</span>
-            <span className="text-neutral-700">|</span>
-            <a href="/sitemap.xml" className="hover:text-[#FFFFFF] hover:underline">XML Sitemap</a>
-            <span className="text-neutral-700">|</span>
-            <a href="/robots.txt" className="hover:text-[#FFFFFF] hover:underline">Robots.txt</a>
           </div>
         </div>
       </div>

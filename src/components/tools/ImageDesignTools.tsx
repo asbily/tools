@@ -48,7 +48,10 @@ const ImageCompressorTool: React.FC = () => {
     setFile(f);
     setOriginalSize(f.size);
     const url = URL.createObjectURL(f);
-    setPreview(url);
+    setPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return url;
+    });
   };
 
   const processImage = () => {
@@ -68,13 +71,20 @@ const ImageCompressorTool: React.FC = () => {
       canvas.height = height;
       const ctx = canvas.getContext('2d');
       if (ctx) {
+        if (format === 'image/jpeg') {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, width, height);
+        }
         ctx.drawImage(img, 0, 0, width, height);
         canvas.toBlob(
           (blob) => {
             if (blob) {
               setCompressedSize(blob.size);
               const resultUrl = URL.createObjectURL(blob);
-              setCompressedUrl(resultUrl);
+              setCompressedUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return resultUrl;
+              });
             }
           },
           format,
@@ -196,7 +206,11 @@ const ImageConverterTool: React.FC = () => {
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (f) {
-      setPreview(URL.createObjectURL(f));
+      const nextUrl = URL.createObjectURL(f);
+      setPreview((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return nextUrl;
+      });
     }
   };
 
@@ -210,11 +224,19 @@ const ImageConverterTool: React.FC = () => {
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
       if (ctx) {
+        if (targetFormat === 'jpeg') {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
         ctx.drawImage(img, 0, 0);
         const mime = `image/${targetFormat}`;
         canvas.toBlob((blob) => {
           if (blob) {
-            setConvertedUrl(URL.createObjectURL(blob));
+            const outUrl = URL.createObjectURL(blob);
+            setConvertedUrl((prev) => {
+              if (prev) URL.revokeObjectURL(prev);
+              return outUrl;
+            });
           }
         }, mime);
       }
@@ -352,24 +374,48 @@ const SvgToPngTool: React.FC = () => {
 
   const rasterize = () => {
     try {
-      const blob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+      const doc = new DOMParser().parseFromString(svgCode, 'image/svg+xml');
+      const svgEl = doc.querySelector('svg');
+      if (!svgEl) return;
+
+      let baseW = parseFloat(svgEl.getAttribute('width') || '0');
+      let baseH = parseFloat(svgEl.getAttribute('height') || '0');
+      if ((!baseW || !baseH) && svgEl.getAttribute('viewBox')) {
+        const parts = svgEl.getAttribute('viewBox')!.trim().split(/[\s,]+/).map(Number);
+        if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
+          baseW = baseW || parts[2];
+          baseH = baseH || parts[3];
+        }
+      }
+      baseW = baseW || 300;
+      baseH = baseH || 300;
+      svgEl.setAttribute('width', String(baseW));
+      svgEl.setAttribute('height', String(baseH));
+      const serialized = new XMLSerializer().serializeToString(svgEl);
+
+      const blob = new Blob([serialized], { type: 'image/svg+xml;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        canvas.width = (img.width || 200) * scale;
-        canvas.height = (img.height || 200) * scale;
+        canvas.width = Math.max(1, Math.round((img.width || baseW) * scale));
+        canvas.height = Math.max(1, Math.round((img.height || baseH) * scale));
         const ctx = canvas.getContext('2d');
         if (ctx) {
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           canvas.toBlob((b) => {
             if (b) {
-              setPngUrl(URL.createObjectURL(b));
+              const nextPng = URL.createObjectURL(b);
+              setPngUrl((prev) => {
+                if (prev) URL.revokeObjectURL(prev);
+                return nextPng;
+              });
             }
           }, 'image/png');
         }
         URL.revokeObjectURL(url);
       };
+      img.onerror = () => URL.revokeObjectURL(url);
       img.src = url;
     } catch {
       // invalid svg
@@ -725,6 +771,15 @@ const ColorPickerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) 
   const passesAA = contrast >= 4.5;
   const passesAAA = contrast >= 7.0;
 
+  const hexToRgb = (hex: string) => {
+    const clean = hex.replace('#', '');
+    if (clean.length !== 6) return 'rgb(0, 0, 0)';
+    const r = parseInt(clean.substring(0, 2), 16) || 0;
+    const g = parseInt(clean.substring(2, 4), 16) || 0;
+    const b = parseInt(clean.substring(4, 6), 16) || 0;
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -733,14 +788,26 @@ const ColorPickerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) 
           <div className="flex items-center gap-3">
             <input type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} className="w-12 h-10 border rounded cursor-pointer" />
             <input type="text" value={textColor} onChange={(e) => setTextColor(e.target.value)} className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded font-mono text-sm uppercase" />
+            <button type="button" onClick={() => onCopy(textColor.toUpperCase())} title="Copy HEX" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded hover:bg-neutral-100 dark:hover:bg-neutral-900">
+              <Copy className="w-4 h-4" />
+            </button>
           </div>
+          <button type="button" onClick={() => onCopy(hexToRgb(textColor))} className="mt-1 text-[11px] font-mono text-neutral-500 hover:underline">
+            Copy {hexToRgb(textColor)}
+          </button>
         </div>
         <div>
           <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Background Color</label>
           <div className="flex items-center gap-3">
             <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-12 h-10 border rounded cursor-pointer" />
             <input type="text" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded font-mono text-sm uppercase" />
+            <button type="button" onClick={() => onCopy(bgColor.toUpperCase())} title="Copy HEX" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded hover:bg-neutral-100 dark:hover:bg-neutral-900">
+              <Copy className="w-4 h-4" />
+            </button>
           </div>
+          <button type="button" onClick={() => onCopy(hexToRgb(bgColor))} className="mt-1 text-[11px] font-mono text-neutral-500 hover:underline">
+            Copy {hexToRgb(bgColor)}
+          </button>
         </div>
       </div>
 
@@ -751,10 +818,13 @@ const ColorPickerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) 
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#090909] text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Contrast Ratio</div>
           <div className="text-2xl font-bold font-mono mt-1">{contrast} : 1</div>
+          <button type="button" onClick={() => onCopy(`${contrast}:1`)} className="mt-1 text-[11px] text-neutral-500 hover:underline inline-flex items-center gap-1">
+            <Copy className="w-3 h-3" /> Copy Ratio
+          </button>
         </div>
         <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#090909] text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">WCAG AA (Normal)</div>

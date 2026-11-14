@@ -783,6 +783,18 @@ ${paymentDetailsText}
                 <Globe className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
                 <span>Web / Pay Link</span>
               </button>
+
+              <button
+                onClick={() => setPaymentMethod('crypto')}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+                  paymentMethod === 'crypto'
+                    ? 'bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-xs'
+                    : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                }`}
+              >
+                <DollarSign className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
+                <span>Crypto / USDT</span>
+              </button>
             </div>
 
             {/* Provider Form Switcher */}
@@ -947,6 +959,39 @@ ${paymentDetailsText}
                 />
               </div>
             )}
+
+            {paymentMethod === 'crypto' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+                <div>
+                  <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">
+                    Network / Coin
+                  </label>
+                  <select
+                    value={cryptoNetwork}
+                    onChange={(e) => setCryptoNetwork(e.target.value)}
+                    className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-900 text-neutral-900 dark:text-white"
+                  >
+                    <option value="USDT (TRC20)">USDT (TRC20)</option>
+                    <option value="USDT (BEP20)">USDT (BEP20)</option>
+                    <option value="USDC (Polygon)">USDC (Polygon)</option>
+                    <option value="Bitcoin (BTC)">Bitcoin (BTC)</option>
+                    <option value="Ethereum (ETH)">Ethereum (ETH)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">
+                    Wallet Address
+                  </label>
+                  <input
+                    type="text"
+                    value={cryptoAddress}
+                    onChange={(e) => setCryptoAddress(e.target.value)}
+                    placeholder="Wallet public address"
+                    className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-900 text-neutral-900 dark:text-white font-mono"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -1075,6 +1120,12 @@ ${paymentDetailsText}
                 {paymentMethod === 'weblink' && (
                   <div className="truncate font-mono text-[10px]">
                     {webPayUrl}
+                  </div>
+                )}
+                {paymentMethod === 'crypto' && (
+                  <div>
+                    <span className="font-bold">{cryptoNetwork}:</span>{' '}
+                    <span className="font-mono break-all text-[10px]">{cryptoAddress}</span>
                   </div>
                 )}
               </div>

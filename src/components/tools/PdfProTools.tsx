@@ -466,13 +466,13 @@ export const ResumeBuilderTool: React.FC = () => {
     // Summary
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.5);
-    doc.setTextColor(15, 23, 42);
+    doc.setTextColor(0, 0, 0);
     doc.text('PROFESSIONAL SUMMARY', margin, y);
     y += 5;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9.5);
-    doc.setTextColor(51, 65, 85);
+    doc.setTextColor(55, 55, 55);
     const sumLines = doc.splitTextToSize(summary, maxW);
     doc.text(sumLines, margin, y);
     y += sumLines.length * 4.5 + 5;
@@ -480,7 +480,7 @@ export const ResumeBuilderTool: React.FC = () => {
     // Experience
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.5);
-    doc.setTextColor(15, 23, 42);
+    doc.setTextColor(0, 0, 0);
     doc.text('EXPERIENCE', margin, y);
     y += 5.5;
 
@@ -491,15 +491,15 @@ export const ResumeBuilderTool: React.FC = () => {
       }
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(10);
-      doc.setTextColor(15, 23, 42);
+      doc.setTextColor(0, 0, 0);
       doc.text(`${exp.role} — ${exp.company}`, margin, y);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
-      doc.setTextColor(100, 116, 139);
+      doc.setTextColor(115, 115, 115);
       doc.text(exp.period, margin + maxW, y, { align: 'right' });
       y += 4.5;
 
-      doc.setTextColor(51, 65, 85);
+      doc.setTextColor(55, 55, 55);
       doc.setFontSize(9.5);
       exp.bullets.split('\n').filter(Boolean).forEach((b) => {
         const bLines = doc.splitTextToSize(`• ${b}`, maxW - 3);
@@ -516,20 +516,21 @@ export const ResumeBuilderTool: React.FC = () => {
     }
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.5);
-    doc.setTextColor(15, 23, 42);
+    doc.setTextColor(0, 0, 0);
     doc.text('EDUCATION', margin, y);
     y += 5.5;
 
     education.forEach((edu) => {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
       doc.text(edu.degree, margin, y);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
-      doc.setTextColor(100, 116, 139);
+      doc.setTextColor(115, 115, 115);
       doc.text(edu.year, margin + maxW, y, { align: 'right' });
       y += 4.5;
-      doc.setTextColor(51, 65, 85);
+      doc.setTextColor(55, 55, 55);
       doc.text(edu.school, margin, y);
       y += 6;
     });
@@ -537,12 +538,12 @@ export const ResumeBuilderTool: React.FC = () => {
     // Skills
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(10.5);
-    doc.setTextColor(15, 23, 42);
+    doc.setTextColor(0, 0, 0);
     doc.text('SKILLS', margin, y);
     y += 5;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9.5);
-    doc.setTextColor(51, 65, 85);
+    doc.setTextColor(55, 55, 55);
     const skLines = doc.splitTextToSize(skills, maxW);
     doc.text(skLines, margin, y);
 
@@ -578,7 +579,7 @@ export const ResumeBuilderTool: React.FC = () => {
           </div>
           {experiences.map((exp, idx) => (
             <div key={exp.id} className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 space-y-2 text-xs">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <input type="text" value={exp.role} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, role: e.target.value } : x)))} placeholder="Role" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
                 <input type="text" value={exp.company} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, company: e.target.value } : x)))} placeholder="Company" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
                 <input type="text" value={exp.period} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, period: e.target.value } : x)))} placeholder="Period" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
@@ -600,7 +601,7 @@ export const ResumeBuilderTool: React.FC = () => {
             </button>
           </div>
           {education.map((edu, idx) => (
-            <div key={edu.id} className="grid grid-cols-3 gap-2 text-xs">
+            <div key={edu.id} className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs p-2.5 sm:p-0 border sm:border-0 border-neutral-200 dark:border-neutral-800 rounded-xl">
               <input type="text" value={edu.degree} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, degree: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
               <input type="text" value={edu.school} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, school: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
               <input type="text" value={edu.year} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, year: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
