@@ -52,19 +52,19 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
     camera.position.set(0, 0.4, 5.2);
 
-    // Three-point studio lighting
-    const ambient = new THREE.AmbientLight(0xffffff, 0.65);
+    // Pure monochrome studio lighting
+    const ambient = new THREE.AmbientLight(0xffffff, 0.75);
     scene.add(ambient);
 
-    const keyLight = new THREE.DirectionalLight(0xfff7ed, 2.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.3);
     keyLight.position.set(4, 5, 4);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xe0e7ff, 1.1);
+    const fillLight = new THREE.DirectionalLight(0xededed, 1.15);
     fillLight.position.set(-5, -2, 3);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0x6366f1, 2.0);
+    const rimLight = new THREE.DirectionalLight(0xffffff, 1.8);
     rimLight.position.set(0, 4, -5);
     scene.add(rimLight);
 
@@ -72,34 +72,33 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
     const group = new THREE.Group();
     scene.add(group);
 
-    // Materials
+    // Strict Official Color System Materials (#090909 / #000000 / #EDEDED / #FFFFFF)
     const coreMat = new THREE.MeshStandardMaterial({
-      color: darkRef.current ? 0x1e293b : 0x0f172a,
-      roughness: 0.22,
-      metalness: 0.78,
+      color: darkRef.current ? 0xededed : 0x090909,
+      roughness: 0.24,
+      metalness: 0.75,
       flatShading: true,
     });
 
     const accentMat = new THREE.MeshStandardMaterial({
-      color: 0x4f46e5,
-      roughness: 0.25,
-      metalness: 0.6,
+      color: darkRef.current ? 0xffffff : 0x000000,
+      roughness: 0.28,
+      metalness: 0.65,
     });
 
     const wireMat = new THREE.MeshBasicMaterial({
-      color: darkRef.current ? 0x818cf8 : 0x4f46e5,
+      color: darkRef.current ? 0xffffff : 0x090909,
       wireframe: true,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.2,
     });
 
     const ringMat = new THREE.MeshStandardMaterial({
-      color: darkRef.current ? 0x94a3b8 : 0x64748b,
+      color: darkRef.current ? 0xa3a3a3 : 0x525252,
       roughness: 0.35,
       metalness: 0.85,
     });
 
-    // Presets meshes
     const crystalGeo = new THREE.IcosahedronGeometry(1.18, 0);
     const crystalMesh = new THREE.Mesh(crystalGeo, coreMat);
 
@@ -122,7 +121,6 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
     orbitRing2.rotation.x = -Math.PI / 3.2;
     orbitRing2.rotation.z = Math.PI / 5;
 
-    // Small orbiting satellite nodes
     const satGroup = new THREE.Group();
     const satGeo = new THREE.OctahedronGeometry(0.11, 0);
     const satPositions: [number, number, number][] = [
@@ -138,7 +136,6 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
 
     group.add(crystalMesh, torusMesh, latticeMesh, shellMesh, orbitRing, orbitRing2, satGroup);
 
-    // Pointer interaction for tactile 3D dragging & parallax
     let isDragging = false;
     let prevX = 0;
     let prevY = 0;
@@ -216,12 +213,11 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
       animId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Sync theme colors
-      coreMat.color.setHex(darkRef.current ? 0x1e293b : 0x0f172a);
-      wireMat.color.setHex(darkRef.current ? 0x818cf8 : 0x4f46e5);
-      ringMat.color.setHex(darkRef.current ? 0x94a3b8 : 0x475569);
+      coreMat.color.setHex(darkRef.current ? 0xededed : 0x090909);
+      accentMat.color.setHex(darkRef.current ? 0xffffff : 0x000000);
+      wireMat.color.setHex(darkRef.current ? 0xffffff : 0x090909);
+      ringMat.color.setHex(darkRef.current ? 0xa3a3a3 : 0x525252);
 
-      // Sync active geometry visibility
       const activePreset = presetRef.current;
       crystalMesh.visible = activePreset === 'crystal';
       torusMesh.visible = activePreset === 'torus';
@@ -276,20 +272,20 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
   }, []);
 
   return (
-    <div className="relative w-full h-full min-h-[300px] sm:min-h-[360px] rounded-2xl border border-slate-200 dark:border-zinc-800 bg-gradient-to-br from-slate-50 via-white to-indigo-50/40 dark:from-zinc-900/90 dark:via-zinc-950 dark:to-indigo-950/25 overflow-hidden flex flex-col justify-between select-none">
-      {/* Subtle architectural perspective floor grid */}
+    <div className="relative w-full h-full min-h-[300px] sm:min-h-[360px] rounded-2xl border border-black/10 dark:border-white/10 bg-[#F6F6F6] dark:bg-[#090909] overflow-hidden flex flex-col justify-between select-none">
+      {/* Subtle monochrome perspective grid */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-25"
+        className="absolute inset-0 pointer-events-none opacity-60 dark:opacity-20"
         style={{
           backgroundImage:
-            'linear-gradient(to right, rgba(99,102,241,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(99,102,241,0.08) 1px, transparent 1px)',
+            'linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
       />
 
       {/* Top HUD Controls */}
       <div className="relative z-10 flex items-center justify-between gap-2 p-3 sm:p-4">
-        <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-white/85 dark:bg-zinc-900/85 backdrop-blur-md border border-slate-200/80 dark:border-zinc-800">
+        <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-[rgba(255,255,255,0.94)] dark:bg-[#050505] backdrop-blur-md border border-black/10 dark:border-white/10">
           {([
             { id: 'crystal', label: 'Crystal' },
             { id: 'torus', label: 'Torus' },
@@ -301,8 +297,8 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
               onClick={() => setPreset(item.id)}
               className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition whitespace-nowrap shrink-0 cursor-pointer ${
                 preset === item.id
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]'
+                  : 'text-neutral-600 dark:text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]'
               }`}
             >
               {item.label}
@@ -310,7 +306,7 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
           ))}
         </div>
 
-        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 dark:text-zinc-400 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-slate-200/70 dark:border-zinc-800 whitespace-nowrap shrink-0">
+        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-neutral-600 dark:text-neutral-400 bg-[rgba(255,255,255,0.94)] dark:bg-[#050505] backdrop-blur-md px-2.5 py-1 rounded-lg border border-black/10 dark:border-white/10 whitespace-nowrap shrink-0">
           <RotateCw className="w-3 h-3" />
           <span>Drag to Orbit</span>
         </span>
@@ -319,11 +315,11 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
       {/* WebGL Canvas Mount or Fallback */}
       {webglFailed || contextLost ? (
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-6 text-center space-y-2">
-          <Box className="w-12 h-12 text-indigo-600 dark:text-indigo-400" />
-          <div className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+          <Box className="w-12 h-12 text-[#000000] dark:text-[#FFFFFF]" />
+          <div className="text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]">
             Interactive 3D Workspace Ready
           </div>
-          <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-xs">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs">
             Launch 3D Mockup Studio or 3D Geometry Exporter to render and export high-resolution 3D assets.
           </p>
         </div>
@@ -336,9 +332,9 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
       )}
 
       {/* Bottom HUD Bar */}
-      <div className="relative z-10 p-3 sm:p-4 flex items-center justify-between gap-2 bg-gradient-to-t from-white/90 via-white/50 to-transparent dark:from-zinc-950/90 dark:via-zinc-950/50 dark:to-transparent">
-        <div className="text-[11px] text-slate-500 dark:text-zinc-400 font-medium flex items-center gap-2 truncate">
-          <Layers className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+      <div className="relative z-10 p-3 sm:p-4 flex items-center justify-between gap-2 bg-gradient-to-t from-[#FFFFFF]/90 via-[#FFFFFF]/50 to-transparent dark:from-[#050505]/95 dark:via-[#050505]/60 dark:to-transparent">
+        <div className="text-[11px] text-neutral-600 dark:text-neutral-400 font-medium flex items-center gap-2 truncate">
+          <Layers className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF] shrink-0" />
           <span className="truncate">WebGL 3D Mockups & STL Studio</span>
         </div>
 
@@ -346,7 +342,7 @@ export const HeroScene3D: React.FC<HeroScene3DProps> = ({ darkMode, onLaunch3DSt
           <button
             type="button"
             onClick={onLaunch3DStudio}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold hover:opacity-90 transition whitespace-nowrap shrink-0 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#000000] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold hover:opacity-90 transition whitespace-nowrap shrink-0 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Open 3D Studio</span>

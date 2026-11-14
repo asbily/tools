@@ -107,21 +107,21 @@ const WordCounterTool: React.FC<{
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg bg-neutral-50 dark:bg-neutral-900">
           <div className="text-xs text-neutral-500 uppercase tracking-wider">Words</div>
-          <div className="text-2xl font-bold text-[#111111] dark:text-neutral-100 mt-1">{stats.words}</div>
+          <div className="text-2xl font-bold text-[#000000] dark:text-[#FFFFFF] mt-1">{stats.words}</div>
         </div>
         <div className="border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg bg-neutral-50 dark:bg-neutral-900">
           <div className="text-xs text-neutral-500 uppercase tracking-wider">Characters</div>
-          <div className="text-2xl font-bold text-[#111111] dark:text-neutral-100 mt-1">{stats.characters}</div>
+          <div className="text-2xl font-bold text-[#000000] dark:text-[#FFFFFF] mt-1">{stats.characters}</div>
           <div className="text-xs text-neutral-400 mt-0.5">{stats.charactersNoSpaces} without spaces</div>
         </div>
         <div className="border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg bg-neutral-50 dark:bg-neutral-900">
           <div className="text-xs text-neutral-500 uppercase tracking-wider">Sentences</div>
-          <div className="text-2xl font-bold text-[#111111] dark:text-neutral-100 mt-1">{stats.sentences}</div>
+          <div className="text-2xl font-bold text-[#000000] dark:text-[#FFFFFF] mt-1">{stats.sentences}</div>
           <div className="text-xs text-neutral-400 mt-0.5">{stats.lines} lines · {stats.paragraphs} paras</div>
         </div>
         <div className="border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg bg-neutral-50 dark:bg-neutral-900">
           <div className="text-xs text-neutral-500 uppercase tracking-wider">Reading Time</div>
-          <div className="text-2xl font-bold text-[#111111] dark:text-neutral-100 mt-1">~{stats.readingTimeMin} m</div>
+          <div className="text-2xl font-bold text-[#000000] dark:text-[#FFFFFF] mt-1">~{stats.readingTimeMin} m</div>
           <div className="text-xs text-neutral-400 mt-0.5">~{stats.speakingTimeMin} m speaking</div>
         </div>
       </div>
@@ -132,7 +132,7 @@ const WordCounterTool: React.FC<{
           onChange={(e) => setText(e.target.value)}
           placeholder="Type or paste your text here to analyze..."
           rows={10}
-          className="w-full p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#111111] dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 resize-y"
+          className="w-full p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#000000] dark:text-[#FFFFFF] placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 resize-y"
         />
       </div>
 
@@ -142,7 +142,7 @@ const WordCounterTool: React.FC<{
           disabled={!text}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition disabled:opacity-40"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           {copied ? 'Copied' : 'Copy Text'}
         </button>
         <button
@@ -156,7 +156,7 @@ const WordCounterTool: React.FC<{
         <button
           onClick={() => setText('')}
           disabled={!text}
-          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium text-neutral-600 dark:text-neutral-300 hover:bg-[#EDEDED] dark:hover:bg-[#090909] transition disabled:opacity-40"
         >
           <RotateCcw className="w-4 h-4" />
           Clear
@@ -242,7 +242,7 @@ const CaseConverterTool: React.FC<{
           onChange={(e) => setInput(e.target.value)}
           placeholder="Paste or write text to convert into multiple cases..."
           rows={5}
-          className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#111111] dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#000000] dark:text-[#FFFFFF] placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
         />
       </div>
 
@@ -255,7 +255,7 @@ const CaseConverterTool: React.FC<{
         </button>
         <button
           onClick={() => setInput('')}
-          className="text-xs px-2.5 py-1 border border-neutral-200 dark:border-neutral-800 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
+          className="text-xs px-2.5 py-1 border border-neutral-200 dark:border-neutral-800 rounded text-neutral-600 dark:text-neutral-300 hover:bg-[#EDEDED] dark:hover:bg-[#090909]"
         >
           Clear
         </button>
@@ -284,7 +284,7 @@ const CaseConverterTool: React.FC<{
                   </button>
                 </div>
               </div>
-              <div className="font-mono text-sm text-[#111111] dark:text-neutral-100 break-words line-clamp-3 min-h-[3rem]">
+              <div className="font-mono text-sm text-[#000000] dark:text-[#FFFFFF] break-words line-clamp-3 min-h-[3rem]">
                 {transformed || <span className="text-neutral-400 italic font-sans text-xs">Output preview...</span>}
               </div>
             </div>
@@ -375,7 +375,7 @@ const TextCleanerTool: React.FC<{
             onChange={(e) => setText(e.target.value)}
             placeholder="Paste text with messy spaces, HTML tags, or empty lines..."
             rows={10}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#111111] dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 font-mono text-sm"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#000000] dark:text-[#FFFFFF] placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 font-mono text-sm"
           />
         </div>
         <div>
@@ -387,7 +387,7 @@ const TextCleanerTool: React.FC<{
             readOnly
             placeholder="Cleaned output will appear here..."
             rows={10}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-[#111111] dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none font-mono text-sm"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-[#000000] dark:text-[#FFFFFF] placeholder:text-neutral-400 focus:outline-none font-mono text-sm"
           />
         </div>
       </div>
@@ -398,7 +398,7 @@ const TextCleanerTool: React.FC<{
           disabled={!cleanedText}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition disabled:opacity-40"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           {copied ? 'Copied' : 'Copy Cleaned'}
         </button>
         <button
@@ -466,7 +466,7 @@ const DuplicateRemoverTool: React.FC<{
         <div className="flex items-center gap-4 text-xs">
           <div>Original: <strong>{originalCount}</strong> lines</div>
           <div>Unique: <strong>{cleanCount}</strong> lines</div>
-          <div className="text-emerald-600 dark:text-emerald-400">
+          <div className="text-[#000000] dark:text-[#FFFFFF]">
             Removed: <strong>{removedCount}</strong> duplicates
           </div>
         </div>
@@ -503,7 +503,7 @@ const DuplicateRemoverTool: React.FC<{
             onChange={(e) => setInput(e.target.value)}
             placeholder="Apple\nBanana\nApple\nOrange\nBanana"
             rows={10}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#111111] dark:text-neutral-100 font-mono text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#000000] dark:text-[#FFFFFF] font-mono text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400"
           />
         </div>
         <div>
@@ -515,7 +515,7 @@ const DuplicateRemoverTool: React.FC<{
             readOnly
             placeholder="Unique lines will appear here..."
             rows={10}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-[#111111] dark:text-neutral-100 font-mono text-sm placeholder:text-neutral-400 focus:outline-none"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-[#000000] dark:text-[#FFFFFF] font-mono text-sm placeholder:text-neutral-400 focus:outline-none"
           />
         </div>
       </div>
@@ -526,7 +526,7 @@ const DuplicateRemoverTool: React.FC<{
           disabled={!output}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition disabled:opacity-40"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Unique Lines
         </button>
         <button
@@ -604,10 +604,10 @@ const TextDiffTool: React.FC<{ onCopy: (t: string) => void }> = () => {
           </span>
           <div className="flex gap-4 text-xs">
             <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Added / Modified
+              <span className="w-2.5 h-2.5 rounded-full bg-[#000000] dark:bg-[#FFFFFF] inline-block"></span> Added / Modified
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Removed
+              <span className="w-2.5 h-2.5 rounded-full border border-black/50 dark:border-white/50 bg-[#EDEDED] dark:bg-neutral-800 inline-block"></span> Removed
             </span>
           </div>
         </div>
@@ -631,11 +631,11 @@ const TextDiffTool: React.FC<{ onCopy: (t: string) => void }> = () => {
                     key={row.lineNum}
                     className={`border-b border-neutral-100 dark:border-neutral-900 ${
                       row.type === 'modified'
-                        ? 'bg-amber-50/60 dark:bg-amber-950/20'
+                        ? 'bg-[#EDEDED] dark:bg-neutral-800/80'
                         : row.type === 'added'
-                        ? 'bg-emerald-50/60 dark:bg-emerald-950/20'
+                        ? 'bg-[#F6F6F6] dark:bg-[#090909] font-medium'
                         : row.type === 'removed'
-                        ? 'bg-red-50/60 dark:bg-red-950/20'
+                        ? 'bg-neutral-200/70 dark:bg-neutral-900 opacity-75 line-through'
                         : ''
                     }`}
                   >
@@ -775,7 +775,7 @@ const LoremIpsumTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
           onClick={() => onCopy(generated)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Dummy Text
         </button>
       </div>
@@ -844,7 +844,7 @@ const FancyTextTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> 
                 <div className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-1">
                   {st.label}
                 </div>
-                <div className="text-base text-[#111111] dark:text-neutral-100 truncate">
+                <div className="text-base text-[#000000] dark:text-[#FFFFFF] truncate">
                   {styled || <span className="text-neutral-400 text-xs">Preview...</span>}
                 </div>
               </div>
@@ -968,7 +968,7 @@ const BanglaUnicodeCleanerTool: React.FC<{
             onChange={(e) => setInput(e.target.value)}
             placeholder="এখানে বাংলা টেক্সট পেস্ট করুন (যেমন: অভ্র বা ইউনিকোডের ভাঙ্গা লেখা)..."
             rows={10}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#111111] dark:text-neutral-100 text-sm placeholder:text-neutral-400 focus:outline-none"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-[#000000] dark:text-[#FFFFFF] text-sm placeholder:text-neutral-400 focus:outline-none"
           />
         </div>
         <div>
@@ -980,7 +980,7 @@ const BanglaUnicodeCleanerTool: React.FC<{
             readOnly
             placeholder="পরিষ্কার টেক্সট এখানে প্রদর্শিত হবে..."
             rows={10}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-[#111111] dark:text-neutral-100 text-sm placeholder:text-neutral-400 focus:outline-none"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-[#000000] dark:text-[#FFFFFF] text-sm placeholder:text-neutral-400 focus:outline-none"
           />
         </div>
       </div>
@@ -991,7 +991,7 @@ const BanglaUnicodeCleanerTool: React.FC<{
           disabled={!cleaned}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition disabled:opacity-40"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Cleaned Bangla
         </button>
         <button

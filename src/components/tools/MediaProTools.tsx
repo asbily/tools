@@ -55,11 +55,12 @@ export const VoiceRecorderTool: React.FC = () => {
         analyser.getByteFrequencyData(dataArray);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        const isDark = document.documentElement.classList.contains('dark');
         const barW = (canvas.width / bufferLength) * 1.8;
         let x = 0;
         for (let i = 0; i < bufferLength; i++) {
           const barH = (dataArray[i] / 255) * canvas.height;
-          ctx.fillStyle = '#4F46E5';
+          ctx.fillStyle = isDark ? '#FFFFFF' : '#000000';
           ctx.fillRect(x, canvas.height - barH, barW - 1, barH);
           x += barW;
         }
@@ -107,16 +108,16 @@ export const VoiceRecorderTool: React.FC = () => {
   return (
     <div className="space-y-6">
       {error && (
-        <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 text-xs text-rose-600 dark:text-rose-400 flex items-center gap-2">
+        <div className="p-3 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] border border-black/15 dark:border-white/15 text-xs text-[#000000] dark:text-[#FFFFFF] flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 space-y-5">
+      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] space-y-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-semibold text-neutral-500">
-            <Mic className={`w-4 h-4 ${recording ? 'text-rose-500' : 'text-indigo-600'}`} />
+          <div className="flex items-center gap-2 text-xs font-semibold text-neutral-600 dark:text-neutral-300">
+            <Mic className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
             <span>{recording ? 'Recording Audio...' : 'Ready to Record'}</span>
           </div>
           <div className="text-2xl font-extrabold font-mono tabular-nums">
@@ -128,7 +129,7 @@ export const VoiceRecorderTool: React.FC = () => {
           ref={canvasRef}
           width={680}
           height={110}
-          className="w-full h-28 rounded-xl bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800"
+          className="w-full h-28 rounded-xl bg-white dark:bg-[#090909] border border-neutral-200 dark:border-neutral-800"
         />
 
         <div className="flex flex-wrap items-center gap-3">
@@ -136,7 +137,7 @@ export const VoiceRecorderTool: React.FC = () => {
             <button
               type="button"
               onClick={startRecording}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
             >
               <Mic className="w-4 h-4" />
               <span>Start Voice Recording</span>
@@ -145,7 +146,7 @@ export const VoiceRecorderTool: React.FC = () => {
             <button
               type="button"
               onClick={stopRecording}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
             >
               <Square className="w-4 h-4" />
               <span>Stop Recording</span>
@@ -260,16 +261,16 @@ export const ScreenRecorderTool: React.FC = () => {
   return (
     <div className="space-y-6">
       {error && (
-        <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 text-xs text-rose-600 dark:text-rose-400 flex items-center gap-2">
+        <div className="p-3 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] border border-black/15 dark:border-white/15 text-xs text-[#000000] dark:text-[#FFFFFF] flex items-center gap-2">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 space-y-5">
+      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs font-semibold">
-            <Monitor className="w-4 h-4 text-indigo-600" />
+            <Monitor className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
             <span>{recording ? 'Screen Recording Active' : 'Capture Screen, Window or Tab'}</span>
           </div>
           <div className="text-xl font-extrabold font-mono tabular-nums">{fmt(seconds)}</div>
@@ -281,7 +282,7 @@ export const ScreenRecorderTool: React.FC = () => {
             checked={includeMic}
             disabled={recording}
             onChange={(e) => setIncludeMic(e.target.checked)}
-            className="accent-indigo-600"
+            className="accent-[#000000] dark:accent-[#FFFFFF]"
           />
           <span>Include Microphone Voiceover</span>
         </label>
@@ -291,7 +292,7 @@ export const ScreenRecorderTool: React.FC = () => {
             <button
               type="button"
               onClick={startCapture}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
             >
               <Video className="w-4 h-4" />
               <span>Start Screen Capture</span>
@@ -300,7 +301,7 @@ export const ScreenRecorderTool: React.FC = () => {
             <button
               type="button"
               onClick={stopCapture}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
             >
               <Square className="w-4 h-4" />
               <span>Stop & Save Video</span>
@@ -316,7 +317,7 @@ export const ScreenRecorderTool: React.FC = () => {
             <a
               href={videoUrl}
               download={`asbily-screen-${Date.now()}.webm`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold"
             >
               <Download className="w-4 h-4" />
               <span>Download .WebM Video</span>

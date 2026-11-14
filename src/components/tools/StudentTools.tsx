@@ -117,7 +117,7 @@ const GpaCalculatorTool: React.FC = () => {
                 <option value={0.0}>F (0.00)</option>
               </select>
             </div>
-            <button onClick={() => removeCourse(idx)} className="p-1 text-neutral-400 hover:text-red-500">
+            <button onClick={() => removeCourse(idx)} className="p-1 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
               <Trash2 className="w-4 h-4" />
             </button>
           </div>
@@ -127,7 +127,7 @@ const GpaCalculatorTool: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Semester GPA ({totalCredits} Credits)</div>
-          <div className="text-3xl font-bold font-mono mt-1 text-[#111111] dark:text-neutral-100">{semesterGpa} / 4.0</div>
+          <div className="text-3xl font-bold font-mono mt-1 text-[#000000] dark:text-[#FFFFFF]">{semesterGpa} / 4.0</div>
         </div>
 
         <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900">
@@ -142,7 +142,7 @@ const GpaCalculatorTool: React.FC = () => {
               <input type="number" step="0.01" value={priorCgpa} onChange={(e) => setPriorCgpa(parseFloat(e.target.value) || 0)} className="w-full p-1 border rounded mt-0.5" />
             </div>
           </div>
-          <div className="text-center pt-1 border-t text-sm font-bold font-mono text-emerald-600">
+          <div className="text-center pt-1 border-t text-sm font-bold font-mono text-[#000000] dark:text-[#FFFFFF]">
             Total CGPA: {cumulativeCgpa}
           </div>
         </div>
@@ -186,11 +186,11 @@ const ExamPercentageTool: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Score Percentage</div>
-          <div className="text-2xl font-bold font-mono mt-1 text-[#111111] dark:text-neutral-100">{percentage}%</div>
+          <div className="text-2xl font-bold font-mono mt-1 text-[#000000] dark:text-[#FFFFFF]">{percentage}%</div>
         </div>
         <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Letter Grade</div>
-          <div className="text-2xl font-bold font-mono mt-1 text-emerald-600">{letterGrade.grade}</div>
+          <div className="text-2xl font-bold font-mono mt-1 text-[#000000] dark:text-[#FFFFFF]">{letterGrade.grade}</div>
         </div>
         <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Performance Remark</div>
@@ -247,7 +247,7 @@ const FlashcardsTool: React.FC = () => {
         <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
           {flipped ? 'Answer' : 'Question'}
         </div>
-        <div className="text-lg font-medium text-[#111111] dark:text-neutral-100">
+        <div className="text-lg font-medium text-[#000000] dark:text-[#FFFFFF]">
           {flipped ? current.answer : current.question}
         </div>
         <div className="text-[11px] text-neutral-400 mt-4">
@@ -267,7 +267,7 @@ const FlashcardsTool: React.FC = () => {
           <input type="text" placeholder="Question / Concept" value={newQ} onChange={(e) => setNewQ(e.target.value)} className="p-2 border rounded text-xs bg-white dark:bg-neutral-950" />
           <input type="text" placeholder="Answer / Definition" value={newA} onChange={(e) => setNewA(e.target.value)} className="p-2 border rounded text-xs bg-white dark:bg-neutral-950" />
         </div>
-        <button onClick={addCard} className="px-4 py-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded text-xs font-medium">
+        <button onClick={addCard} className="px-4 py-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded text-xs font-medium">
           Add to Deck
         </button>
       </div>
@@ -308,7 +308,7 @@ const CitationGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boo
             key={s}
             onClick={() => setStyle(s)}
             className={`px-3 py-1.5 rounded text-xs font-semibold ${
-              style === s ? 'bg-[#111111] text-white dark:bg-white dark:text-black' : 'border border-neutral-200 dark:border-neutral-800'
+              style === s ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]' : 'border border-neutral-200 dark:border-neutral-800'
             }`}
           >
             {s} Style
@@ -337,14 +337,14 @@ const CitationGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boo
 
       <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900">
         <div className="text-xs font-semibold text-neutral-500 uppercase mb-2">Formatted Citation ({style})</div>
-        <div className="text-sm font-serif text-[#111111] dark:text-neutral-100">{citation}</div>
+        <div className="text-sm font-serif text-[#000000] dark:text-[#FFFFFF]">{citation}</div>
       </div>
 
       <button
         onClick={() => onCopy(citation.replace(/\*/g, ''))}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Citation
       </button>
     </div>
@@ -385,7 +385,7 @@ const StudyNotesTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
           onClick={() => onCopy(notes)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Notes
         </button>
       </div>

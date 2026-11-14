@@ -189,12 +189,12 @@ const ScientificCalcTool: React.FC = () => {
           <div className="flex items-center justify-between mt-1">
             <button
               onClick={copyResult}
-              className="p-1 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition"
+              className="p-1 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] transition"
               title="Copy result"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
             </button>
-            <div className="text-3xl sm:text-4xl font-mono font-bold text-[#111111] dark:text-neutral-100 truncate select-all">
+            <div className="text-3xl sm:text-4xl font-mono font-bold text-[#000000] dark:text-[#FFFFFF] truncate select-all">
               {result}
             </div>
           </div>
@@ -214,10 +214,10 @@ const ScientificCalcTool: React.FC = () => {
                     onClick={() => handlePress(btn)}
                     className={`py-3 rounded-xl text-xs sm:text-sm font-semibold transition active:scale-95 cursor-pointer shadow-xs ${
                       isClear
-                        ? 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400 border border-red-200 dark:border-red-900 hover:bg-red-100'
+                        ? 'bg-[#EDEDED] text-[#000000] dark:bg-neutral-800 dark:text-[#FFFFFF] border border-black/15 dark:border-white/15 hover:bg-neutral-300 dark:hover:bg-neutral-700'
                         : isOperator
-                        ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-bold hover:bg-neutral-300'
-                        : 'bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                        ? 'bg-[#F6F6F6] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] border border-neutral-200 dark:border-neutral-800 font-bold hover:bg-[#EDEDED] dark:hover:bg-neutral-800'
+                        : 'bg-[#FFFFFF] dark:bg-[#050505] border border-neutral-200 dark:border-neutral-800 text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-[#090909]'
                     }`}
                   >
                     {btn}
@@ -230,7 +230,7 @@ const ScientificCalcTool: React.FC = () => {
           {/* Bottom equals bar */}
           <button
             onClick={() => handlePress('=')}
-            className="w-full py-3.5 bg-[#111111] hover:bg-black text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black rounded-xl text-base font-bold transition shadow-sm cursor-pointer mt-2"
+            className="w-full py-3.5 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-base font-bold transition shadow-sm cursor-pointer mt-2"
           >
             =
           </button>
@@ -238,7 +238,7 @@ const ScientificCalcTool: React.FC = () => {
       </div>
 
       {/* History Tape Sidebar */}
-      <div className="lg:col-span-4 p-5 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0E0E10] shadow-sm space-y-4">
+      <div className="lg:col-span-4 p-5 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm space-y-4">
         <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-neutral-500">
           <div className="flex items-center gap-1.5">
             <History className="w-3.5 h-3.5" />
@@ -247,7 +247,7 @@ const ScientificCalcTool: React.FC = () => {
           {history.length > 0 && (
             <button
               onClick={() => setHistory([])}
-              className="text-[11px] text-neutral-400 hover:text-red-500 cursor-pointer"
+              className="text-[11px] text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] cursor-pointer"
             >
               Clear
             </button>
@@ -300,7 +300,7 @@ const PercentageCalcTool: React.FC = () => {
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Percentage of */}
-        <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-white dark:bg-[#0E0E10] shadow-sm space-y-4">
+        <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm space-y-4">
           <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
             What is X% of Y?
           </div>
@@ -310,24 +310,24 @@ const PercentageCalcTool: React.FC = () => {
               type="number"
               value={val1}
               onChange={(e) => setVal1(parseFloat(e.target.value) || 0)}
-              className="w-20 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-sm font-bold text-center"
+              className="w-20 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] text-sm font-bold text-center"
             />
             <span className="text-xs text-neutral-500">% of</span>
             <input
               type="number"
               value={val2}
               onChange={(e) => setVal2(parseFloat(e.target.value) || 0)}
-              className="w-24 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-sm font-bold text-center"
+              className="w-24 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] text-sm font-bold text-center"
             />
           </div>
-          <div className="p-4 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 text-sm font-mono flex items-center justify-between">
+          <div className="p-4 bg-[#F6F6F6] dark:bg-[#050505] rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 text-sm font-mono flex items-center justify-between">
             <span className="text-neutral-500">Calculated Result:</span>
-            <span className="text-xl font-bold text-emerald-600">{percentOf}</span>
+            <span className="text-xl font-bold text-[#000000] dark:text-[#FFFFFF]">{percentOf}</span>
           </div>
         </div>
 
         {/* X is what percent of Y */}
-        <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-white dark:bg-[#0E0E10] shadow-sm space-y-4">
+        <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm space-y-4">
           <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
             X is what % of Y?
           </div>
@@ -336,25 +336,25 @@ const PercentageCalcTool: React.FC = () => {
               type="number"
               value={val1}
               onChange={(e) => setVal1(parseFloat(e.target.value) || 0)}
-              className="w-20 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-sm font-bold text-center"
+              className="w-20 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] text-sm font-bold text-center"
             />
             <span className="text-xs text-neutral-500">is what % of</span>
             <input
               type="number"
               value={val2}
               onChange={(e) => setVal2(parseFloat(e.target.value) || 0)}
-              className="w-24 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-sm font-bold text-center"
+              className="w-24 p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] text-sm font-bold text-center"
             />
           </div>
-          <div className="p-4 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 text-sm font-mono flex items-center justify-between">
+          <div className="p-4 bg-[#F6F6F6] dark:bg-[#050505] rounded-xl border border-neutral-200/80 dark:border-neutral-800/80 text-sm font-mono flex items-center justify-between">
             <span className="text-neutral-500">Calculated Percentage:</span>
-            <span className="text-xl font-bold text-[#111111] dark:text-neutral-100">{isWhatPercent}%</span>
+            <span className="text-xl font-bold text-[#000000] dark:text-[#FFFFFF]">{isWhatPercent}%</span>
           </div>
         </div>
       </div>
 
       {/* Sale Discount Calculator */}
-      <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 bg-white dark:bg-[#0E0E10] shadow-sm space-y-4">
+      <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm space-y-4">
         <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
           Discount & Savings Calculator
         </div>
@@ -365,7 +365,7 @@ const PercentageCalcTool: React.FC = () => {
               type="number"
               value={origPrice}
               onChange={(e) => setOrigPrice(parseFloat(e.target.value) || 0)}
-              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900 text-sm font-mono font-bold"
+              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] text-sm font-mono font-bold"
             />
           </div>
           <div>
@@ -374,18 +374,18 @@ const PercentageCalcTool: React.FC = () => {
               type="number"
               value={discountPercent}
               onChange={(e) => setDiscountPercent(parseFloat(e.target.value) || 0)}
-              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900 text-sm font-mono font-bold"
+              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] text-sm font-mono font-bold"
             />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 pt-2">
-          <div className="p-4 bg-emerald-50/60 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-900/60">
-            <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Total Money Saved:</div>
-            <div className="text-2xl font-bold text-emerald-600 font-mono mt-0.5">${discountAmount}</div>
+          <div className="p-4 bg-[#000000] dark:bg-[#FFFFFF] rounded-xl border border-[#000000] dark:border-[#FFFFFF]">
+            <div className="text-xs font-semibold text-neutral-300 dark:text-neutral-600">Total Money Saved:</div>
+            <div className="text-2xl font-bold text-[#FFFFFF] dark:text-[#000000] font-mono mt-0.5">${discountAmount}</div>
           </div>
-          <div className="p-4 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200/80 dark:border-neutral-800/80">
+          <div className="p-4 bg-[#F6F6F6] dark:bg-[#050505] rounded-xl border border-neutral-200/80 dark:border-neutral-800/80">
             <div className="text-xs font-semibold text-neutral-500">Final Discounted Price:</div>
-            <div className="text-2xl font-bold text-[#111111] dark:text-neutral-100 font-mono mt-0.5">${finalPrice}</div>
+            <div className="text-2xl font-bold text-[#000000] dark:text-[#FFFFFF] font-mono mt-0.5">${finalPrice}</div>
           </div>
         </div>
       </div>
@@ -413,7 +413,7 @@ const ProfitMarginTool: React.FC = () => {
             type="number"
             value={cost}
             onChange={(e) => setCost(parseFloat(e.target.value) || 0)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-sm font-mono font-bold"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#FFFFFF] dark:bg-[#050505] text-sm font-mono font-bold"
           />
         </div>
         <div>
@@ -422,25 +422,25 @@ const ProfitMarginTool: React.FC = () => {
             type="number"
             value={selling}
             onChange={(e) => setSelling(parseFloat(e.target.value) || 0)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-sm font-mono font-bold"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#FFFFFF] dark:bg-[#050505] text-sm font-mono font-bold"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Gross Profit</div>
-          <div className={`text-3xl font-bold font-mono mt-2 ${grossProfit >= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+          <div className={`text-3xl font-bold font-mono mt-2 ${grossProfit >= 0 ? 'text-[#000000] dark:text-[#FFFFFF]' : 'text-neutral-500 underline decoration-dashed'}`}>
             ${grossProfit.toFixed(2)}
           </div>
         </div>
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Profit Margin</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-[#111111] dark:text-neutral-100">{marginPercent}%</div>
+          <div className="text-3xl font-bold font-mono mt-2 text-[#000000] dark:text-[#FFFFFF]">{marginPercent}%</div>
         </div>
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Cost Markup</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-indigo-600 dark:text-indigo-400">{markupPercent}%</div>
+          <div className="text-3xl font-bold font-mono mt-2 text-[#000000] dark:text-[#FFFFFF]">{markupPercent}%</div>
         </div>
       </div>
     </div>
@@ -507,27 +507,27 @@ const AgeDateTool: React.FC = () => {
 
       {ageDetails && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
             <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Exact Chronological Age</div>
-            <div className="text-xl font-bold mt-2 text-[#111111] dark:text-neutral-100">
+            <div className="text-xl font-bold mt-2 text-[#000000] dark:text-[#FFFFFF]">
               {ageDetails.years} Years, {ageDetails.months} Mos, {ageDetails.days} Days
             </div>
           </div>
-          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
             <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Total Days Lived</div>
-            <div className="text-2xl font-bold font-mono mt-2 text-[#111111] dark:text-neutral-100">
+            <div className="text-2xl font-bold font-mono mt-2 text-[#000000] dark:text-[#FFFFFF]">
               {ageDetails.totalDays.toLocaleString()} Days
             </div>
           </div>
-          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
             <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Next Birthday</div>
-            <div className="text-2xl font-bold font-mono mt-2 text-emerald-600">
+            <div className="text-2xl font-bold font-mono mt-2 text-[#000000] dark:text-[#FFFFFF]">
               in {ageDetails.daysToBday} Days
             </div>
           </div>
-          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+          <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
             <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Born On</div>
-            <div className="text-2xl font-bold mt-2 text-indigo-600 dark:text-indigo-400">
+            <div className="text-2xl font-bold mt-2 text-[#000000] dark:text-[#FFFFFF]">
               {ageDetails.bornDay}
             </div>
           </div>
@@ -614,29 +614,29 @@ const LoanCalculatorTool: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Monthly EMI</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-[#111111] dark:text-neutral-100">${emiCalc.emi} / mo</div>
+          <div className="text-3xl font-bold font-mono mt-2 text-[#000000] dark:text-[#FFFFFF]">${emiCalc.emi} / mo</div>
         </div>
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Total Interest</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-amber-600">${emiCalc.totalInterest.toLocaleString()}</div>
+          <div className="text-3xl font-bold font-mono mt-2 text-neutral-700 dark:text-neutral-300">${emiCalc.totalInterest.toLocaleString()}</div>
         </div>
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Total Payment (P + I)</div>
-          <div className="text-3xl font-bold font-mono mt-2 text-indigo-600 dark:text-indigo-400">${emiCalc.totalPayment.toLocaleString()}</div>
+          <div className="text-3xl font-bold font-mono mt-2 text-[#000000] dark:text-[#FFFFFF]">${emiCalc.totalPayment.toLocaleString()}</div>
         </div>
       </div>
 
       {/* Amortization Schedule Accordion */}
-      <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-white dark:bg-[#0E0E10] shadow-sm">
+      <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">
             Amortization Breakdown (First Year Preview)
           </span>
           <button
             onClick={() => setShowSchedule(!showSchedule)}
-            className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:underline cursor-pointer"
+            className="text-xs font-semibold text-[#000000] dark:text-[#FFFFFF] hover:underline cursor-pointer"
           >
             {showSchedule ? 'Hide Schedule' : 'View Schedule Table'}
           </button>
@@ -645,7 +645,7 @@ const LoanCalculatorTool: React.FC = () => {
         {showSchedule && (
           <div className="overflow-x-auto pt-2">
             <table className="w-full text-xs text-left font-mono">
-              <thead className="bg-neutral-50 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 text-neutral-400">
+              <thead className="bg-[#F6F6F6] dark:bg-[#050505] border-b border-neutral-200 dark:border-neutral-800 text-neutral-400">
                 <tr>
                   <th className="p-2.5">Month</th>
                   <th className="p-2.5">Principal</th>
@@ -655,10 +655,10 @@ const LoanCalculatorTool: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-neutral-100 dark:divide-neutral-900">
                 {emiCalc.schedule.map((row) => (
-                  <tr key={row.month} className="hover:bg-neutral-50/50 dark:hover:bg-neutral-900/50">
+                  <tr key={row.month} className="hover:bg-[#F6F6F6] dark:hover:bg-[#050505]">
                     <td className="p-2.5 font-bold">Month {row.month}</td>
-                    <td className="p-2.5 text-emerald-600">${row.principalPaid}</td>
-                    <td className="p-2.5 text-amber-600">${row.interest}</td>
+                    <td className="p-2.5 font-semibold text-[#000000] dark:text-[#FFFFFF]">${row.principalPaid}</td>
+                    <td className="p-2.5 text-neutral-500 dark:text-neutral-400">${row.interest}</td>
                     <td className="p-2.5 text-neutral-700 dark:text-neutral-300">${row.remaining.toLocaleString()}</td>
                   </tr>
                 ))}
@@ -693,7 +693,7 @@ const ElectricityCalcTool: React.FC = () => {
             type="number"
             value={watts}
             onChange={(e) => setWatts(parseFloat(e.target.value) || 0)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-sm font-mono font-bold"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#FFFFFF] dark:bg-[#050505] text-sm font-mono font-bold"
           />
         </div>
         <div>
@@ -704,7 +704,7 @@ const ElectricityCalcTool: React.FC = () => {
             max={24}
             value={hours}
             onChange={(e) => setHours(parseFloat(e.target.value) || 0)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-sm font-mono font-bold"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#FFFFFF] dark:bg-[#050505] text-sm font-mono font-bold"
           />
         </div>
         <div>
@@ -714,25 +714,25 @@ const ElectricityCalcTool: React.FC = () => {
             step="0.01"
             value={tariff}
             onChange={(e) => setTariff(parseFloat(e.target.value) || 0)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-sm font-mono font-bold"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#FFFFFF] dark:bg-[#050505] text-sm font-mono font-bold"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Daily Cost</div>
-          <div className="text-2xl font-bold font-mono mt-1 text-[#111111] dark:text-neutral-100">${dailyCost.toFixed(2)}</div>
+          <div className="text-2xl font-bold font-mono mt-1 text-[#000000] dark:text-[#FFFFFF]">${dailyCost.toFixed(2)}</div>
           <div className="text-[11px] text-neutral-400 mt-1 font-mono">{dailyKwh.toFixed(2)} kWh / day</div>
         </div>
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Monthly (30 Days)</div>
-          <div className="text-2xl font-bold font-mono mt-1 text-emerald-600">${monthlyCost.toFixed(2)}</div>
+          <div className="text-2xl font-bold font-mono mt-1 text-[#000000] dark:text-[#FFFFFF]">${monthlyCost.toFixed(2)}</div>
           <div className="text-[11px] text-neutral-400 mt-1 font-mono">{(dailyKwh * 30).toFixed(1)} kWh / month</div>
         </div>
-        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white dark:bg-[#0E0E10] text-center shadow-sm">
+        <div className="p-5 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-[#FFFFFF] dark:bg-[#090909] text-center shadow-sm">
           <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Annual (365 Days)</div>
-          <div className="text-2xl font-bold font-mono mt-1 text-indigo-600 dark:text-indigo-400">${annualCost.toFixed(2)}</div>
+          <div className="text-2xl font-bold font-mono mt-1 text-[#000000] dark:text-[#FFFFFF]">${annualCost.toFixed(2)}</div>
           <div className="text-[11px] text-neutral-400 mt-1 font-mono">{(dailyKwh * 365).toFixed(0)} kWh / year</div>
         </div>
       </div>
@@ -875,7 +875,7 @@ const UnitConverterTool: React.FC = () => {
       </div>
 
       {/* Main Converter Card */}
-      <div className="p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0E0E10] shadow-sm space-y-6">
+      <div className="p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-11 gap-4 items-center">
           {/* From */}
           <div className="sm:col-span-5 space-y-2">
@@ -884,12 +884,12 @@ const UnitConverterTool: React.FC = () => {
               type="number"
               value={val}
               onChange={(e) => setVal(parseFloat(e.target.value) || 0)}
-              className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900 font-mono text-base font-bold"
+              className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] font-mono text-base font-bold"
             />
             <select
               value={fromUnit}
               onChange={(e) => setFromUnit(e.target.value)}
-              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold bg-white dark:bg-neutral-950 uppercase tracking-wider"
+              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold bg-[#FFFFFF] dark:bg-[#050505] uppercase tracking-wider"
             >
               {unitList.map((u) => (
                 <option key={u} value={u}>
@@ -903,7 +903,7 @@ const UnitConverterTool: React.FC = () => {
           <div className="sm:col-span-1 flex justify-center pt-5">
             <button
               onClick={swap}
-              className="p-3 rounded-full border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition shadow-xs cursor-pointer"
+              className="p-3 rounded-full border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-[#050505] transition shadow-xs cursor-pointer"
               title="Swap units"
             >
               <ArrowRightLeft className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
@@ -913,13 +913,13 @@ const UnitConverterTool: React.FC = () => {
           {/* To */}
           <div className="sm:col-span-5 space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-neutral-500">To (Calculated)</label>
-            <div className="w-full p-3 border border-emerald-300 dark:border-emerald-800/80 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 font-mono text-base font-bold text-emerald-700 dark:text-emerald-300 truncate select-all">
+            <div className="w-full p-3 border border-[#000000] dark:border-[#FFFFFF] rounded-xl bg-[#000000] dark:bg-[#FFFFFF] font-mono text-base font-bold text-[#FFFFFF] dark:text-[#000000] truncate select-all">
               {Number(convertedValue.toFixed(6))}
             </div>
             <select
               value={toUnit}
               onChange={(e) => setToUnit(e.target.value)}
-              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold bg-white dark:bg-neutral-950 uppercase tracking-wider"
+              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold bg-[#FFFFFF] dark:bg-[#050505] uppercase tracking-wider"
             >
               {unitList.map((u) => (
                 <option key={u} value={u}>

@@ -135,8 +135,8 @@ export const ImageEditorProTool: React.FC = () => {
   return (
     <div className="space-y-6">
       {!imgSrc ? (
-        <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-10 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 transition">
-          <Upload className="w-8 h-8 text-indigo-600 mb-2" />
+        <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-10 flex flex-col items-center justify-center cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-white/5 transition">
+          <Upload className="w-8 h-8 text-[#000000] dark:text-[#FFFFFF] mb-2" />
           <span className="text-sm font-semibold">Upload a photo to crop, rotate & enhance</span>
           <span className="text-xs text-neutral-400 mt-1">100% browser Canvas processing — PNG, JPEG, WebP</span>
           <input type="file" accept="image/*" onChange={handleUpload} className="hidden" />
@@ -144,7 +144,7 @@ export const ImageEditorProTool: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="space-y-4">
-            <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 space-y-3 text-xs">
+            <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] space-y-3 text-xs">
               <div className="font-bold uppercase tracking-wider text-neutral-500 flex items-center gap-1.5">
                 <Crop className="w-3.5 h-3.5" />
                 <span>Crop & Transform</span>
@@ -157,8 +157,8 @@ export const ImageEditorProTool: React.FC = () => {
                     onClick={() => setAspect(r)}
                     className={`py-1.5 rounded font-semibold border cursor-pointer ${
                       aspect === r
-                        ? 'bg-indigo-600 text-white border-indigo-600'
-                        : 'bg-white dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800'
+                        ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
+                        : 'bg-[#FFFFFF] dark:bg-[#090909] border-neutral-200 dark:border-neutral-800'
                     }`}
                   >
                     {r}
@@ -214,22 +214,22 @@ export const ImageEditorProTool: React.FC = () => {
                   <span>Crop Zoom</span>
                   <span className="font-mono tabular-nums">{cropZoom}%</span>
                 </div>
-                <input type="range" min={100} max={250} value={cropZoom} onChange={(e) => setCropZoom(Number(e.target.value))} className="w-full accent-indigo-600" />
+                <input type="range" min={100} max={250} value={cropZoom} onChange={(e) => setCropZoom(Number(e.target.value))} className="w-full accent-[#000000] dark:accent-[#FFFFFF]" />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <span className="block mb-1">Pan X</span>
-                  <input type="range" min={-50} max={50} value={offsetX} onChange={(e) => setOffsetX(Number(e.target.value))} className="w-full accent-indigo-600" />
+                  <input type="range" min={-50} max={50} value={offsetX} onChange={(e) => setOffsetX(Number(e.target.value))} className="w-full accent-[#000000] dark:accent-[#FFFFFF]" />
                 </div>
                 <div>
                   <span className="block mb-1">Pan Y</span>
-                  <input type="range" min={-50} max={50} value={offsetY} onChange={(e) => setOffsetY(Number(e.target.value))} className="w-full accent-indigo-600" />
+                  <input type="range" min={-50} max={50} value={offsetY} onChange={(e) => setOffsetY(Number(e.target.value))} className="w-full accent-[#000000] dark:accent-[#FFFFFF]" />
                 </div>
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 space-y-2.5 text-xs">
+            <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] space-y-2.5 text-xs">
               <div className="font-bold uppercase tracking-wider text-neutral-500 flex items-center gap-1.5">
                 <Sliders className="w-3.5 h-3.5" />
                 <span>Color & Light Filters</span>
@@ -253,7 +253,7 @@ export const ImageEditorProTool: React.FC = () => {
                     max={ctrl.max}
                     value={ctrl.val}
                     onChange={(e) => ctrl.set(Number(e.target.value))}
-                    className="w-full accent-indigo-600"
+                    className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
                   />
                 </div>
               ))}
@@ -293,7 +293,7 @@ export const ImageEditorProTool: React.FC = () => {
               <button
                 type="button"
                 onClick={handleDownload}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>Download Full-Resolution Image</span>
@@ -407,8 +407,8 @@ export const BgColorRemoverTool: React.FC = () => {
   return (
     <div className="space-y-6">
       {!imgObj ? (
-        <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-10 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 transition">
-          <Upload className="w-8 h-8 text-indigo-600 mb-2" />
+        <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-10 flex flex-col items-center justify-center cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-white/5 transition">
+          <Upload className="w-8 h-8 text-[#000000] dark:text-[#FFFFFF] mb-2" />
           <span className="text-sm font-semibold">Upload logo, signature, or product photo</span>
           <span className="text-xs text-neutral-400 mt-1">Click any background color to make it 100% transparent</span>
           <input type="file" accept="image/*" onChange={handleUpload} className="hidden" />
@@ -416,7 +416,7 @@ export const BgColorRemoverTool: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="space-y-4">
-            <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 space-y-4 text-xs">
+            <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] space-y-4 text-xs">
               <div className="flex items-center justify-between">
                 <span className="font-bold uppercase tracking-wider text-neutral-500 flex items-center gap-1.5">
                   <Pipette className="w-3.5 h-3.5" />
@@ -445,7 +445,7 @@ export const BgColorRemoverTool: React.FC = () => {
                   max={100}
                   value={tolerance}
                   onChange={(e) => setTolerance(Number(e.target.value))}
-                  className="w-full accent-indigo-600"
+                  className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
                 />
               </div>
 
@@ -460,7 +460,7 @@ export const BgColorRemoverTool: React.FC = () => {
                   max={50}
                   value={feather}
                   onChange={(e) => setFeather(Number(e.target.value))}
-                  className="w-full accent-indigo-600"
+                  className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
                 />
               </div>
             </div>
@@ -469,11 +469,11 @@ export const BgColorRemoverTool: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setTargetColor([255, 255, 255])}
-                className="flex-1 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-900 cursor-pointer"
+                className="flex-1 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-semibold hover:bg-[#F6F6F6] dark:hover:bg-white/10 cursor-pointer"
               >
                 Pick White
               </button>
-              <label className="flex-1 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-semibold text-center hover:bg-neutral-50 dark:hover:bg-neutral-900 cursor-pointer">
+              <label className="flex-1 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-semibold text-center hover:bg-[#F6F6F6] dark:hover:bg-white/10 cursor-pointer">
                 Change Image
                 <input type="file" accept="image/*" onChange={handleUpload} className="hidden" />
               </label>
@@ -494,7 +494,7 @@ export const BgColorRemoverTool: React.FC = () => {
               <button
                 type="button"
                 onClick={downloadPng}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>Download Transparent PNG</span>

@@ -243,24 +243,23 @@ const TextToSpeechTool: React.FC = () => {
       </div>
 
       {/* Player Controller & Visualizer */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl border border-neutral-200/90 dark:border-neutral-800/90 bg-white dark:bg-[#0E0E10] shadow-sm">
-        {/* Animated Soundwave */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl border border-neutral-200/90 dark:border-neutral-800/90 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm">
+        {/* Soundwave Visualizer */}
         <div className="flex items-center gap-1.5 h-8">
           {[40, 75, 55, 95, 30, 85, 60, 90, 45, 80, 50, 70].map((h, i) => (
             <div
               key={i}
               className={`w-1 rounded-full transition-all duration-200 ${
                 isPlaying
-                  ? 'bg-emerald-500 animate-pulse'
-                  : 'bg-neutral-200 dark:bg-neutral-800'
+                  ? 'bg-[#000000] dark:bg-[#FFFFFF]'
+                  : 'bg-[#EDEDED] dark:bg-neutral-800'
               }`}
               style={{
                 height: isPlaying ? `${Math.max(12, (h * (i % 2 === 0 ? 0.9 : 1.2)) % 32)}px` : '6px',
-                animationDelay: `${i * 70}ms`
               }}
             />
           ))}
-          <span className="text-xs font-semibold text-neutral-400 ml-2">
+          <span className="text-xs font-semibold text-neutral-500 ml-2">
             {isPlaying ? 'Speaking...' : isPaused ? 'Paused' : 'Ready'}
           </span>
         </div>
@@ -270,7 +269,7 @@ const TextToSpeechTool: React.FC = () => {
           {!isPlaying ? (
             <button
               onClick={handleSpeak}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111111] hover:bg-black text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
             >
               <Play className="w-3.5 h-3.5 fill-current" />
               <span>{isPaused ? 'Resume Speech' : 'Play Speech'}</span>
@@ -278,7 +277,7 @@ const TextToSpeechTool: React.FC = () => {
           ) : (
             <button
               onClick={handlePause}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
             >
               <Pause className="w-3.5 h-3.5 fill-current" />
               <span>Pause</span>
@@ -288,7 +287,7 @@ const TextToSpeechTool: React.FC = () => {
           <button
             onClick={handleStop}
             disabled={!isPlaying && !isPaused}
-            className="inline-flex items-center gap-2 px-4 py-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-900 transition disabled:opacity-40 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold hover:bg-[#F6F6F6] dark:hover:bg-[#050505] transition disabled:opacity-40 cursor-pointer"
           >
             <Square className="w-3.5 h-3.5 fill-current" />
             <span>Stop</span>
@@ -424,8 +423,8 @@ const SpeechToTextTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
             onClick={toggleListening}
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-sm cursor-pointer ${
               isListening
-                ? 'bg-red-600 hover:bg-red-700 text-white animate-pulse'
-                : 'bg-[#111111] hover:bg-black text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black'
+                ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] ring-2 ring-black/20 dark:ring-white/20'
+                : 'bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000]'
             }`}
           >
             <Mic className="w-4 h-4" />
@@ -435,16 +434,16 @@ const SpeechToTextTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
       </div>
 
       {error && (
-        <div className="p-3 border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900 rounded-xl text-xs text-red-600">
+        <div className="p-3 border border-black/20 dark:border-white/20 bg-[#F6F6F6] dark:bg-[#090909] rounded-xl text-xs text-[#000000] dark:text-[#FFFFFF]">
           {error}
         </div>
       )}
 
       {/* Transcript Display Window */}
-      <div className="relative border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-white dark:bg-[#0E0E10] min-h-[220px] flex flex-col justify-between shadow-sm">
+      <div className="relative border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 bg-[#FFFFFF] dark:bg-[#090909] min-h-[220px] flex flex-col justify-between shadow-sm">
         <div className="space-y-2">
           {fullText ? (
-            <div className="text-sm text-neutral-900 dark:text-neutral-100 leading-relaxed font-sans select-all whitespace-pre-wrap">
+            <div className="text-sm text-[#000000] dark:text-[#FFFFFF] leading-relaxed font-sans select-all whitespace-pre-wrap">
               <span>{transcript}</span>
               {interim && <span className="text-neutral-400 italic"> {interim}</span>}
             </div>
@@ -466,16 +465,16 @@ const SpeechToTextTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
             <button
               onClick={() => onCopy(fullText)}
               disabled={!fullText}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded-lg font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 disabled:opacity-40 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded-lg font-medium hover:bg-[#F6F6F6] dark:hover:bg-[#050505] disabled:opacity-40 transition cursor-pointer"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-3.5 h-3.5" />}
               <span>{copied ? 'Copied' : 'Copy'}</span>
             </button>
 
             <button
               onClick={downloadText}
               disabled={!fullText}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded-lg font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 disabled:opacity-40 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded-lg font-medium hover:bg-[#F6F6F6] dark:hover:bg-[#050505] disabled:opacity-40 transition cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Download .txt</span>
@@ -484,7 +483,7 @@ const SpeechToTextTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
             <button
               onClick={clearTranscript}
               disabled={!fullText}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-neutral-400 hover:text-red-500 disabled:opacity-30 transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] disabled:opacity-30 transition cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Clear</span>
@@ -572,9 +571,9 @@ const DeviceInspectorTool: React.FC<{ onCopy: (t: string) => void; copied: boole
         </div>
         <button
           onClick={() => onCopy(fullReport)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-900 transition cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-xl text-xs font-semibold hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition cursor-pointer"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+          {copied ? <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-3.5 h-3.5" />}
           <span>{copied ? 'Copied Specs' : 'Copy System Report'}</span>
         </button>
       </div>
@@ -661,15 +660,15 @@ const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }
     <div className="space-y-8">
       {/* Storage Estimate Quota Bar */}
       {estimate && (
-        <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0E0E10] shadow-sm space-y-3">
+        <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm space-y-3">
           <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-neutral-500">
             <span>Browser Storage Quota</span>
             <span className="font-mono">{estimate.usedMb} MB used of {estimate.quotaMb} MB (~{estimate.percent}%)</span>
           </div>
 
-          <div className="w-full h-3 rounded-full bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+          <div className="w-full h-3 rounded-full bg-[#EDEDED] dark:bg-neutral-800 overflow-hidden">
             <div
-              className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+              className="h-full bg-[#000000] dark:bg-[#FFFFFF] rounded-full transition-all duration-500"
               style={{ width: `${Math.max(2, Math.min(100, estimate.percent))}%` }}
             />
           </div>
@@ -690,7 +689,7 @@ const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }
           <div className="flex items-center gap-2">
             <button
               onClick={loadStorage}
-              className="p-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+              className="p-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition"
               title="Refresh"
             >
               <RefreshCw className="w-3.5 h-3.5" />
@@ -698,7 +697,7 @@ const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }
             {localItems.length > 0 && (
               <button
                 onClick={clearAllLocal}
-                className="px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition"
+                className="px-2.5 py-1 text-xs font-semibold text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 rounded-lg transition"
               >
                 Clear All
               </button>
@@ -707,9 +706,9 @@ const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }
         </div>
 
         {localItems.length > 0 ? (
-          <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden bg-white dark:bg-[#0E0E10]">
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden bg-[#FFFFFF] dark:bg-[#090909]">
             <table className="w-full text-left text-xs">
-              <thead className="bg-neutral-50 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 text-neutral-500 font-semibold uppercase">
+              <thead className="bg-[#F6F6F6] dark:bg-[#050505] border-b border-neutral-200 dark:border-neutral-800 text-neutral-500 font-semibold uppercase">
                 <tr>
                   <th className="p-3">Key Name</th>
                   <th className="p-3">Size</th>
@@ -719,14 +718,14 @@ const StorageViewerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }
               </thead>
               <tbody className="divide-y divide-neutral-100 dark:divide-neutral-900 font-mono">
                 {localItems.map((item) => (
-                  <tr key={item.key} className="hover:bg-neutral-50/50 dark:hover:bg-neutral-900/50">
-                    <td className="p-3 font-semibold text-neutral-800 dark:text-neutral-200">{item.key}</td>
+                  <tr key={item.key} className="hover:bg-[#F6F6F6] dark:hover:bg-[#050505]">
+                    <td className="p-3 font-semibold text-[#000000] dark:text-[#FFFFFF]">{item.key}</td>
                     <td className="p-3 text-neutral-400">{item.sizeKb} KB</td>
                     <td className="p-3 text-neutral-500 truncate max-w-xs">{item.value}</td>
                     <td className="p-3 text-right">
                       <button
                         onClick={() => deleteKey(item.key)}
-                        className="p-1 text-neutral-400 hover:text-red-500 transition"
+                        className="p-1 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] transition"
                         title="Delete key"
                       >
                         <Trash2 className="w-3.5 h-3.5" />

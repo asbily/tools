@@ -35,11 +35,11 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl">
+      <div className="bg-[#FFFFFF] dark:bg-[#090909] border border-neutral-200 dark:border-neutral-800 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl">
         {/* Header */}
         <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-sm text-[#111111] dark:text-neutral-100">Asbily Platforms</span>
+            <span className="font-bold text-sm text-[#000000] dark:text-[#FFFFFF]">Asbily Platforms</span>
             <span className="text-neutral-400">·</span>
             <span className="text-xs text-neutral-500 uppercase tracking-wider">Information & Policies</span>
           </div>
@@ -68,7 +68,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`py-3 px-3 flex items-center gap-1.5 border-b-2 whitespace-nowrap transition ${
                   activeTab === tab.id
-                    ? 'border-[#111111] dark:border-white text-[#111111] dark:text-white font-semibold'
+                    ? 'border-[#000000] dark:border-[#FFFFFF] text-[#000000] dark:text-[#FFFFFF] font-semibold'
                     : 'border-transparent text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
                 }`}
               >
@@ -83,7 +83,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
         <div className="p-6 overflow-y-auto space-y-4 text-xs leading-relaxed text-neutral-600 dark:text-neutral-300">
           {activeTab === 'about' && (
             <div className="space-y-3">
-              <h3 className="text-base font-bold text-[#111111] dark:text-neutral-100">About Asbily Free Tools</h3>
+              <h3 className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">About Asbily Free Tools</h3>
               <p>
                 <strong>Asbily Free Tools</strong> is an all-in-one suite of modern web utilities created and maintained by <strong>Asbily Platforms</strong>.
               </p>
@@ -101,7 +101,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
 
           {activeTab === 'privacy' && (
             <div className="space-y-3">
-              <h3 className="text-base font-bold text-[#111111] dark:text-neutral-100">Privacy Policy</h3>
+              <h3 className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">Privacy Policy</h3>
               <p>
                 At Asbily Free Tools (published by Asbily Platforms), user privacy is paramount.
               </p>
@@ -116,7 +116,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
 
           {activeTab === 'terms' && (
             <div className="space-y-3">
-              <h3 className="text-base font-bold text-[#111111] dark:text-neutral-100">Terms of Use</h3>
+              <h3 className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">Terms of Use</h3>
               <p>
                 By accessing Asbily Free Tools, you agree to use our platform in compliance with applicable local and international laws.
               </p>
@@ -128,7 +128,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
 
           {activeTab === 'disclaimer' && (
             <div className="space-y-3">
-              <h3 className="text-base font-bold text-[#111111] dark:text-neutral-100">Disclaimer</h3>
+              <h3 className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">Disclaimer</h3>
               <p>
                 The information and calculations provided on Asbily Free Tools (including loan calculations, tax estimations, and SEO checklists) are intended for educational and general informational purposes only. They do not constitute certified legal, financial, or tax advice.
               </p>
@@ -137,7 +137,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
 
           {activeTab === 'faq' && (
             <div className="space-y-3">
-              <h3 className="text-base font-bold text-[#111111] dark:text-neutral-100">Frequently Asked Questions</h3>
+              <h3 className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">Frequently Asked Questions</h3>
               <div className="space-y-2">
                 <div className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg">
                   <div className="font-semibold text-neutral-900 dark:text-neutral-100">Is Asbily Free Tools really 100% free?</div>
@@ -157,11 +157,11 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
 
           {activeTab === 'contact' && (
             <div className="space-y-3">
-              <h3 className="text-base font-bold text-[#111111] dark:text-neutral-100">Contact & Feedback</h3>
+              <h3 className="text-base font-bold text-[#000000] dark:text-[#FFFFFF]">Contact & Feedback</h3>
               <p>We welcome suggestions for new tools, bug reports, and partnership inquiries from the global community.</p>
 
               {feedbackSent ? (
-                <div className="p-4 border border-emerald-200 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300 rounded-lg flex items-center gap-2">
+                <div className="p-4 border border-black/15 dark:border-white/15 bg-[#F6F6F6] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] rounded-lg flex items-center gap-2">
                   <Check className="w-4 h-4" />
                   <span>Thank you! Your feedback has been received and saved locally.</span>
                 </div>
@@ -200,7 +200,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ initialTab = 'about', is
                   </div>
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-xs font-semibold"
+                    className="px-5 py-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-xs font-semibold"
                   >
                     Submit Feedback
                   </button>

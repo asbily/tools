@@ -107,7 +107,7 @@ const JsonFormatterTool: React.FC<{
           </button>
           <button
             onClick={() => setInput('')}
-            className="text-xs px-2.5 py-1 border border-neutral-200 dark:border-neutral-800 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
+            className="text-xs px-2.5 py-1 border border-neutral-200 dark:border-neutral-800 rounded text-neutral-600 dark:text-neutral-300 hover:bg-[#EDEDED] dark:hover:bg-[#090909]"
           >
             Clear
           </button>
@@ -115,7 +115,7 @@ const JsonFormatterTool: React.FC<{
       </div>
 
       {error && (
-        <div className="p-3 border border-red-200 bg-red-50 text-red-700 dark:bg-red-950/20 dark:border-red-900 dark:text-red-400 rounded-lg text-xs flex items-center gap-2">
+        <div className="p-3 border border-black/20 bg-[#F6F6F6] text-[#000000] dark:bg-[#090909] dark:border-white/20 dark:text-[#FFFFFF] rounded-lg text-xs flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 shrink-0" />
           <span><strong>JSON Syntax Error:</strong> {error}</span>
         </div>
@@ -153,7 +153,7 @@ const JsonFormatterTool: React.FC<{
           disabled={!formatted}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition disabled:opacity-40"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Beautified
         </button>
         <button
@@ -212,7 +212,7 @@ const Base64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = (
           onClick={() => setMode('encode')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             mode === 'encode'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >
@@ -222,7 +222,7 @@ const Base64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = (
           onClick={() => setMode('decode')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             mode === 'decode'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >
@@ -231,7 +231,7 @@ const Base64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = (
       </div>
 
       {error && (
-        <div className="p-3 border border-red-200 bg-red-50 text-red-700 dark:bg-red-950/20 dark:border-red-900 dark:text-red-400 rounded-lg text-xs">
+        <div className="p-3 border border-black/20 bg-[#F6F6F6] text-[#000000] dark:bg-[#090909] dark:border-white/20 dark:text-[#FFFFFF] rounded-lg text-xs">
           {error}
         </div>
       )}
@@ -266,7 +266,7 @@ const Base64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = (
         disabled={!output}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition disabled:opacity-40"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Result
       </button>
     </div>
@@ -385,7 +385,7 @@ const HtmlEntitiesTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
           onClick={() => setMode('encode')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             mode === 'encode'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >
@@ -395,7 +395,7 @@ const HtmlEntitiesTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
           onClick={() => setMode('decode')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             mode === 'decode'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >
@@ -433,7 +433,7 @@ const HtmlEntitiesTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
         disabled={!result}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Entities
       </button>
     </div>
@@ -499,7 +499,7 @@ const CsvJsonTool: React.FC<{
           onClick={() => setDirection('csv-to-json')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             direction === 'csv-to-json'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >
@@ -509,7 +509,7 @@ const CsvJsonTool: React.FC<{
           onClick={() => setDirection('json-to-csv')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             direction === 'json-to-csv'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >
@@ -549,7 +549,7 @@ const CsvJsonTool: React.FC<{
           onClick={() => onCopy(direction === 'csv-to-json' ? convertedJson : convertedCsv)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Converted
         </button>
         <button
@@ -726,7 +726,7 @@ const SqlFormatterTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
         onClick={() => onCopy(formattedSql)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Formatted SQL
       </button>
     </div>
@@ -779,7 +779,7 @@ const RegexTesterTool: React.FC<{ onCopy: (t: string) => void }> = () => {
       </div>
 
       {error && (
-        <div className="p-3 border border-red-200 bg-red-50 text-red-700 dark:bg-red-950/20 dark:border-red-900 rounded-lg text-xs">
+        <div className="p-3 border border-black/20 bg-[#F6F6F6] text-[#000000] dark:bg-[#090909] dark:border-white/20 dark:text-[#FFFFFF] rounded-lg text-xs">
           <strong>Regex Error:</strong> {error}
         </div>
       )}
@@ -803,7 +803,7 @@ const RegexTesterTool: React.FC<{ onCopy: (t: string) => void }> = () => {
         <div className="space-y-2">
           {matches.map((m, idx) => (
             <div key={idx} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950 font-mono text-xs flex justify-between">
-              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{m[0]}</span>
+              <span className="text-[#000000] dark:text-[#FFFFFF] font-semibold">{m[0]}</span>
               <span className="text-neutral-400">index: {m.index}</span>
             </div>
           ))}
@@ -865,7 +865,7 @@ const JwtDecoderTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) =
       </div>
 
       {error && (
-        <div className="p-3 border border-red-200 bg-red-50 text-red-700 dark:bg-red-950/20 dark:border-red-900 rounded-lg text-xs">
+        <div className="p-3 border border-black/20 bg-[#F6F6F6] text-[#000000] dark:bg-[#090909] dark:border-white/20 dark:text-[#FFFFFF] rounded-lg text-xs">
           {error}
         </div>
       )}
@@ -972,7 +972,7 @@ const UuidGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
       <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg divide-y divide-neutral-200 dark:divide-neutral-800 font-mono text-xs">
         {uuids.map((id, idx) => (
           <div key={idx} className="flex items-center justify-between p-3 bg-white dark:bg-neutral-950">
-            <span className="text-[#111111] dark:text-neutral-100">{id}</span>
+            <span className="text-[#000000] dark:text-[#FFFFFF]">{id}</span>
             <button
               onClick={() => onCopy(id)}
               className="text-neutral-400 hover:text-black dark:hover:text-white transition"
@@ -988,7 +988,7 @@ const UuidGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
         onClick={() => onCopy(uuids.join('\n'))}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy All ({uuids.length})
       </button>
     </div>
@@ -1061,7 +1061,7 @@ const HashGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
                 <Copy className="w-3.5 h-3.5" />
               </button>
             </div>
-            <div className="font-mono text-xs break-all text-[#111111] dark:text-neutral-100 select-all">
+            <div className="font-mono text-xs break-all text-[#000000] dark:text-[#FFFFFF] select-all">
               {h.val}
             </div>
           </div>
@@ -1101,7 +1101,7 @@ const TimestampConverterTool: React.FC<{ onCopy: (t: string) => void }> = ({ onC
       <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 flex items-center justify-between">
         <div>
           <div className="text-xs text-neutral-500 uppercase font-semibold">Current Unix Epoch</div>
-          <div className="text-2xl font-mono font-bold mt-1 text-[#111111] dark:text-neutral-100">{currentEpoch}</div>
+          <div className="text-2xl font-mono font-bold mt-1 text-[#000000] dark:text-[#FFFFFF]">{currentEpoch}</div>
         </div>
         <button
           onClick={() => setInputEpoch(String(currentEpoch))}
@@ -1127,15 +1127,15 @@ const TimestampConverterTool: React.FC<{ onCopy: (t: string) => void }> = ({ onC
         <div className="space-y-3">
           <div className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900">
             <div className="text-xs text-neutral-400">Local Time:</div>
-            <div className="font-mono text-sm font-semibold text-[#111111] dark:text-neutral-100">{convertedDate.local}</div>
+            <div className="font-mono text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]">{convertedDate.local}</div>
           </div>
           <div className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900">
             <div className="text-xs text-neutral-400">UTC / GMT:</div>
-            <div className="font-mono text-sm font-semibold text-[#111111] dark:text-neutral-100">{convertedDate.utc}</div>
+            <div className="font-mono text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]">{convertedDate.utc}</div>
           </div>
           <div className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900">
             <div className="text-xs text-neutral-400">ISO 8601:</div>
-            <div className="font-mono text-sm font-semibold text-[#111111] dark:text-neutral-100">{convertedDate.iso}</div>
+            <div className="font-mono text-sm font-semibold text-[#000000] dark:text-[#FFFFFF]">{convertedDate.iso}</div>
           </div>
         </div>
       )}
@@ -1214,14 +1214,14 @@ const CronExplainerTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
         <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">
           Human Explanation
         </div>
-        <div className="text-base font-medium text-[#111111] dark:text-neutral-100">{explanation}</div>
+        <div className="text-base font-medium text-[#000000] dark:text-[#FFFFFF]">{explanation}</div>
       </div>
 
       <button
         onClick={() => onCopy(cron)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Expression
       </button>
     </div>
@@ -1266,7 +1266,7 @@ const NumberBaseTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) =
               <Copy className="w-3.5 h-3.5" />
             </button>
           </div>
-          <div className="font-mono text-sm font-bold text-[#111111] dark:text-neutral-100 break-all">{bin || '-'}</div>
+          <div className="font-mono text-sm font-bold text-[#000000] dark:text-[#FFFFFF] break-all">{bin || '-'}</div>
         </div>
 
         <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 bg-neutral-50 dark:bg-neutral-900">
@@ -1276,7 +1276,7 @@ const NumberBaseTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) =
               <Copy className="w-3.5 h-3.5" />
             </button>
           </div>
-          <div className="font-mono text-sm font-bold text-[#111111] dark:text-neutral-100 break-all">{hex || '-'}</div>
+          <div className="font-mono text-sm font-bold text-[#000000] dark:text-[#FFFFFF] break-all">{hex || '-'}</div>
         </div>
 
         <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 bg-neutral-50 dark:bg-neutral-900">
@@ -1286,7 +1286,7 @@ const NumberBaseTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) =
               <Copy className="w-3.5 h-3.5" />
             </button>
           </div>
-          <div className="font-mono text-sm font-bold text-[#111111] dark:text-neutral-100 break-all">{oct || '-'}</div>
+          <div className="font-mono text-sm font-bold text-[#000000] dark:text-[#FFFFFF] break-all">{oct || '-'}</div>
         </div>
       </div>
     </div>
@@ -1373,7 +1373,7 @@ const CurlBuilderTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
         onClick={() => onCopy(curlCommand)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy cURL Command
       </button>
     </div>
@@ -1421,7 +1421,7 @@ const MarkdownEditorTool: React.FC<{
           onClick={() => onCopy(md)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Markdown
         </button>
         <button
@@ -1444,8 +1444,8 @@ const CssGeneratorsTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
 
   // Gradient state
   const [gradAngle, setGradAngle] = useState(135);
-  const [color1, setColor1] = useState('#111111');
-  const [color2, setColor2] = useState('#4B5563');
+  const [color1, setColor1] = useState('#000000');
+  const [color2, setColor2] = useState('#525252');
 
   // Shadow state
   const [xOffset, setXOffset] = useState(0);
@@ -1464,7 +1464,7 @@ const CssGeneratorsTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
           onClick={() => setTab('gradient')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             tab === 'gradient'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >
@@ -1474,7 +1474,7 @@ const CssGeneratorsTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
           onClick={() => setTab('shadow')}
           className={`px-4 py-2 text-xs font-semibold rounded-lg border transition ${
             tab === 'shadow'
-              ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+              ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
               : 'border-neutral-200 dark:border-neutral-800'
           }`}
         >

@@ -148,13 +148,13 @@ const ImageCompressorTool: React.FC = () => {
             <div className="flex items-center gap-6 text-xs">
               <div>Original: <strong>{(originalSize / 1024).toFixed(1)} KB</strong></div>
               <div>Compressed: <strong>{(compressedSize / 1024).toFixed(1)} KB</strong></div>
-              <div className="text-emerald-600 dark:text-emerald-400 font-bold">
+              <div className="text-[#000000] dark:text-[#FFFFFF] font-bold">
                 Saved: {savings}%
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <label className="text-xs px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900">
+              <label className="text-xs px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-[#090909]">
                 Change Photo
                 <input type="file" accept="image/*" onChange={handleUpload} className="hidden" />
               </label>
@@ -162,7 +162,7 @@ const ImageCompressorTool: React.FC = () => {
                 <a
                   href={compressedUrl}
                   download={`compressed-image.${format.split('/')[1]}`}
-                  className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#111111] text-white dark:bg-white dark:text-black rounded text-xs font-medium hover:opacity-90"
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded text-xs font-medium hover:opacity-90"
                 >
                   <Download className="w-3.5 h-3.5" />
                   Download
@@ -238,7 +238,7 @@ const ImageConverterTool: React.FC = () => {
               onClick={() => setTargetFormat(fmt)}
               className={`px-3 py-1.5 text-xs font-medium rounded uppercase ${
                 targetFormat === fmt
-                  ? 'bg-[#111111] text-white dark:bg-white dark:text-black'
+                  ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]'
                   : 'border border-neutral-200 dark:border-neutral-800'
               }`}
             >
@@ -249,12 +249,12 @@ const ImageConverterTool: React.FC = () => {
       </div>
 
       {convertedUrl && (
-        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 bg-neutral-50 dark:bg-neutral-900 flex flex-col items-center">
+        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 bg-[#F6F6F6] dark:bg-[#090909] flex flex-col items-center">
           <img src={convertedUrl} alt="Converted" className="max-h-72 object-contain rounded mb-4" />
           <a
             href={convertedUrl}
             download={`converted-image.${targetFormat}`}
-            className="inline-flex items-center gap-2 px-5 py-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium"
+            className="inline-flex items-center gap-2 px-5 py-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium"
           >
             <Download className="w-4 h-4" />
             Download Converted .{targetFormat.toUpperCase()}
@@ -295,7 +295,7 @@ const ImageBase64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
         {base64 && (
           <button
             onClick={() => setBase64('')}
-            className="text-xs text-red-500 hover:underline"
+            className="text-xs text-neutral-600 dark:text-neutral-300 hover:underline font-semibold"
           >
             Clear
           </button>
@@ -311,16 +311,16 @@ const ImageBase64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
           onChange={(e) => setBase64(e.target.value)}
           placeholder="Paste Base64 data URI (data:image/...) or upload above..."
           rows={8}
-          className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 font-mono text-xs"
+          className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#FFFFFF] dark:bg-[#050505] font-mono text-xs"
         />
       </div>
 
       {base64 && (
         <div className="space-y-4">
-          <div className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900">
+          <div className="p-3 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#090909]">
             <div className="flex justify-between items-center text-xs font-semibold text-neutral-500 uppercase mb-1">
               <span>CSS Background Snippet</span>
-              <button onClick={() => onCopy(cssSnippet)} className="text-neutral-500 hover:text-black dark:hover:text-white">
+              <button onClick={() => onCopy(cssSnippet)} className="text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
                 <Copy className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -330,9 +330,9 @@ const ImageBase64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
           <div className="flex gap-3">
             <button
               onClick={() => onCopy(base64)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+              className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
               Copy Base64 String
             </button>
           </div>
@@ -346,7 +346,7 @@ const ImageBase64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }
 // Component: SVG to PNG Rasterizer
 // -------------------------------------------------------------
 const SvgToPngTool: React.FC = () => {
-  const [svgCode, setSvgCode] = useState('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">\n  <circle cx="50" cy="50" r="45" fill="#111111"/>\n  <polygon points="50,20 62,68 38,68" fill="#FFFFFF"/>\n</svg>');
+  const [svgCode, setSvgCode] = useState('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">\n  <circle cx="50" cy="50" r="45" fill="#000000"/>\n  <polygon points="50,20 62,68 38,68" fill="#FFFFFF"/>\n</svg>');
   const [scale, setScale] = useState(2);
   const [pngUrl, setPngUrl] = useState<string | null>(null);
 
@@ -410,7 +410,7 @@ const SvgToPngTool: React.FC = () => {
               key={s}
               onClick={() => setScale(s)}
               className={`px-3 py-1.5 rounded font-semibold ${
-                scale === s ? 'bg-[#111111] text-white dark:bg-white dark:text-black' : 'border border-neutral-200 dark:border-neutral-800'
+                scale === s ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]' : 'border border-neutral-200 dark:border-neutral-800'
               }`}
             >
               {s}x ({s * 100}%)
@@ -422,7 +422,7 @@ const SvgToPngTool: React.FC = () => {
           <a
             href={pngUrl}
             download="vector-raster.png"
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium ml-auto"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium ml-auto"
           >
             <Download className="w-4 h-4" />
             Download PNG
@@ -526,7 +526,7 @@ const FaviconGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: bool
 // Component: Image Color Palette Extractor
 // -------------------------------------------------------------
 const PaletteExtractorTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) => {
-  const [colors, setColors] = useState<string[]>(['#111111', '#4B5563', '#9CA3AF', '#E5E7EB', '#FFFFFF']);
+  const [colors, setColors] = useState<string[]>(['#000000', '#090909', '#525252', '#EDEDED', '#F6F6F6', '#FFFFFF']);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -684,7 +684,7 @@ const WatermarkTool: React.FC = () => {
           <a
             href={watermarkedUrl}
             download="watermarked-image.png"
-            className="inline-flex items-center gap-2 px-5 py-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium"
+            className="inline-flex items-center gap-2 px-5 py-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium"
           >
             <Download className="w-4 h-4" />
             Download Watermarked Image
@@ -699,7 +699,7 @@ const WatermarkTool: React.FC = () => {
 // Component: Color Picker & WCAG Contrast Checker
 // -------------------------------------------------------------
 const ColorPickerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) => {
-  const [textColor, setTextColor] = useState('#111111');
+  const [textColor, setTextColor] = useState('#000000');
   const [bgColor, setBgColor] = useState('#FFFFFF');
 
   const getLuminance = (hex: string) => {
@@ -752,19 +752,19 @@ const ColorPickerTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy }) 
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-center">
+        <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#090909] text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Contrast Ratio</div>
           <div className="text-2xl font-bold font-mono mt-1">{contrast} : 1</div>
         </div>
-        <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-center">
+        <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#090909] text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">WCAG AA (Normal)</div>
-          <div className={`text-sm font-bold mt-2 ${passesAA ? 'text-emerald-600' : 'text-red-500'}`}>
+          <div className={`text-sm font-bold mt-2 ${passesAA ? 'text-[#000000] dark:text-[#FFFFFF]' : 'text-neutral-400 line-through'}`}>
             {passesAA ? 'PASSED (≥ 4.5)' : 'FAILED'}
           </div>
         </div>
-        <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-center">
+        <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#090909] text-center">
           <div className="text-xs font-semibold text-neutral-500 uppercase">WCAG AAA (Enhanced)</div>
-          <div className={`text-sm font-bold mt-2 ${passesAAA ? 'text-emerald-600' : 'text-amber-500'}`}>
+          <div className={`text-sm font-bold mt-2 ${passesAAA ? 'text-[#000000] dark:text-[#FFFFFF]' : 'text-neutral-500'}`}>
             {passesAAA ? 'PASSED (≥ 7.0)' : 'FAILED (< 7.0)'}
           </div>
         </div>

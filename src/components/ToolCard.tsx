@@ -264,17 +264,17 @@ export const ToolCard: React.FC<ToolCardProps> = ({
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       style={{ transform: tiltStyle.transform }}
-      className="card-3d-tilt group relative border border-slate-200 dark:border-zinc-800 rounded-2xl p-5 bg-white dark:bg-[#111114] hover:border-indigo-500/70 dark:hover:border-indigo-400/70 hover:shadow-xl hover:shadow-indigo-500/5 cursor-pointer flex flex-col justify-between overflow-hidden"
+      className="card-3d-tilt group relative border border-black/10 dark:border-white/10 rounded-2xl p-5 bg-[#FFFFFF] dark:bg-[#090909] hover:border-[#000000] dark:hover:border-[#FFFFFF] hover:shadow-xl hover:shadow-black/5 cursor-pointer flex flex-col justify-between overflow-hidden"
     >
       {/* Subtle 3D specular highlight */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br from-indigo-500/[0.06] via-transparent to-slate-500/[0.04] transition-opacity duration-200 pointer-events-none ${tiltStyle.sheen}`}
+        className={`absolute inset-0 bg-gradient-to-br from-[#F6F6F6]/80 via-transparent to-[#EDEDED]/40 dark:from-white/[0.04] dark:via-transparent dark:to-white/[0.02] transition-opacity duration-200 pointer-events-none ${tiltStyle.sheen}`}
       />
 
       <div className="relative z-10">
         {/* Top Row: 3D-elevated Icon & Actions */}
         <div className="flex items-start justify-between gap-2 mb-3.5">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-zinc-800 dark:to-zinc-900 border border-slate-200/90 dark:border-zinc-700/80 flex items-center justify-center text-slate-800 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-300 dark:group-hover:border-indigo-700 transition-colors shadow-xs">
+          <div className="w-11 h-11 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] border border-black/10 dark:border-white/15 flex items-center justify-center text-[#000000] dark:text-[#FFFFFF] group-hover:bg-[#000000] group-hover:text-[#FFFFFF] dark:group-hover:bg-[#FFFFFF] dark:group-hover:text-[#000000] transition-colors">
             <IconComponent className="w-5 h-5" />
           </div>
 
@@ -282,12 +282,12 @@ export const ToolCard: React.FC<ToolCardProps> = ({
             <button
               type="button"
               onClick={handleCopyLink}
-              className="p-2 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+              className="p-2 rounded-lg text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer"
               title="Copy link to this tool"
               aria-label="Copy tool link"
             >
               {copiedLink ? (
-                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
               ) : (
                 <Share2 className="w-3.5 h-3.5" />
               )}
@@ -299,16 +299,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({
                 e.stopPropagation();
                 onToggleFavorite(tool.id);
                 if (onShowToast) {
-                  onShowToast(isFavorite ? 'Removed from favorites' : 'Saved to favorites');
+                  onShowToast(isFavorite ? 'Removed from saved' : 'Saved to your collection');
                 }
               }}
-              className="p-2 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition cursor-pointer"
-              title={isFavorite ? 'Remove from favorites' : 'Save to favorites'}
-              aria-label="Toggle favorite"
+              className="p-2 rounded-lg text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer"
+              title={isFavorite ? 'Remove from saved' : 'Save tool'}
+              aria-label="Toggle saved tool"
             >
               <Star
                 className={`w-3.5 h-3.5 transition-transform ${
-                  isFavorite ? 'text-amber-500 fill-amber-500 scale-110' : ''
+                  isFavorite ? 'text-[#000000] fill-[#000000] dark:text-[#FFFFFF] dark:fill-[#FFFFFF] scale-110' : ''
                 }`}
               />
             </button>
@@ -316,37 +316,37 @@ export const ToolCard: React.FC<ToolCardProps> = ({
         </div>
 
         {/* Clean Unboxed Metadata Line (Zero-Pill Discipline) */}
-        <div className="flex items-center justify-between gap-2 mb-1.5 text-[11px] font-medium text-slate-500 dark:text-zinc-400">
+        <div className="flex items-center justify-between gap-2 mb-1.5 text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
           <div className="flex items-center gap-1.5 truncate">
-            <span className="font-semibold text-slate-600 dark:text-zinc-300">{tool.categoryLabel}</span>
+            <span className="font-semibold text-neutral-700 dark:text-neutral-300">{tool.categoryLabel}</span>
             <span aria-hidden="true" className="opacity-40">·</span>
             <span>Client-Side</span>
           </div>
 
           {tool.isNew ? (
-            <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">
+            <span className="text-[11px] font-semibold text-[#000000] dark:text-[#FFFFFF] shrink-0">
               New
             </span>
           ) : tool.popular ? (
-            <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 shrink-0">
+            <span className="text-[11px] font-semibold text-neutral-700 dark:text-neutral-300 shrink-0">
               Popular
             </span>
           ) : null}
         </div>
 
         {/* Title */}
-        <h3 className="font-bold text-[15px] text-slate-900 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">
+        <h3 className="font-bold text-[15px] text-[#000000] dark:text-[#FFFFFF] transition-colors line-clamp-1">
           {tool.name}
         </h3>
 
         {/* Description */}
-        <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1.5 line-clamp-2 leading-relaxed">
+        <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1.5 line-clamp-2 leading-relaxed">
           {tool.shortDesc}
         </p>
 
         {/* Quiet Tags */}
         {tool.tags && tool.tags.length > 0 && (
-          <div className="flex items-center gap-1.5 mt-3 text-[11px] text-slate-400 dark:text-zinc-500 font-mono truncate">
+          <div className="flex items-center gap-1.5 mt-3 text-[11px] text-neutral-400 dark:text-neutral-500 font-mono truncate">
             {tool.tags.slice(0, 3).map((tag, idx) => (
               <React.Fragment key={tag}>
                 {idx > 0 && <span aria-hidden="true" className="opacity-40">/</span>}
@@ -358,11 +358,9 @@ export const ToolCard: React.FC<ToolCardProps> = ({
       </div>
 
       {/* Action Footer */}
-      <div className="relative z-10 pt-3.5 mt-4 border-t border-slate-100 dark:border-zinc-800/80 flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-zinc-200">
-        <span className="group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-          Open Tool
-        </span>
-        <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-zinc-800/80 flex items-center justify-center text-slate-500 dark:text-zinc-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+      <div className="relative z-10 pt-3.5 mt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#000000] dark:text-[#FFFFFF]">
+        <span>Open Tool</span>
+        <div className="w-7 h-7 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] border border-black/10 dark:border-white/15 flex items-center justify-center text-[#000000] dark:text-[#FFFFFF] group-hover:bg-[#000000] group-hover:text-[#FFFFFF] dark:group-hover:bg-[#FFFFFF] dark:group-hover:text-[#000000] transition-colors">
           <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />
         </div>
       </div>

@@ -374,7 +374,7 @@ export default function App() {
         : 'home';
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFFFFF] dark:bg-[#09090B] text-slate-900 dark:text-zinc-100 transition-colors selection:bg-indigo-600 selection:text-white overflow-x-clip w-full max-w-full">
+    <div className="min-h-screen flex flex-col bg-[#FFFFFF] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] transition-colors selection:bg-[#000000] selection:text-[#FFFFFF] overflow-x-clip w-full max-w-full">
       {/* Smart Scroll Hide/Show Header */}
       <Header
         onSearchClick={() => setIsSearchModalOpen(true)}
@@ -447,14 +447,14 @@ export default function App() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-10 w-full max-w-full overflow-hidden">
                   <AdSlot slotName="Sponsored Advertisement" type="responsive-header" />
 
-                  {/* Clean Compact Quick Workspace Bar (Saved Page link + Recent items without clutter) */}
+                  {/* Clean Compact Quick Workspace Bar (Official Gray Section #F6F6F6) */}
                   {!searchQuery && selectedCategory === 'all' && (favoriteToolItems.length > 0 || recentToolItems.length > 0) && (
-                    <section className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/70 dark:bg-[#111114] flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <section className="p-4 sm:p-5 rounded-2xl border border-black/10 dark:border-white/10 bg-[#F6F6F6] dark:bg-[#050505] flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex flex-wrap items-center gap-2 min-w-0">
                         {recentToolItems.length > 0 ? (
                           <>
-                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-zinc-300 shrink-0 mr-1">
-                              <Clock className="w-3.5 h-3.5 text-slate-400" />
+                            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#000000] dark:text-[#FFFFFF] shrink-0 mr-1">
+                              <Clock className="w-3.5 h-3.5 text-neutral-500" />
                               <span>Recent:</span>
                             </span>
                             {recentToolItems.slice(0, 4).map((tool) => (
@@ -462,7 +462,7 @@ export default function App() {
                                 key={tool.id}
                                 type="button"
                                 onClick={() => handleOpenTool(tool)}
-                                className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 hover:border-indigo-500 text-xs font-medium transition cursor-pointer truncate max-w-[180px]"
+                                className="px-2.5 py-1.5 rounded-lg bg-[#FFFFFF] dark:bg-[#090909] border border-black/10 dark:border-white/15 hover:border-[#000000] dark:hover:border-[#FFFFFF] text-xs font-medium text-[#000000] dark:text-[#FFFFFF] transition cursor-pointer truncate max-w-[180px]"
                               >
                                 {tool.name}
                               </button>
@@ -470,7 +470,7 @@ export default function App() {
                             <button
                               type="button"
                               onClick={clearRecentlyUsed}
-                              className="p-1.5 text-slate-400 hover:text-rose-500 transition cursor-pointer"
+                              className="p-1.5 text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF] transition cursor-pointer"
                               title="Clear recent history"
                               aria-label="Clear recent history"
                             >
@@ -478,7 +478,7 @@ export default function App() {
                             </button>
                           </>
                         ) : (
-                          <span className="text-xs text-slate-500 dark:text-zinc-400">
+                          <span className="text-xs text-neutral-600 dark:text-neutral-400">
                             Star your favorite tools to access them anytime from your Saved workspace.
                           </span>
                         )}
@@ -487,23 +487,23 @@ export default function App() {
                       <button
                         type="button"
                         onClick={handleOpenSaved}
-                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 hover:border-indigo-500 text-xs font-semibold text-slate-800 dark:text-zinc-100 transition shrink-0 cursor-pointer"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#000000] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold hover:opacity-90 transition shrink-0 cursor-pointer"
                       >
-                        <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                        <Star className="w-3.5 h-3.5 fill-current" />
                         <span>Open Saved Tools ({favoriteToolItems.length})</span>
-                        <ArrowRight className="w-3.5 h-3.5 opacity-60" />
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </section>
                   )}
 
                   {/* Organized Tools Directory Grid */}
                   <section id="tools-grid-section" className="space-y-6 w-full max-w-full overflow-hidden">
-                    <div className="flex items-center justify-between pb-2.5 border-b border-slate-200 dark:border-zinc-800">
+                    <div className="flex items-center justify-between pb-2.5 border-b border-black/10 dark:border-white/10">
                       <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-zinc-100">
+                        <Sparkles className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
+                        <h2 className="text-sm font-bold uppercase tracking-wider text-[#000000] dark:text-[#FFFFFF]">
                           {selectedCategory === 'all' ? 'All Free Tools' : CATEGORIES.find((c) => c.id === selectedCategory)?.name}
-                          <span className="ml-2 text-xs font-normal text-slate-400 tabular-nums">
+                          <span className="ml-2 text-xs font-normal text-neutral-500 dark:text-neutral-400 tabular-nums">
                             ({displayedTools.length} {displayedTools.length === 1 ? 'tool' : 'tools'})
                           </span>
                         </h2>
@@ -513,7 +513,7 @@ export default function App() {
                         <button
                           type="button"
                           onClick={() => handleSelectCategory('all')}
-                          className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer font-medium"
+                          className="text-xs text-[#000000] dark:text-[#FFFFFF] hover:underline cursor-pointer font-semibold"
                         >
                           Show All Categories
                         </button>
@@ -521,11 +521,11 @@ export default function App() {
                     </div>
 
                     {displayedTools.length === 0 ? (
-                      <div className="p-12 sm:p-16 border border-dashed border-slate-200 dark:border-zinc-800 rounded-2xl text-center space-y-3">
-                        <div className="text-base font-semibold text-slate-700 dark:text-zinc-300">
+                      <div className="p-12 sm:p-16 border border-dashed border-black/15 dark:border-white/15 rounded-2xl bg-[#F6F6F6] dark:bg-[#050505] text-center space-y-3">
+                        <div className="text-base font-semibold text-[#000000] dark:text-[#FFFFFF]">
                           No tools match your query "{searchQuery}"
                         </div>
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-neutral-500 dark:text-neutral-400">
                           Try searching with different keywords or browse our categories.
                         </div>
                         <button
@@ -534,7 +534,7 @@ export default function App() {
                             setSearchQuery('');
                             handleSelectCategory('all');
                           }}
-                          className="mt-2 px-4 py-2 border border-slate-200 dark:border-zinc-800 rounded-lg text-xs font-medium cursor-pointer hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
+                          className="mt-2 px-4 py-2 bg-[#000000] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000] rounded-lg text-xs font-semibold cursor-pointer hover:opacity-90 transition"
                         >
                           Clear Search Filters
                         </button>
@@ -579,6 +579,39 @@ export default function App() {
                       </div>
                     )}
                   </section>
+
+                  {/* Official Dark Section (#090909) Highlight */}
+                  {!searchQuery && selectedCategory === 'all' && (
+                    <section className="rounded-2xl bg-[#090909] text-[#FFFFFF] border border-white/10 p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                      <div className="space-y-2 max-w-2xl">
+                        <div className="text-xs font-mono text-neutral-400">
+                          100% Private Browser Architecture
+                        </div>
+                        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#FFFFFF]">
+                          Zero Uploads. Instant Execution. Shareable Direct URLs.
+                        </h3>
+                        <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                          Every document merge, 3D render, audio recording, image cutout, and developer utility executes natively inside your device memory with zero server tracking.
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-3 shrink-0">
+                        <button
+                          type="button"
+                          onClick={handleOpenSaved}
+                          className="px-4 py-2.5 rounded-xl bg-[#FFFFFF] text-[#000000] text-xs font-semibold hover:bg-[#EDEDED] transition cursor-pointer"
+                        >
+                          Saved Workspace ({favoriteToolItems.length})
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleOpenSitemap}
+                          className="px-4 py-2.5 rounded-xl border border-white/20 text-[#FFFFFF] text-xs font-semibold hover:bg-white/10 transition cursor-pointer"
+                        >
+                          Browse Full Directory
+                        </button>
+                      </div>
+                    </section>
+                  )}
 
                   <AdSlot slotName="Sponsored Recommendations" type="native" />
                 </div>

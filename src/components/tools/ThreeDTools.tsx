@@ -38,10 +38,10 @@ const ThreeDMockupStudio: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [cardTitle, setCardTitle] = useState('Asbily Pro Studio');
   const [cardSubtitle, setCardSubtitle] = useState('100% Client-Side 3D Mockup');
-  const [cardAccent, setCardAccent] = useState('#4F46E5');
+  const [cardAccent, setCardAccent] = useState('#FFFFFF');
   const [shapeMode, setShapeMode] = useState<'slab' | 'box' | 'poster'>('slab');
   const [finish, setFinish] = useState<'glossy' | 'matte' | 'metallic'>('glossy');
-  const [bgTheme, setBgTheme] = useState<'transparent' | 'light' | 'dark' | 'indigo'>('dark');
+  const [bgTheme, setBgTheme] = useState<'transparent' | 'light' | 'dark' | 'gray'>('dark');
   const [rotX, setRotX] = useState(-14);
   const [rotY, setRotY] = useState(24);
   const [zoom, setZoom] = useState(4.6);
@@ -60,8 +60,8 @@ const ThreeDMockupStudio: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (ctx) {
       const grad = ctx.createLinearGradient(0, 0, 1024, 640);
-      grad.addColorStop(0, '#0F172A');
-      grad.addColorStop(1, '#1E1B4B');
+      grad.addColorStop(0, '#090909');
+      grad.addColorStop(1, '#000000');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 1024, 640);
 
@@ -90,7 +90,7 @@ const ThreeDMockupStudio: React.FC = () => {
       ctx.font = 'bold 64px system-ui, -apple-system, sans-serif';
       ctx.fillText(title.slice(0, 26), 64, 240);
 
-      ctx.fillStyle = '#CBD5E1';
+      ctx.fillStyle = '#EDEDED';
       ctx.font = '500 30px system-ui, -apple-system, sans-serif';
       ctx.fillText(subtitle.slice(0, 44), 64, 305);
 
@@ -102,7 +102,7 @@ const ThreeDMockupStudio: React.FC = () => {
       ctx.lineTo(960, 490);
       ctx.stroke();
 
-      ctx.fillStyle = '#94A3B8';
+      ctx.fillStyle = '#A3A3A3';
       ctx.font = '600 22px monospace';
       ctx.fillText('3D RENDERED IN BROWSER · ZERO SERVER UPLOAD', 64, 545);
     }
@@ -141,12 +141,12 @@ const ThreeDMockupStudio: React.FC = () => {
     camera.position.set(0, 0, zoom);
     cameraRef.current = camera;
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.75);
-    const key = new THREE.DirectionalLight(0xfffbeb, 2.1);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.8);
+    const key = new THREE.DirectionalLight(0xffffff, 2.2);
     key.position.set(4, 6, 5);
-    const fill = new THREE.DirectionalLight(0xe0e7ff, 1.0);
+    const fill = new THREE.DirectionalLight(0xededed, 1.1);
     fill.position.set(-5, -2, 3);
-    const rim = new THREE.DirectionalLight(0x818cf8, 1.6);
+    const rim = new THREE.DirectionalLight(0xffffff, 1.5);
     rim.position.set(0, 4, -5);
     scene.add(ambient, key, fill, rim);
 
@@ -231,9 +231,9 @@ const ThreeDMockupStudio: React.FC = () => {
 
     // Background
     if (bgTheme === 'transparent') scene.background = null;
-    else if (bgTheme === 'light') scene.background = new THREE.Color('#F1F5F9');
-    else if (bgTheme === 'dark') scene.background = new THREE.Color('#09090B');
-    else if (bgTheme === 'indigo') scene.background = new THREE.Color('#1E1B4B');
+    else if (bgTheme === 'light') scene.background = new THREE.Color('#FFFFFF');
+    else if (bgTheme === 'dark') scene.background = new THREE.Color('#090909');
+    else if (bgTheme === 'gray') scene.background = new THREE.Color('#EDEDED');
 
     // Dispose old children
     while (group.children.length > 0) {
@@ -252,7 +252,7 @@ const ThreeDMockupStudio: React.FC = () => {
       const metalness = finish === 'metallic' ? 0.75 : finish === 'glossy' ? 0.15 : 0.05;
 
       const edgeMat = new THREE.MeshStandardMaterial({
-        color: finish === 'metallic' ? 0x94a3b8 : 0x1e293b,
+        color: finish === 'metallic' ? 0xd4d4d4 : 0x090909,
         roughness: 0.3,
         metalness: 0.75,
       });
@@ -329,8 +329,8 @@ const ThreeDMockupStudio: React.FC = () => {
             <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
               1. Artwork / Screenshot
             </div>
-            <label className="w-full py-2.5 px-3 rounded-lg border border-dashed border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-950 hover:border-indigo-500 transition flex items-center justify-center gap-2 text-xs font-semibold cursor-pointer">
-              <Upload className="w-4 h-4 text-indigo-600" />
+            <label className="w-full py-2.5 px-3 rounded-lg border border-dashed border-neutral-300 dark:border-neutral-700 bg-white dark:bg-[#090909] hover:border-[#000000] dark:hover:border-[#FFFFFF] transition flex items-center justify-center gap-2 text-xs font-semibold cursor-pointer">
+              <Upload className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
               <span>{imageUrl ? 'Replace Image' : 'Upload Screenshot / Logo'}</span>
               <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
             </label>
@@ -338,7 +338,7 @@ const ThreeDMockupStudio: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setImageUrl(null)}
-                className="w-full text-xs text-neutral-500 hover:text-rose-500 underline cursor-pointer"
+                className="w-full text-xs text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF] underline cursor-pointer"
               >
                 Use Custom Text Card Instead
               </button>
@@ -351,14 +351,14 @@ const ThreeDMockupStudio: React.FC = () => {
                   value={cardTitle}
                   onChange={(e) => setCardTitle(e.target.value)}
                   placeholder="Card headline..."
-                  className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-xs"
+                  className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-[#090909] text-xs"
                 />
                 <input
                   type="text"
                   value={cardSubtitle}
                   onChange={(e) => setCardSubtitle(e.target.value)}
                   placeholder="Card subtitle..."
-                  className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-xs"
+                  className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-[#090909] text-xs"
                 />
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-neutral-500">Accent Color</span>
@@ -373,7 +373,7 @@ const ThreeDMockupStudio: React.FC = () => {
             )}
           </div>
 
-          <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 space-y-3">
+          <div className="p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] space-y-3">
             <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
               2. 3D Object & Material
             </div>
@@ -389,8 +389,8 @@ const ThreeDMockupStudio: React.FC = () => {
                   onClick={() => setShapeMode(s.id)}
                   className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition cursor-pointer ${
                     shapeMode === s.id
-                      ? 'bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-black dark:border-white'
-                      : 'bg-white dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800'
+                      ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
+                      : 'bg-[#FFFFFF] dark:bg-[#090909] border-neutral-200 dark:border-neutral-800'
                   }`}
                 >
                   {s.label}
@@ -410,8 +410,8 @@ const ThreeDMockupStudio: React.FC = () => {
                   onClick={() => setFinish(f.id)}
                   className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition cursor-pointer ${
                     finish === f.id
-                      ? 'bg-indigo-600 text-white border-indigo-600'
-                      : 'bg-white dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800'
+                      ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
+                      : 'bg-[#FFFFFF] dark:bg-[#090909] border-neutral-200 dark:border-neutral-800'
                   }`}
                 >
                   {f.label}
@@ -430,7 +430,7 @@ const ThreeDMockupStudio: React.FC = () => {
                 max={65}
                 value={rotX}
                 onChange={(e) => setRotX(Number(e.target.value))}
-                className="w-full accent-indigo-600"
+                className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
               />
               <input
                 type="range"
@@ -438,7 +438,7 @@ const ThreeDMockupStudio: React.FC = () => {
                 max={180}
                 value={rotY}
                 onChange={(e) => setRotY(Number(e.target.value))}
-                className="w-full accent-indigo-600"
+                className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
               />
               <div className="flex justify-between">
                 <span className="text-neutral-500">Camera Zoom</span>
@@ -451,20 +451,20 @@ const ThreeDMockupStudio: React.FC = () => {
                 step={0.1}
                 value={zoom}
                 onChange={(e) => setZoom(Number(e.target.value))}
-                className="w-full accent-indigo-600"
+                className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
               />
             </div>
 
             <div className="grid grid-cols-4 gap-1.5 pt-1">
-              {(['transparent', 'dark', 'light', 'indigo'] as const).map((bg) => (
+              {(['transparent', 'dark', 'light', 'gray'] as const).map((bg) => (
                 <button
                   key={bg}
                   type="button"
                   onClick={() => setBgTheme(bg)}
                   className={`py-1 rounded text-[11px] font-medium capitalize border cursor-pointer ${
                     bgTheme === bg
-                      ? 'bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-black'
-                      : 'bg-white dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800'
+                      ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
+                      : 'bg-[#FFFFFF] dark:bg-[#090909] border-neutral-200 dark:border-neutral-800'
                   }`}
                 >
                   {bg === 'transparent' ? 'Alpha' : bg}
@@ -521,7 +521,7 @@ const ThreeDMockupStudio: React.FC = () => {
             <button
               type="button"
               onClick={handleExportPng}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold transition cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Export High-Res PNG</span>
@@ -544,7 +544,7 @@ const ThreeDGeometryStudio: React.FC = () => {
   const meshRef = useRef<THREE.Mesh | null>(null);
 
   const [shape, setShape] = useState<'torusKnot' | 'icosahedron' | 'cube' | 'octahedron' | 'cylinder'>('torusKnot');
-  const [color, setColor] = useState('#4F46E5');
+  const [color, setColor] = useState('#EDEDED');
   const [metalness, setMetalness] = useState(0.55);
   const [roughness, setRoughness] = useState(0.25);
   const [wireframe, setWireframe] = useState(false);
@@ -569,21 +569,21 @@ const ThreeDGeometryStudio: React.FC = () => {
     rendererRef.current = renderer;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#09090B');
+    scene.background = new THREE.Color('#090909');
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(45, (container.clientWidth || 640) / (container.clientHeight || 420), 0.1, 100);
     camera.position.set(0, 0.5, 4.4);
     cameraRef.current = camera;
 
-    const grid = new THREE.GridHelper(10, 20, 0x334155, 0x1e293b);
+    const grid = new THREE.GridHelper(10, 20, 0x525252, 0x262626);
     grid.position.y = -1.65;
     scene.add(grid);
 
-    const amb = new THREE.AmbientLight(0xffffff, 0.7);
-    const key = new THREE.DirectionalLight(0xffffff, 2.1);
+    const amb = new THREE.AmbientLight(0xffffff, 0.75);
+    const key = new THREE.DirectionalLight(0xffffff, 2.2);
     key.position.set(4, 6, 4);
-    const rim = new THREE.DirectionalLight(0x818cf8, 1.4);
+    const rim = new THREE.DirectionalLight(0xededed, 1.4);
     rim.position.set(-4, 2, -4);
     scene.add(amb, key, rim);
 
@@ -785,7 +785,7 @@ const ThreeDGeometryStudio: React.FC = () => {
                 step={0.05}
                 value={metalness}
                 onChange={(e) => setMetalness(Number(e.target.value))}
-                className="w-full accent-indigo-600"
+                className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
               />
             </div>
 
@@ -801,17 +801,17 @@ const ThreeDGeometryStudio: React.FC = () => {
                 step={0.05}
                 value={roughness}
                 onChange={(e) => setRoughness(Number(e.target.value))}
-                className="w-full accent-indigo-600"
+                className="w-full accent-[#000000] dark:accent-[#FFFFFF]"
               />
             </div>
 
             <div className="flex items-center justify-between pt-1">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={wireframe} onChange={(e) => setWireframe(e.target.checked)} className="accent-indigo-600" />
+                <input type="checkbox" checked={wireframe} onChange={(e) => setWireframe(e.target.checked)} className="accent-[#000000] dark:accent-[#FFFFFF]" />
                 <span>Wireframe Mesh</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={autoRotate} onChange={(e) => setAutoRotate(e.target.checked)} className="accent-indigo-600" />
+                <input type="checkbox" checked={autoRotate} onChange={(e) => setAutoRotate(e.target.checked)} className="accent-[#000000] dark:accent-[#FFFFFF]" />
                 <span>Auto Rotate</span>
               </label>
             </div>
@@ -824,7 +824,7 @@ const ThreeDGeometryStudio: React.FC = () => {
         </div>
 
         <div className="lg:col-span-2 space-y-3">
-          <div className="w-full h-[380px] sm:h-[440px] rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden bg-zinc-950">
+          <div className="w-full h-[380px] sm:h-[440px] rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden bg-[#090909]">
             <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing touch-none" />
           </div>
 
@@ -832,7 +832,7 @@ const ThreeDGeometryStudio: React.FC = () => {
             <button
               type="button"
               onClick={exportPng}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-900 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-neutral-200 dark:border-neutral-800 text-xs font-semibold hover:bg-[#F6F6F6] dark:hover:bg-white/10 cursor-pointer"
             >
               <ImageIcon className="w-4 h-4" />
               <span>Export PNG Render</span>
@@ -840,7 +840,7 @@ const ThreeDGeometryStudio: React.FC = () => {
             <button
               type="button"
               onClick={exportStl}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
             >
               <FileCode2 className="w-4 h-4" />
               <span>Export .STL (3D Print)</span>

@@ -76,14 +76,14 @@ const PasswordGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boo
 
   return (
     <div className="space-y-6">
-      <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 bg-white dark:bg-neutral-950 flex items-center justify-between gap-4">
-        <div className="font-mono text-xl font-bold text-[#111111] dark:text-neutral-100 tracking-wider break-all select-all">
+      <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 bg-[#FFFFFF] dark:bg-[#050505] flex items-center justify-between gap-4">
+        <div className="font-mono text-xl font-bold text-[#000000] dark:text-[#FFFFFF] tracking-wider break-all select-all">
           {password || 'Select options below'}
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={generate}
-            className="p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+            className="p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition"
             title="Generate new password"
           >
             <RefreshCw className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
@@ -91,7 +91,7 @@ const PasswordGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boo
           <button
             onClick={() => onCopy(password)}
             disabled={!password}
-            className="p-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg hover:opacity-90 transition disabled:opacity-40"
+            className="p-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg hover:opacity-90 transition disabled:opacity-40"
             title="Copy password"
           >
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -99,11 +99,11 @@ const PasswordGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boo
         </div>
       </div>
 
-      <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900 space-y-4">
+      <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-[#F6F6F6] dark:bg-[#090909] space-y-4">
         <div>
           <div className="flex justify-between text-xs font-semibold text-neutral-500 uppercase mb-1">
             <span>Password Length</span>
-            <span className="font-mono text-[#111111] dark:text-neutral-100">{length} characters</span>
+            <span className="font-mono text-[#000000] dark:text-[#FFFFFF]">{length} characters</span>
           </div>
           <input
             type="range"
@@ -197,19 +197,19 @@ const PasswordStrengthTool: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900">
+        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-[#F6F6F6] dark:bg-[#090909]">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Resilience Rating</div>
-          <div className={`text-xl font-bold mt-1 ${analysis.score >= 3 ? 'text-emerald-600' : analysis.score >= 2 ? 'text-amber-500' : 'text-red-500'}`}>
+          <div className={`text-xl font-bold mt-1 ${analysis.score >= 3 ? 'text-[#000000] dark:text-[#FFFFFF]' : analysis.score >= 2 ? 'text-neutral-600 dark:text-neutral-300' : 'text-neutral-500 underline decoration-dashed'}`}>
             {analysis.label}
           </div>
         </div>
-        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900">
+        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-[#F6F6F6] dark:bg-[#090909]">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Estimated Entropy</div>
-          <div className="text-xl font-bold mt-1 text-[#111111] dark:text-neutral-100">{analysis.entropy} bits</div>
+          <div className="text-xl font-bold mt-1 text-[#000000] dark:text-[#FFFFFF]">{analysis.entropy} bits</div>
         </div>
-        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900">
+        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-[#F6F6F6] dark:bg-[#090909]">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Offline Brute Force Time</div>
-          <div className="text-xl font-bold mt-1 text-[#111111] dark:text-neutral-100">{analysis.crackTime}</div>
+          <div className="text-xl font-bold mt-1 text-[#000000] dark:text-[#FFFFFF]">{analysis.crackTime}</div>
         </div>
       </div>
     </div>
@@ -250,15 +250,15 @@ const PassphraseGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: b
 
   return (
     <div className="space-y-6">
-      <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 bg-white dark:bg-neutral-950 flex items-center justify-between gap-4">
-        <div className="font-mono text-lg font-bold text-[#111111] dark:text-neutral-100 break-all select-all">
+      <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 bg-[#FFFFFF] dark:bg-[#050505] flex items-center justify-between gap-4">
+        <div className="font-mono text-lg font-bold text-[#000000] dark:text-[#FFFFFF] break-all select-all">
           {passphrase}
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <button onClick={generate} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900">
+          <button onClick={generate} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:bg-[#F6F6F6] dark:hover:bg-[#090909]">
             <RefreshCw className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
           </button>
-          <button onClick={() => onCopy(passphrase)} className="p-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg">
+          <button onClick={() => onCopy(passphrase)} className="p-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg">
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
           </button>
         </div>
@@ -343,24 +343,24 @@ const FileChecksumTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy })
 
       {sha256 && (
         <div className="space-y-4">
-          <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 bg-neutral-50 dark:bg-neutral-900">
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 bg-[#F6F6F6] dark:bg-[#090909]">
             <div className="flex justify-between items-center text-xs font-semibold text-neutral-500 uppercase mb-1">
               <span>SHA-256 Hash</span>
-              <button onClick={() => onCopy(sha256)} className="text-neutral-400 hover:text-black dark:hover:text-white">
+              <button onClick={() => onCopy(sha256)} className="text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
                 <Copy className="w-3.5 h-3.5" />
               </button>
             </div>
-            <div className="font-mono text-xs break-all text-[#111111] dark:text-neutral-100">{sha256}</div>
+            <div className="font-mono text-xs break-all text-[#000000] dark:text-[#FFFFFF]">{sha256}</div>
           </div>
 
-          <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 bg-neutral-50 dark:bg-neutral-900">
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 bg-[#F6F6F6] dark:bg-[#090909]">
             <div className="flex justify-between items-center text-xs font-semibold text-neutral-500 uppercase mb-1">
               <span>SHA-1 Hash</span>
-              <button onClick={() => onCopy(sha1)} className="text-neutral-400 hover:text-black dark:hover:text-white">
+              <button onClick={() => onCopy(sha1)} className="text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
                 <Copy className="w-3.5 h-3.5" />
               </button>
             </div>
-            <div className="font-mono text-xs break-all text-[#111111] dark:text-neutral-100">{sha1}</div>
+            <div className="font-mono text-xs break-all text-[#000000] dark:text-[#FFFFFF]">{sha1}</div>
           </div>
 
           <div>
@@ -370,10 +370,10 @@ const FileChecksumTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy })
               value={expectedHash}
               onChange={(e) => setExpectedHash(e.target.value)}
               placeholder="Paste official checksum here to compare..."
-              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg font-mono text-xs bg-white dark:bg-neutral-950"
+              className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg font-mono text-xs bg-[#FFFFFF] dark:bg-[#050505]"
             />
             {expectedHash && (
-              <div className={`mt-2 text-xs font-semibold flex items-center gap-1.5 ${isMatch ? 'text-emerald-600' : 'text-red-500'}`}>
+              <div className={`mt-2 text-xs font-semibold flex items-center gap-1.5 ${isMatch ? 'text-[#000000] dark:text-[#FFFFFF]' : 'text-neutral-500 underline decoration-dashed'}`}>
                 {isMatch ? <CheckCircle2 className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
                 {isMatch ? 'Checksum MATCHES perfectly! The file is authentic and unaltered.' : 'Checksum MISMATCH! File may be corrupt or altered.'}
               </div>
@@ -451,9 +451,9 @@ If you have any questions about this Privacy Policy, please contact us at **${co
       <div className="flex gap-3">
         <button
           onClick={() => onCopy(policyMarkdown)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy Markdown Policy
         </button>
         <button

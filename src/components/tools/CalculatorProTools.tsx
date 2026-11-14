@@ -92,14 +92,14 @@ export const CurrencyConverterTool: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500">
         <span className="flex items-center gap-1.5">
-          <Coins className="w-4 h-4 text-indigo-600" />
+          <Coins className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
           <span>Rates: {lastUpdated}</span>
         </span>
         <button
           type="button"
           onClick={fetchLiveRates}
           disabled={loading}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 font-medium cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-white/10 font-medium cursor-pointer"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>{loading ? 'Refreshing...' : 'Refresh Live Rates'}</span>
@@ -113,7 +113,7 @@ export const CurrencyConverterTool: React.FC = () => {
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-base font-mono tabular-nums font-bold"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-[#090909] text-base font-mono tabular-nums font-bold"
           />
         </div>
 
@@ -122,7 +122,7 @@ export const CurrencyConverterTool: React.FC = () => {
           <select
             value={from}
             onChange={(e) => setFrom(e.target.value)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-sm font-medium"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-[#090909] text-sm font-medium"
           >
             {CURRENCY_META.map((c) => (
               <option key={c.code} value={c.code}>{c.code} — {c.name}</option>
@@ -134,7 +134,7 @@ export const CurrencyConverterTool: React.FC = () => {
           <button
             type="button"
             onClick={swapCurrencies}
-            className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
+            className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer"
             title="Swap currencies"
           >
             <ArrowRightLeft className="w-4 h-4" />
@@ -146,7 +146,7 @@ export const CurrencyConverterTool: React.FC = () => {
           <select
             value={to}
             onChange={(e) => setTo(e.target.value)}
-            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-950 text-sm font-medium"
+            className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-[#090909] text-sm font-medium"
           >
             {CURRENCY_META.map((c) => (
               <option key={c.code} value={c.code}>{c.code} — {c.name}</option>
@@ -156,12 +156,12 @@ export const CurrencyConverterTool: React.FC = () => {
       </div>
 
       {/* Primary Result Box */}
-      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="text-xs text-neutral-500 font-medium">
             {numAmount.toLocaleString()} {from} equals
           </div>
-          <div className="text-3xl sm:text-4xl font-extrabold font-mono tabular-nums text-indigo-600 dark:text-indigo-400 mt-1">
+          <div className="text-3xl sm:text-4xl font-extrabold font-mono tabular-nums text-[#000000] dark:text-[#FFFFFF] mt-1">
             {converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {to}
           </div>
         </div>
@@ -182,7 +182,7 @@ export const CurrencyConverterTool: React.FC = () => {
               <div
                 key={code}
                 onClick={() => setTo(code)}
-                className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 hover:border-indigo-500 transition cursor-pointer"
+                className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#090909] hover:border-[#000000] dark:hover:border-[#FFFFFF] transition cursor-pointer"
               >
                 <div className="text-[11px] font-semibold text-neutral-400">{code}</div>
                 <div className="text-sm font-bold font-mono tabular-nums mt-0.5">
@@ -217,16 +217,16 @@ export const HealthBmiTool: React.FC = () => {
     const bmi = m > 0 ? kg / (m * m) : 0;
 
     let category = 'Normal Weight';
-    let colorClass = 'text-emerald-600 dark:text-emerald-400';
+    let colorClass = 'text-[#000000] dark:text-[#FFFFFF]';
     if (bmi < 18.5) {
       category = 'Underweight';
-      colorClass = 'text-amber-600 dark:text-amber-400';
+      colorClass = 'text-neutral-600 dark:text-neutral-300';
     } else if (bmi >= 25 && bmi < 30) {
       category = 'Overweight';
-      colorClass = 'text-amber-600 dark:text-amber-400';
+      colorClass = 'text-neutral-700 dark:text-neutral-300';
     } else if (bmi >= 30) {
       category = 'Obese';
-      colorClass = 'text-rose-600 dark:text-rose-400';
+      colorClass = 'text-[#000000] dark:text-[#FFFFFF] underline';
     }
 
     const minHealthy = 18.5 * m * m;
@@ -242,20 +242,20 @@ export const HealthBmiTool: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
-        <div className="inline-flex p-1 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-          <button type="button" onClick={() => setUnit('metric')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${unit === 'metric' ? 'bg-neutral-900 text-white dark:bg-white dark:text-black' : 'text-neutral-500'}`}>
+        <div className="inline-flex p-1 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] border border-neutral-200 dark:border-neutral-800">
+          <button type="button" onClick={() => setUnit('metric')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${unit === 'metric' ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]' : 'text-neutral-500'}`}>
             Metric (kg / cm)
           </button>
-          <button type="button" onClick={() => setUnit('imperial')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${unit === 'imperial' ? 'bg-neutral-900 text-white dark:bg-white dark:text-black' : 'text-neutral-500'}`}>
+          <button type="button" onClick={() => setUnit('imperial')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${unit === 'imperial' ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]' : 'text-neutral-500'}`}>
             Imperial (lb / ft·in)
           </button>
         </div>
 
-        <div className="inline-flex p-1 rounded-xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
-          <button type="button" onClick={() => setGender('male')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${gender === 'male' ? 'bg-indigo-600 text-white' : 'text-neutral-500'}`}>
+        <div className="inline-flex p-1 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] border border-neutral-200 dark:border-neutral-800">
+          <button type="button" onClick={() => setGender('male')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${gender === 'male' ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]' : 'text-neutral-500'}`}>
             Male
           </button>
-          <button type="button" onClick={() => setGender('female')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${gender === 'female' ? 'bg-indigo-600 text-white' : 'text-neutral-500'}`}>
+          <button type="button" onClick={() => setGender('female')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${gender === 'female' ? 'bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000]' : 'text-neutral-500'}`}>
             Female
           </button>
         </div>
@@ -310,31 +310,31 @@ export const HealthBmiTool: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60">
+        <div className="p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505]">
           <div className="text-xs font-semibold text-neutral-500 uppercase flex items-center gap-1.5">
-            <HeartPulse className="w-3.5 h-3.5 text-indigo-600" />
+            <HeartPulse className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
             <span>Your BMI</span>
           </div>
           <div className="text-3xl font-extrabold font-mono tabular-nums mt-2">{metrics.bmi.toFixed(1)}</div>
           <div className={`text-xs font-semibold mt-1 ${metrics.colorClass}`}>{metrics.category}</div>
-          <div className="text-[11px] text-neutral-400 mt-2">
+          <div className="text-[11px] text-neutral-500 mt-2">
             Healthy range: {metrics.minHealthy.toFixed(1)} – {metrics.maxHealthy.toFixed(1)} kg
           </div>
         </div>
 
-        <div className="p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60">
+        <div className="p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505]">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Basal Metabolic Rate (BMR)</div>
           <div className="text-3xl font-extrabold font-mono tabular-nums mt-2">{Math.round(metrics.bmr)}</div>
           <div className="text-xs text-neutral-500 mt-1">kcal / day at rest</div>
         </div>
 
-        <div className="p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 space-y-1.5">
+        <div className="p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505] space-y-1.5">
           <div className="text-xs font-semibold text-neutral-500 uppercase">Daily Calorie Goals (TDEE)</div>
           <div className="flex justify-between text-xs pt-1">
             <span>Weight Loss (-500)</span>
             <strong className="font-mono tabular-nums">{Math.round(metrics.tdee - 500)} kcal</strong>
           </div>
-          <div className="flex justify-between text-xs text-indigo-600 dark:text-indigo-400 font-semibold">
+          <div className="flex justify-between text-xs text-[#000000] dark:text-[#FFFFFF] font-bold">
             <span>Maintain Weight</span>
             <strong className="font-mono tabular-nums">{Math.round(metrics.tdee)} kcal</strong>
           </div>
@@ -422,9 +422,9 @@ export const BillSplitTaxTool: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-5 rounded-xl border border-indigo-200 dark:border-indigo-900/50 bg-indigo-50/40 dark:bg-indigo-950/20 flex flex-col justify-between">
+        <div className="p-5 rounded-xl border border-white/10 dark:border-black/10 bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] flex flex-col justify-between">
           <div>
-            <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase flex items-center gap-1.5">
+            <div className="text-xs font-semibold text-neutral-300 dark:text-neutral-600 uppercase flex items-center gap-1.5">
               <Receipt className="w-3.5 h-3.5" />
               <span>Each Person Pays ({people} {people === 1 ? 'person' : 'people'})</span>
             </div>
@@ -436,7 +436,7 @@ export const BillSplitTaxTool: React.FC = () => {
           <button
             type="button"
             onClick={copySummary}
-            className="mt-4 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer"
+            className="mt-4 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#FFFFFF] text-[#000000] hover:bg-[#EDEDED] dark:bg-[#000000] dark:text-[#FFFFFF] dark:hover:bg-[#090909] text-xs font-semibold cursor-pointer"
           >
             {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copied ? 'Copied Breakdown' : 'Copy Shareable Summary'}</span>

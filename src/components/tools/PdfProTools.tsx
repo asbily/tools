@@ -186,15 +186,15 @@ export const PdfMergeSplitTool: React.FC = () => {
       </div>
 
       {errorMsg && (
-        <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 text-xs text-rose-600 dark:text-rose-400">
+        <div className="p-3 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] border border-black/15 dark:border-white/15 text-xs text-[#000000] dark:text-[#FFFFFF]">
           {errorMsg}
         </div>
       )}
 
       {mode === 'merge' ? (
         <div className="space-y-4">
-          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900/50 transition">
-            <Upload className="w-7 h-7 text-indigo-600 mb-2" />
+          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-white/5 transition">
+            <Upload className="w-7 h-7 text-[#000000] dark:text-[#FFFFFF] mb-2" />
             <span className="text-sm font-semibold">Select 2 or more PDF files to combine</span>
             <span className="text-xs text-neutral-400 mt-1">Merged locally inside your browser — zero uploads</span>
             <input type="file" multiple accept="application/pdf" onChange={handleAddMergePdfs} className="hidden" />
@@ -204,21 +204,21 @@ export const PdfMergeSplitTool: React.FC = () => {
             <div className="space-y-3">
               <div className="divide-y divide-neutral-200 dark:divide-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden">
                 {pdfs.map((item, idx) => (
-                  <div key={item.id} className="flex items-center justify-between px-4 py-3 text-xs bg-white dark:bg-neutral-950">
+                  <div key={item.id} className="flex items-center justify-between px-4 py-3 text-xs bg-white dark:bg-[#090909]">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <span className="font-mono text-neutral-400 w-5">{idx + 1}.</span>
-                      <FileText className="w-4 h-4 text-indigo-500 shrink-0" />
+                      <FileText className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF] shrink-0" />
                       <span className="font-medium truncate">{item.file.name}</span>
                       <span className="text-neutral-400 tabular-nums shrink-0">({item.pageCount} pages)</span>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
-                      <button type="button" onClick={() => movePdf(idx, -1)} className="p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded cursor-pointer" title="Move Up">
+                      <button type="button" onClick={() => movePdf(idx, -1)} className="p-1 hover:bg-[#F6F6F6] dark:hover:bg-white/10 rounded cursor-pointer" title="Move Up">
                         <ArrowUp className="w-3.5 h-3.5" />
                       </button>
-                      <button type="button" onClick={() => movePdf(idx, 1)} className="p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded cursor-pointer" title="Move Down">
+                      <button type="button" onClick={() => movePdf(idx, 1)} className="p-1 hover:bg-[#F6F6F6] dark:hover:bg-white/10 rounded cursor-pointer" title="Move Down">
                         <ArrowDown className="w-3.5 h-3.5" />
                       </button>
-                      <button type="button" onClick={() => setPdfs((p) => p.filter((x) => x.id !== item.id))} className="p-1 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950 rounded cursor-pointer" title="Remove">
+                      <button type="button" onClick={() => setPdfs((p) => p.filter((x) => x.id !== item.id))} className="p-1 text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 rounded cursor-pointer" title="Remove">
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -230,7 +230,7 @@ export const PdfMergeSplitTool: React.FC = () => {
                 type="button"
                 onClick={mergeAndDownload}
                 disabled={pdfs.length < 2 || merging}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold disabled:opacity-50 cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold disabled:opacity-50 cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>{merging ? 'Merging PDFs...' : `Merge ${pdfs.length} PDFs & Download`}</span>
@@ -240,8 +240,8 @@ export const PdfMergeSplitTool: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900/50 transition">
-            <Upload className="w-7 h-7 text-indigo-600 mb-2" />
+          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-white/5 transition">
+            <Upload className="w-7 h-7 text-[#000000] dark:text-[#FFFFFF] mb-2" />
             <span className="text-sm font-semibold">
               {singleFile ? `${singleFile.name} (${singlePages} pages)` : 'Select a PDF file to extract or rotate pages'}
             </span>
@@ -249,7 +249,7 @@ export const PdfMergeSplitTool: React.FC = () => {
           </label>
 
           {singleFile && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505]">
               <div>
                 <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">
                   Pages to Extract (1–{singlePages})
@@ -259,7 +259,7 @@ export const PdfMergeSplitTool: React.FC = () => {
                   value={pageRange}
                   onChange={(e) => setPageRange(e.target.value)}
                   placeholder="e.g. 1-3, 5"
-                  className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-sm font-mono"
+                  className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-[#090909] text-sm font-mono"
                 />
               </div>
 
@@ -275,8 +275,8 @@ export const PdfMergeSplitTool: React.FC = () => {
                       onClick={() => setRotateDeg(deg)}
                       className={`py-2 rounded-lg text-xs font-semibold border cursor-pointer flex items-center justify-center gap-1 ${
                         rotateDeg === deg
-                          ? 'bg-indigo-600 text-white border-indigo-600'
-                          : 'bg-white dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800'
+                          ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
+                          : 'bg-white dark:bg-[#090909] border-neutral-200 dark:border-neutral-800'
                       }`}
                     >
                       <RotateCw className="w-3 h-3" />
@@ -291,7 +291,7 @@ export const PdfMergeSplitTool: React.FC = () => {
                   type="button"
                   onClick={splitAndDownload}
                   disabled={splitting}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold disabled:opacity-50 cursor-pointer"
                 >
                   <Download className="w-4 h-4" />
                   <span>{splitting ? 'Processing...' : 'Extract & Download PDF'}</span>
@@ -352,13 +352,13 @@ export const PdfInspectorProTool: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <label className="px-4 py-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 inline-flex items-center gap-2">
-        <Upload className="w-4 h-4 text-indigo-600" />
+      <label className="px-4 py-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-white/10 inline-flex items-center gap-2">
+        <Upload className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
         <span>Inspect Local PDF File</span>
         <input type="file" accept="application/pdf" onChange={handleUpload} className="hidden" />
       </label>
 
-      {err && <div className="text-xs text-rose-500">{err}</div>}
+      {err && <div className="text-xs text-[#000000] dark:text-[#FFFFFF]">{err}</div>}
 
       {info && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/60 text-xs">
@@ -444,22 +444,22 @@ export const ResumeBuilderTool: React.FC = () => {
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(20);
-    doc.setTextColor(15, 23, 42);
+    doc.setTextColor(0, 0, 0);
     doc.text(fullName, margin, y);
     y += 6.5;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
-    doc.setTextColor(79, 70, 229);
+    doc.setTextColor(82, 82, 82);
     doc.text(headline, margin, y);
     y += 5.5;
 
     doc.setFontSize(9.5);
-    doc.setTextColor(100, 116, 139);
+    doc.setTextColor(115, 115, 115);
     doc.text(`${email}  |  ${phone}  |  ${location}`, margin, y);
     y += 4;
 
-    doc.setDrawColor(226, 232, 240);
+    doc.setDrawColor(237, 237, 237);
     doc.line(margin, y, margin + maxW, y);
     y += 7;
 
@@ -571,7 +571,7 @@ export const ResumeBuilderTool: React.FC = () => {
             <button
               type="button"
               onClick={() => setExperiences((e) => [...e, { id: String(Date.now()), role: 'Role', company: 'Company', period: '2025', bullets: 'Key achievement...' }])}
-              className="text-xs text-indigo-600 font-semibold flex items-center gap-1 cursor-pointer"
+              className="text-xs text-[#000000] dark:text-[#FFFFFF] font-semibold flex items-center gap-1 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" /> Add Role
             </button>
@@ -579,11 +579,11 @@ export const ResumeBuilderTool: React.FC = () => {
           {experiences.map((exp, idx) => (
             <div key={exp.id} className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 space-y-2 text-xs">
               <div className="grid grid-cols-3 gap-2">
-                <input type="text" value={exp.role} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, role: e.target.value } : x)))} placeholder="Role" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950" />
-                <input type="text" value={exp.company} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, company: e.target.value } : x)))} placeholder="Company" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950" />
-                <input type="text" value={exp.period} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, period: e.target.value } : x)))} placeholder="Period" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950" />
+                <input type="text" value={exp.role} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, role: e.target.value } : x)))} placeholder="Role" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
+                <input type="text" value={exp.company} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, company: e.target.value } : x)))} placeholder="Company" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
+                <input type="text" value={exp.period} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, period: e.target.value } : x)))} placeholder="Period" className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
               </div>
-              <textarea value={exp.bullets} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, bullets: e.target.value } : x)))} rows={2} className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950" />
+              <textarea value={exp.bullets} onChange={(e) => setExperiences((arr) => arr.map((x, i) => (i === idx ? { ...x, bullets: e.target.value } : x)))} rows={2} className="w-full p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
             </div>
           ))}
         </div>
@@ -594,71 +594,71 @@ export const ResumeBuilderTool: React.FC = () => {
             <button
               type="button"
               onClick={() => setEducation((ed) => [...ed, { id: String(Date.now()), degree: 'Degree', school: 'University', year: '2024' }])}
-              className="text-xs text-indigo-600 font-semibold flex items-center gap-1 cursor-pointer"
+              className="text-xs text-[#000000] dark:text-[#FFFFFF] font-semibold flex items-center gap-1 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" /> Add Education
             </button>
           </div>
           {education.map((edu, idx) => (
             <div key={edu.id} className="grid grid-cols-3 gap-2 text-xs">
-              <input type="text" value={edu.degree} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, degree: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950" />
-              <input type="text" value={edu.school} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, school: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950" />
-              <input type="text" value={edu.year} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, year: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-neutral-950" />
+              <input type="text" value={edu.degree} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, degree: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
+              <input type="text" value={edu.school} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, school: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
+              <input type="text" value={edu.year} onChange={(e) => setEducation((arr) => arr.map((x, i) => (i === idx ? { ...x, year: e.target.value } : x)))} className="p-2 border border-neutral-200 dark:border-neutral-800 rounded bg-white dark:bg-[#090909]" />
             </div>
           ))}
         </div>
 
         <div>
           <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Skills (Comma separated)</label>
-          <input type="text" value={skills} onChange={(e) => setSkills(e.target.value)} className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-950 text-xs" />
+          <input type="text" value={skills} onChange={(e) => setSkills(e.target.value)} className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-[#090909] text-xs" />
         </div>
       </div>
 
       {/* Live A4 Preview & Export */}
       <div className="space-y-4">
-        <div className="p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white text-slate-900 shadow-sm space-y-4 text-xs leading-relaxed">
-          <div className="border-b border-slate-200 pb-3">
-            <div className="text-xl font-bold text-slate-900">{fullName}</div>
-            <div className="text-sm font-semibold text-indigo-600">{headline}</div>
-            <div className="text-[11px] text-slate-500 mt-1">{email} · {phone} · {location}</div>
+        <div className="p-6 rounded-xl border border-black/10 bg-[#FFFFFF] text-[#000000] shadow-sm space-y-4 text-xs leading-relaxed">
+          <div className="border-b border-black/10 pb-3">
+            <div className="text-xl font-bold text-[#000000]">{fullName}</div>
+            <div className="text-sm font-semibold text-neutral-700">{headline}</div>
+            <div className="text-[11px] text-neutral-500 mt-1">{email} · {phone} · {location}</div>
           </div>
           <div>
-            <div className="font-bold text-[10px] uppercase tracking-wider text-slate-500 mb-1">Summary</div>
-            <p className="text-slate-700">{summary}</p>
+            <div className="font-bold text-[10px] uppercase tracking-wider text-neutral-500 mb-1">Summary</div>
+            <p className="text-neutral-700">{summary}</p>
           </div>
           <div>
-            <div className="font-bold text-[10px] uppercase tracking-wider text-slate-500 mb-1.5">Experience</div>
+            <div className="font-bold text-[10px] uppercase tracking-wider text-neutral-500 mb-1.5">Experience</div>
             {experiences.map((e) => (
               <div key={e.id} className="mb-2.5">
                 <div className="flex justify-between font-semibold">
                   <span>{e.role} — {e.company}</span>
-                  <span className="text-slate-500">{e.period}</span>
+                  <span className="text-neutral-500">{e.period}</span>
                 </div>
-                <ul className="list-disc pl-4 text-slate-700 mt-1 space-y-0.5">
+                <ul className="list-disc pl-4 text-neutral-700 mt-1 space-y-0.5">
                   {e.bullets.split('\n').filter(Boolean).map((b, i) => <li key={i}>{b}</li>)}
                 </ul>
               </div>
             ))}
           </div>
           <div>
-            <div className="font-bold text-[10px] uppercase tracking-wider text-slate-500 mb-1">Education</div>
+            <div className="font-bold text-[10px] uppercase tracking-wider text-neutral-500 mb-1">Education</div>
             {education.map((ed) => (
               <div key={ed.id} className="flex justify-between mb-1">
                 <span><strong>{ed.degree}</strong>, {ed.school}</span>
-                <span className="text-slate-500">{ed.year}</span>
+                <span className="text-neutral-500">{ed.year}</span>
               </div>
             ))}
           </div>
           <div>
-            <div className="font-bold text-[10px] uppercase tracking-wider text-slate-500 mb-1">Skills</div>
-            <p className="text-slate-700">{skills}</p>
+            <div className="font-bold text-[10px] uppercase tracking-wider text-neutral-500 mb-1">Skills</div>
+            <p className="text-neutral-700">{skills}</p>
           </div>
         </div>
 
         <button
           type="button"
           onClick={exportCvPdf}
-          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
         >
           <Download className="w-4 h-4" />
           <span>Download ATS Resume PDF</span>

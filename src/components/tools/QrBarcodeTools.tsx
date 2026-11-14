@@ -77,7 +77,7 @@ const QrGeneratorTool: React.FC = () => {
   const [vcardUrl, setVcardUrl] = useState('https://techsolutions.com');
 
   // Design state
-  const [fgColor, setFgColor] = useState('#111827');
+  const [fgColor, setFgColor] = useState('#000000');
   const [bgColor, setBgColor] = useState('#FFFFFF');
   const [ecc, setEcc] = useState<'L' | 'M' | 'Q' | 'H'>('H');
   const [size, setSize] = useState<number>(600);
@@ -475,7 +475,7 @@ const QrGeneratorTool: React.FC = () => {
 
         {/* Right QR Preview & Action Area */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <div className="w-full p-8 rounded-3xl border border-neutral-200/90 dark:border-neutral-800/90 bg-white dark:bg-[#0E0E10] shadow-sm flex flex-col items-center text-center">
+          <div className="w-full p-8 rounded-3xl border border-neutral-200/90 dark:border-neutral-800/90 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm flex flex-col items-center text-center">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 mb-4">
               Real-time High-Resolution Preview
             </span>
@@ -513,7 +513,7 @@ const QrGeneratorTool: React.FC = () => {
                   <a
                     href={qrDataUrl}
                     download={`asbily-qr-${type}.png`}
-                    className="flex items-center justify-center gap-2 py-3 px-4 bg-[#111111] hover:bg-black text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
+                    className="flex items-center justify-center gap-2 py-3 px-4 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Download PNG</span>
@@ -535,8 +535,8 @@ const QrGeneratorTool: React.FC = () => {
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-600 font-bold">Copied to Clipboard!</span>
+                    <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
+                    <span className="text-[#000000] dark:text-[#FFFFFF] font-bold">Copied to Clipboard!</span>
                   </>
                 ) : (
                   <>
@@ -562,7 +562,7 @@ const BarcodeGeneratorTool: React.FC = () => {
   const [barWidth, setBarWidth] = useState<number>(2);
   const [barHeight, setBarHeight] = useState<number>(75);
   const [displayValue, setDisplayValue] = useState<boolean>(true);
-  const [lineColor, setLineColor] = useState<string>('#111827');
+  const [lineColor, setLineColor] = useState<string>('#000000');
   const [bgColor, setBgColor] = useState<string>('#FFFFFF');
   const [copied, setCopied] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -746,13 +746,13 @@ const BarcodeGeneratorTool: React.FC = () => {
 
         {/* Barcode Output Preview */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <div className="w-full p-8 rounded-3xl border border-neutral-200/90 dark:border-neutral-800/90 bg-white dark:bg-[#0E0E10] shadow-sm flex flex-col items-center text-center">
+          <div className="w-full p-8 rounded-3xl border border-neutral-200/90 dark:border-neutral-800/90 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm flex flex-col items-center text-center">
             <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 mb-4">
               Vector Barcode Preview
             </span>
 
             {error ? (
-              <div className="w-full p-4 mb-6 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900 text-red-600 text-xs flex items-center gap-2">
+              <div className="w-full p-4 mb-6 rounded-xl border border-black/20 bg-[#F6F6F6] dark:bg-[#090909] dark:border-white/20 text-[#000000] dark:text-[#FFFFFF] text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -769,7 +769,7 @@ const BarcodeGeneratorTool: React.FC = () => {
               <button
                 onClick={downloadBarcodePng}
                 disabled={!!error}
-                className="flex items-center justify-center gap-2 py-3 px-4 bg-[#111111] hover:bg-black text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black rounded-xl text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
+                className="flex items-center justify-center gap-2 py-3 px-4 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-xs font-bold transition shadow-sm disabled:opacity-50 cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download PNG</span>
@@ -782,7 +782,7 @@ const BarcodeGeneratorTool: React.FC = () => {
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
                     <span>Copied!</span>
                   </>
                 ) : (
@@ -946,7 +946,7 @@ const QrScannerTool: React.FC = () => {
       </div>
 
       {cameraError && (
-        <div className="p-4 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900 text-red-600 dark:text-red-400 text-xs flex items-center gap-2.5">
+        <div className="p-4 rounded-xl border border-black/20 bg-[#F6F6F6] dark:bg-[#090909] dark:border-white/20 text-[#000000] dark:text-[#FFFFFF] text-xs flex items-center gap-2.5">
           <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{cameraError}</span>
         </div>
@@ -963,11 +963,11 @@ const QrScannerTool: React.FC = () => {
         {/* Viewfinder Target Reticle Overlay */}
         {scanning && (
           <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-            <div className="w-48 h-48 border-2 border-emerald-400/80 rounded-2xl relative animate-pulse">
-              <div className="absolute top-0 left-0 w-4 h-4 border-t-4 border-l-4 border-emerald-400 rounded-tl -mt-1 -ml-1"></div>
-              <div className="absolute top-0 right-0 w-4 h-4 border-t-4 border-r-4 border-emerald-400 rounded-tr -mt-1 -mr-1"></div>
-              <div className="absolute bottom-0 left-0 w-4 h-4 border-b-4 border-l-4 border-emerald-400 rounded-bl -mb-1 -ml-1"></div>
-              <div className="absolute bottom-0 right-0 w-4 h-4 border-b-4 border-r-4 border-emerald-400 rounded-br -mb-1 -mr-1"></div>
+            <div className="w-48 h-48 border-2 border-[#FFFFFF]/80 rounded-2xl relative">
+              <div className="absolute top-0 left-0 w-4 h-4 border-t-4 border-l-4 border-[#FFFFFF] rounded-tl -mt-1 -ml-1"></div>
+              <div className="absolute top-0 right-0 w-4 h-4 border-t-4 border-r-4 border-[#FFFFFF] rounded-tr -mt-1 -mr-1"></div>
+              <div className="absolute bottom-0 left-0 w-4 h-4 border-b-4 border-l-4 border-[#FFFFFF] rounded-bl -mb-1 -ml-1"></div>
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b-4 border-r-4 border-[#FFFFFF] rounded-br -mb-1 -mr-1"></div>
             </div>
           </div>
         )}
@@ -990,7 +990,7 @@ const QrScannerTool: React.FC = () => {
         {!scanning ? (
           <button
             onClick={startCamera}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#111111] hover:bg-black text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
           >
             <Camera className="w-4 h-4" />
             <span>Start Live Camera Scanner</span>
@@ -998,7 +998,7 @@ const QrScannerTool: React.FC = () => {
         ) : (
           <button
             onClick={stopCamera}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-xs font-bold transition shadow-sm cursor-pointer border border-black/15 dark:border-white/15"
           >
             <span>Stop Camera</span>
           </button>
@@ -1007,27 +1007,27 @@ const QrScannerTool: React.FC = () => {
 
       {/* Scanned Result Card */}
       {scannedResult && (
-        <div className="p-6 rounded-3xl border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50/50 dark:bg-emerald-950/20 space-y-4 animate-in fade-in duration-300">
+        <div className="p-6 rounded-3xl border border-black/15 dark:border-white/15 bg-[#F6F6F6] dark:bg-[#090909] space-y-4 animate-in fade-in duration-300">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#000000] dark:text-[#FFFFFF]">
               <Check className="w-4 h-4" />
               <span>QR Code Decoded Successfully</span>
             </div>
             {isUrl && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-200 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 font-bold uppercase">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#EDEDED] dark:bg-neutral-800 text-[#000000] dark:text-[#FFFFFF] font-bold uppercase">
                 Web Link
               </span>
             )}
           </div>
 
-          <div className="p-4 rounded-xl bg-white dark:bg-neutral-900 border border-emerald-200 dark:border-emerald-800/60 font-mono text-sm text-neutral-900 dark:text-neutral-100 break-all select-all">
+          <div className="p-4 rounded-xl bg-[#FFFFFF] dark:bg-[#000000] border border-black/10 dark:border-white/10 font-mono text-sm text-[#000000] dark:text-[#FFFFFF] break-all select-all">
             {scannedResult}
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5 pt-1">
             <button
               onClick={copyResult}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] rounded-xl text-xs font-bold transition cursor-pointer"
             >
               {copied ? (
                 <>

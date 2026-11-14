@@ -144,13 +144,13 @@ export const ZipArchiveTool: React.FC = () => {
                 max={9}
                 value={compressionLevel}
                 onChange={(e) => setCompressionLevel(Number(e.target.value))}
-                className="w-full accent-indigo-600 mt-2"
+                className="w-full accent-[#000000] dark:accent-[#FFFFFF] mt-2"
               />
             </div>
           </div>
 
-          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900/50 transition">
-            <Plus className="w-7 h-7 text-indigo-600 mb-2" />
+          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-white/5 transition">
+            <Plus className="w-7 h-7 text-[#000000] dark:text-[#FFFFFF] mb-2" />
             <span className="text-sm font-semibold">Add files to pack into ZIP</span>
             <span className="text-xs text-neutral-400 mt-1">Select documents, images, JSON, or folders locally</span>
             <input type="file" multiple onChange={handleAddFiles} className="hidden" />
@@ -165,7 +165,7 @@ export const ZipArchiveTool: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setFilesToZip([])}
-                  className="text-rose-500 hover:underline cursor-pointer"
+                  className="text-[#000000] dark:text-[#FFFFFF] hover:underline cursor-pointer"
                 >
                   Clear All
                 </button>
@@ -173,7 +173,7 @@ export const ZipArchiveTool: React.FC = () => {
 
               <div className="divide-y divide-neutral-200 dark:divide-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden">
                 {filesToZip.map((f, idx) => (
-                  <div key={`${f.name}-${idx}`} className="flex items-center justify-between px-4 py-2.5 text-xs bg-white dark:bg-neutral-950">
+                  <div key={`${f.name}-${idx}`} className="flex items-center justify-between px-4 py-2.5 text-xs bg-white dark:bg-[#090909]">
                     <div className="flex items-center gap-2 min-w-0">
                       <FileText className="w-4 h-4 text-neutral-400 shrink-0" />
                       <span className="truncate font-medium">{f.name}</span>
@@ -185,7 +185,7 @@ export const ZipArchiveTool: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => removeQueuedFile(idx)}
-                        className="text-neutral-400 hover:text-rose-500 cursor-pointer"
+                        className="text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -198,7 +198,7 @@ export const ZipArchiveTool: React.FC = () => {
                 type="button"
                 onClick={buildAndDownloadZip}
                 disabled={creating}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold cursor-pointer disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#090909] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer disabled:opacity-50"
               >
                 <Archive className="w-4 h-4" />
                 <span>{creating ? 'Compressing ZIP...' : 'Compress & Download .ZIP'}</span>
@@ -208,15 +208,15 @@ export const ZipArchiveTool: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-5">
-          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900/50 transition">
-            <FolderOpen className="w-7 h-7 text-indigo-600 mb-2" />
+          <label className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-white/5 transition">
+            <FolderOpen className="w-7 h-7 text-[#000000] dark:text-[#FFFFFF] mb-2" />
             <span className="text-sm font-semibold">{archiveName ? `Loaded: ${archiveName}` : 'Select a .ZIP file to inspect'}</span>
             <span className="text-xs text-neutral-400 mt-1">100% browser-based extraction</span>
             <input type="file" accept=".zip,application/zip" onChange={handleOpenZip} className="hidden" />
           </label>
 
           {extractError && (
-            <div className="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 text-xs text-rose-600 dark:text-rose-400">
+            <div className="p-3 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] border border-black/15 dark:border-white/15 text-xs text-[#000000] dark:text-[#FFFFFF]">
               {extractError}
             </div>
           )}

@@ -172,8 +172,8 @@ const HashtagGeneratorTool: React.FC<{
                 onClick={() => setPlatform(p)}
                 className={`py-2 px-3 text-xs font-medium rounded-lg border transition capitalize ${
                   platform === p
-                    ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
-                    : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900'
+                    ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
+                    : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-[#F6F6F6] dark:hover:bg-[#090909]'
                 }`}
               >
                 {p}
@@ -194,7 +194,7 @@ const HashtagGeneratorTool: React.FC<{
               onClick={() => setLanguage('en')}
               className={`py-2 px-3 text-xs font-medium rounded-lg border transition ${
                 language === 'en'
-                  ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+                  ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
                   : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400'
               }`}
             >
@@ -204,7 +204,7 @@ const HashtagGeneratorTool: React.FC<{
               onClick={() => setLanguage('bn')}
               className={`py-2 px-3 text-xs font-medium rounded-lg border transition ${
                 language === 'bn'
-                  ? 'bg-[#111111] text-white border-[#111111] dark:bg-white dark:text-black dark:border-white'
+                  ? 'bg-[#000000] text-[#FFFFFF] border-[#000000] dark:bg-[#FFFFFF] dark:text-[#000000] dark:border-[#FFFFFF]'
                   : 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400'
               }`}
             >
@@ -281,7 +281,7 @@ const HashtagGeneratorTool: React.FC<{
                 onClick={() => toggleTag(tag)}
                 className={`text-xs px-2.5 py-1.5 rounded border transition cursor-pointer select-none ${
                   selectedTags.length === 0 || isSelected
-                    ? 'border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-[#111111] dark:text-neutral-100'
+                    ? 'border-neutral-300 dark:border-neutral-700 bg-[#EDEDED] dark:bg-neutral-800 text-[#000000] dark:text-[#FFFFFF]'
                     : 'border-dashed border-neutral-200 dark:border-neutral-800 text-neutral-400'
                 }`}
               >
@@ -296,9 +296,9 @@ const HashtagGeneratorTool: React.FC<{
       <div className="flex flex-wrap gap-3">
         <button
           onClick={() => onCopy(tagString)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+          className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy All ({activeTags.length})
         </button>
         <button
@@ -385,7 +385,7 @@ const CaptionGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: bool
         <div className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-2">
           Generated Post Template ({current.title})
         </div>
-        <pre className="font-sans whitespace-pre-wrap text-sm text-[#111111] dark:text-neutral-100 leading-relaxed">
+        <pre className="font-sans whitespace-pre-wrap text-sm text-[#000000] dark:text-[#FFFFFF] leading-relaxed">
           {fullPost}
         </pre>
       </div>
@@ -475,11 +475,11 @@ const BioGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boolean 
                 <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
                   {b.title}
                 </span>
-                <span className={`text-xs font-mono ${isOver ? 'text-red-500 font-bold' : 'text-neutral-400'}`}>
+                <span className={`text-xs font-mono ${isOver ? 'text-[#000000] dark:text-[#FFFFFF] font-bold underline decoration-dashed' : 'text-neutral-400'}`}>
                   {charLen} / {b.limit} chars
                 </span>
               </div>
-              <pre className="font-sans whitespace-pre-wrap text-sm text-[#111111] dark:text-neutral-100 mb-3">
+              <pre className="font-sans whitespace-pre-wrap text-sm text-[#000000] dark:text-[#FFFFFF] mb-3">
                 {b.text}
               </pre>
               <button
@@ -540,9 +540,9 @@ const PostFormatterTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
 
       <button
         onClick={() => onCopy(formatted)}
-        className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
+        className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Formatted Post
       </button>
     </div>
@@ -575,12 +575,12 @@ const SocialImageGuideTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCop
     if (ctx) {
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = '#111111';
+      ctx.fillStyle = '#000000';
       ctx.font = 'bold 36px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(`${name} (${w}×${h}px)`, w / 2, h / 2);
       ctx.font = '24px sans-serif';
-      ctx.fillStyle = '#666666';
+      ctx.fillStyle = '#525252';
       ctx.fillText('Asbily Free Tools Canvas Template', w / 2, h / 2 + 50);
 
       canvas.toBlob((blob) => {
@@ -608,17 +608,17 @@ const SocialImageGuideTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCop
           return (
             <div
               key={idx}
-              className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900 flex flex-col justify-between"
+              className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-[#F6F6F6] dark:bg-[#090909] flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-1">
                   <span>{item.platform}</span>
                   <span className="font-mono">{item.ratio}</span>
                 </div>
-                <div className="font-medium text-[#111111] dark:text-neutral-100 text-sm mb-2">
+                <div className="font-medium text-[#000000] dark:text-[#FFFFFF] text-sm mb-2">
                   {item.name}
                 </div>
-                <div className="text-xl font-bold font-mono text-[#111111] dark:text-neutral-100 mb-4">
+                <div className="text-xl font-bold font-mono text-[#000000] dark:text-[#FFFFFF] mb-4">
                   {item.size}
                 </div>
               </div>

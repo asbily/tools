@@ -85,10 +85,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-[#0E0E10] border border-neutral-200 dark:border-neutral-800 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-in zoom-in-95 duration-150"
+        className="bg-[#FFFFFF] dark:bg-[#090909] border border-neutral-200 dark:border-neutral-800 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[80vh] animate-in zoom-in-95 duration-150"
       >
         {/* Search Input Bar */}
-        <div className="p-3.5 sm:p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center gap-3 bg-white dark:bg-[#0E0E10] sticky top-0 z-10">
+        <div className="p-3.5 sm:p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center gap-3 bg-[#FFFFFF] dark:bg-[#090909] sticky top-0 z-10">
           <Search className="w-5 h-5 text-neutral-400 ml-1 shrink-0" />
           <input
             ref={inputRef}
@@ -100,7 +100,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             }}
             onKeyDown={handleKeyDown}
             placeholder={`Search all ${tools.length} free tools by name, tag, or function...`}
-            className="flex-1 bg-transparent border-none text-sm text-[#111111] dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none"
+            className="flex-1 bg-transparent border-none text-sm text-[#000000] dark:text-[#FFFFFF] placeholder:text-neutral-400 focus:outline-none"
           />
           {query && (
             <button
@@ -170,13 +170,13 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                   onMouseEnter={() => setSelectedIndex(idx)}
                   className={`p-3 sm:p-3.5 rounded-xl cursor-pointer flex items-center justify-between group transition ${
                     isSelected
-                      ? 'bg-indigo-50 dark:bg-indigo-950/35'
-                      : 'hover:bg-neutral-50 dark:hover:bg-neutral-900/40'
+                      ? 'bg-[#EDEDED] dark:bg-white/10'
+                      : 'hover:bg-[#F6F6F6] dark:hover:bg-white/5'
                   }`}
                 >
                   <div className="min-w-0 pr-3">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-sm text-[#111111] dark:text-neutral-100 truncate">
+                      <span className="font-semibold text-sm text-[#000000] dark:text-[#FFFFFF] truncate">
                         {t.name}
                       </span>
                       <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-medium shrink-0">

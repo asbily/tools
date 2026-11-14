@@ -98,7 +98,7 @@ const ImagesToPdfTool: React.FC = () => {
           <button
             onClick={generatePdf}
             disabled={generating}
-            className="inline-flex items-center gap-2 px-5 py-2 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-50"
           >
             <Download className="w-4 h-4" />
             {generating ? 'Compiling PDF...' : `Download PDF (${images.length} pages)`}
@@ -113,13 +113,13 @@ const ImagesToPdfTool: React.FC = () => {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {images.map((img, idx) => (
-            <div key={img.id} className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-2 bg-neutral-50 dark:bg-neutral-900 relative group">
-              <div className="h-36 flex items-center justify-center overflow-hidden rounded bg-white dark:bg-neutral-950">
+            <div key={img.id} className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-2 bg-[#F6F6F6] dark:bg-[#090909] relative group">
+              <div className="h-36 flex items-center justify-center overflow-hidden rounded bg-[#FFFFFF] dark:bg-[#050505]">
                 <img src={img.url} alt={`Upload ${idx}`} className="max-h-full max-w-full object-contain" />
               </div>
               <div className="flex items-center justify-between text-xs text-neutral-500 mt-2 px-1">
                 <span>Page {idx + 1}</span>
-                <button onClick={() => removeImg(img.id)} className="text-red-500 hover:underline">
+                <button onClick={() => removeImg(img.id)} className="text-neutral-500 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -189,7 +189,7 @@ const TextToPdfTool: React.FC = () => {
 
       <button
         onClick={downloadPdf}
-        className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium hover:opacity-90"
+        className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium hover:opacity-90"
       >
         <Download className="w-4 h-4" />
         Generate & Download PDF
@@ -403,13 +403,13 @@ const InvoiceGeneratorTool: React.FC = () => {
               <div className="w-24 text-xs font-mono font-bold text-right px-2">
                 {currency}{(item.qty * item.price).toFixed(2)}
               </div>
-              <button onClick={() => removeItem(idx)} className="p-2 text-neutral-400 hover:text-red-500">
+              <button onClick={() => removeItem(idx)} className="p-2 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF]">
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
           ))}
         </div>
-        <div className="p-4 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 flex justify-end">
+        <div className="p-4 bg-[#F6F6F6] dark:bg-[#090909] border-t border-neutral-200 dark:border-neutral-800 flex justify-end">
           <div className="w-64 space-y-1.5 text-xs">
             <div className="flex justify-between">
               <span>Subtotal:</span>
@@ -423,7 +423,7 @@ const InvoiceGeneratorTool: React.FC = () => {
               <span>Discount:</span>
               <input type="number" min={0} value={discount} onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)} className="w-20 p-1 border rounded text-right text-xs" />
             </div>
-            <div className="flex justify-between pt-2 border-t font-bold text-sm text-[#111111] dark:text-neutral-100">
+            <div className="flex justify-between pt-2 border-t font-bold text-sm text-[#000000] dark:text-[#FFFFFF]">
               <span>Total:</span>
               <span>{currency}{total.toFixed(2)}</span>
             </div>
@@ -433,7 +433,7 @@ const InvoiceGeneratorTool: React.FC = () => {
 
       <button
         onClick={generatePdf}
-        className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium hover:opacity-90"
+        className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium hover:opacity-90"
       >
         <Download className="w-4 h-4" />
         Download Professional Invoice PDF
@@ -508,7 +508,7 @@ const QuotationGeneratorTool: React.FC = () => {
 
       <button
         onClick={downloadQuote}
-        className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#111111] text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium hover:opacity-90"
+        className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg text-sm font-medium hover:opacity-90"
       >
         <Download className="w-4 h-4" />
         Download Project Quotation PDF
@@ -537,18 +537,18 @@ const PdfInfoTool: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <label className="px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-900 inline-flex items-center gap-2">
+      <label className="px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#F6F6F6] dark:hover:bg-[#090909] inline-flex items-center gap-2">
         <Upload className="w-4 h-4" />
         Inspect Local PDF File
         <input type="file" accept="application/pdf" onChange={handleUpload} className="hidden" />
       </label>
 
       {fileDetails && (
-        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900 space-y-2 text-xs font-mono">
-          <div>File Name: <strong className="text-[#111111] dark:text-neutral-100">{fileDetails.name}</strong></div>
-          <div>Size: <strong className="text-[#111111] dark:text-neutral-100">{fileDetails.size}</strong></div>
-          <div>MIME Type: <strong className="text-[#111111] dark:text-neutral-100">{fileDetails.type}</strong></div>
-          <div>Last Modified: <strong className="text-[#111111] dark:text-neutral-100">{fileDetails.lastModified}</strong></div>
+        <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-[#F6F6F6] dark:bg-[#090909] space-y-2 text-xs font-mono">
+          <div>File Name: <strong className="text-[#000000] dark:text-[#FFFFFF]">{fileDetails.name}</strong></div>
+          <div>Size: <strong className="text-[#000000] dark:text-[#FFFFFF]">{fileDetails.size}</strong></div>
+          <div>MIME Type: <strong className="text-[#000000] dark:text-[#FFFFFF]">{fileDetails.type}</strong></div>
+          <div>Last Modified: <strong className="text-[#000000] dark:text-[#FFFFFF]">{fileDetails.lastModified}</strong></div>
         </div>
       )}
     </div>

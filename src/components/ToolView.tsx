@@ -122,31 +122,31 @@ export const ToolView: React.FC<ToolViewProps> = ({
             onClick={() => {
               onToggleFavorite(tool.id);
               if (onShowToast) {
-                onShowToast(isFavorite ? 'Removed from favorites' : 'Saved to favorites');
+                onShowToast(isFavorite ? 'Removed from saved' : 'Saved to your collection');
               }
             }}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-medium transition cursor-pointer ${
               isFavorite
-                ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300'
-                : 'border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 text-neutral-700 dark:text-neutral-300'
+                ? 'bg-[#000000] dark:bg-[#FFFFFF] border-[#000000] dark:border-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000]'
+                : 'border-black/15 dark:border-white/15 hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-[#000000] dark:text-[#FFFFFF]'
             }`}
           >
             <Star
               className={`w-3.5 h-3.5 ${
-                isFavorite ? 'text-amber-500 fill-amber-500' : 'text-neutral-400'
+                isFavorite ? 'fill-current' : 'text-neutral-500'
               }`}
             />
-            <span>{isFavorite ? 'Saved' : 'Favorite'}</span>
+            <span>{isFavorite ? 'Saved' : 'Save'}</span>
           </button>
 
           <button
             onClick={handleShare}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-neutral-200 dark:border-neutral-800 rounded-lg text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition cursor-pointer text-neutral-700 dark:text-neutral-300"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-black/15 dark:border-white/15 rounded-lg text-xs font-medium hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer text-[#000000] dark:text-[#FFFFFF]"
           >
             {copiedShare ? (
-              <Check className="w-3.5 h-3.5 text-emerald-600" />
+              <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
             ) : (
-              <Share2 className="w-3.5 h-3.5 text-neutral-400" />
+              <Share2 className="w-3.5 h-3.5 text-neutral-500" />
             )}
             <span>{copiedShare ? 'Copied Link' : 'Share'}</span>
           </button>
@@ -156,18 +156,18 @@ export const ToolView: React.FC<ToolViewProps> = ({
       {/* Tool Header Banner */}
       <div className="space-y-3 w-full max-w-full overflow-hidden">
         <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-          <span className="font-semibold text-neutral-700 dark:text-neutral-300">{tool.categoryLabel}</span>
+          <span className="font-semibold text-[#000000] dark:text-[#FFFFFF]">{tool.categoryLabel}</span>
           <span aria-hidden="true" className="opacity-40">·</span>
-          <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+          <span className="inline-flex items-center gap-1 text-[#000000] dark:text-[#FFFFFF]">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>100% Client-Side Private</span>
           </span>
           <span aria-hidden="true" className="opacity-40">·</span>
-          <span className="font-mono text-neutral-400 dark:text-neutral-500">
+          <span className="font-mono text-neutral-500 dark:text-neutral-400">
             /{tool.category}/{tool.id}
           </span>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-[#111111] dark:text-neutral-100 tracking-tight">
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-[#000000] dark:text-[#FFFFFF] tracking-tight">
           {tool.name}
         </h1>
         <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-3xl">
@@ -179,7 +179,7 @@ export const ToolView: React.FC<ToolViewProps> = ({
       <AdSlot slotName="Sponsored Advertisement" type="responsive-header" />
 
       {/* Main Tool Interactive Workspace */}
-      <div className="border border-neutral-200/90 dark:border-neutral-800/90 rounded-2xl p-4 sm:p-8 bg-white dark:bg-[#0E0E10] shadow-sm w-full max-w-full overflow-hidden">
+      <div className="border border-black/10 dark:border-white/10 rounded-2xl p-4 sm:p-8 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm w-full max-w-full overflow-hidden">
         {renderToolComponent()}
       </div>
 
@@ -188,24 +188,24 @@ export const ToolView: React.FC<ToolViewProps> = ({
         <AdSlot slotName="Sponsored Solution" type="300x250" />
       </div>
 
-      {/* Privacy Guarantee & How it works box */}
+      {/* Privacy Guarantee & How it works box (Official Gray Section #F6F6F6) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="border border-neutral-200/80 dark:border-neutral-800/80 rounded-xl p-5 bg-neutral-50 dark:bg-neutral-900/60 space-y-2">
-          <div className="flex items-center gap-2 text-xs font-bold text-[#111111] dark:text-neutral-100 uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+        <div className="border border-black/10 dark:border-white/10 rounded-xl p-5 bg-[#F6F6F6] dark:bg-[#050505] space-y-2">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#000000] dark:text-[#FFFFFF] uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4" />
             <span>Browser-Sandboxed Privacy</span>
           </div>
-          <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
             All algorithms, hashes, conversions, and image compressions run strictly inside your local browser via modern Web APIs. No text or files are uploaded to remote servers.
           </p>
         </div>
 
-        <div className="border border-neutral-200/80 dark:border-neutral-800/80 rounded-xl p-5 bg-neutral-50 dark:bg-neutral-900/60 space-y-2">
-          <div className="flex items-center gap-2 text-xs font-bold text-[#111111] dark:text-neutral-100 uppercase tracking-wider">
-            <HelpCircle className="w-4 h-4 text-neutral-500" />
+        <div className="border border-black/10 dark:border-white/10 rounded-xl p-5 bg-[#F6F6F6] dark:bg-[#050505] space-y-2">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#000000] dark:text-[#FFFFFF] uppercase tracking-wider">
+            <HelpCircle className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
             <span>Installable & Offline Ready</span>
           </div>
-          <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
             Asbily Free Tools is an installable Progressive Web App (PWA). Once loaded, core algorithms remain fully operational even without an active internet connection.
           </p>
         </div>

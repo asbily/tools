@@ -80,7 +80,7 @@ const MetaTagGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: bool
           <div>
             <div className="flex justify-between text-xs mb-1">
               <span className="font-semibold text-neutral-500 uppercase">Page Title</span>
-              <span className={`font-mono ${title.length > 60 ? 'text-amber-500 font-bold' : 'text-neutral-400'}`}>
+              <span className={`font-mono ${title.length > 60 ? 'text-[#000000] dark:text-[#FFFFFF] font-bold' : 'text-neutral-400'}`}>
                 {title.length} / 60 chars
               </span>
             </div>
@@ -95,7 +95,7 @@ const MetaTagGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: bool
           <div>
             <div className="flex justify-between text-xs mb-1">
               <span className="font-semibold text-neutral-500 uppercase">Meta Description</span>
-              <span className={`font-mono ${description.length > 160 ? 'text-amber-500 font-bold' : 'text-neutral-400'}`}>
+              <span className={`font-mono ${description.length > 160 ? 'text-[#000000] dark:text-[#FFFFFF] font-bold' : 'text-neutral-400'}`}>
                 {description.length} / 160 chars
               </span>
             </div>
@@ -144,7 +144,7 @@ const MetaTagGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: bool
           <div className="text-xs font-semibold text-neutral-500 uppercase">Google SERP Preview</div>
           <div className="border border-neutral-200 dark:border-neutral-800 p-4 rounded-lg bg-white dark:bg-neutral-950">
             <div className="text-xs text-neutral-500 truncate mb-0.5">{url}</div>
-            <div className="text-base text-blue-600 dark:text-blue-400 hover:underline font-medium line-clamp-1 cursor-pointer">
+            <div className="text-base text-[#000000] dark:text-[#FFFFFF] hover:underline font-medium line-clamp-1 cursor-pointer">
               {title}
             </div>
             <div className="text-xs text-neutral-600 dark:text-neutral-400 mt-1 line-clamp-2">
@@ -166,7 +166,7 @@ const MetaTagGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: bool
         onClick={() => onCopy(metaHtml)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Meta Tags
       </button>
     </div>
@@ -269,7 +269,7 @@ const RobotsTxtTool: React.FC<{
           onClick={() => onCopy(content)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy robots.txt
         </button>
         <button
@@ -370,7 +370,7 @@ const SitemapGeneratorTool: React.FC<{
           onClick={() => onCopy(sitemapXml)}
           className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
           Copy XML
         </button>
         <button
@@ -430,7 +430,7 @@ const OgPreviewTool: React.FC = () => {
         </div>
         <div className="p-4 border-t border-neutral-200 dark:border-neutral-800">
           <div className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">{site}</div>
-          <div className="text-base font-bold text-[#111111] dark:text-neutral-100 mt-1 line-clamp-2">{title}</div>
+          <div className="text-base font-bold text-[#000000] dark:text-[#FFFFFF] mt-1 line-clamp-2">{title}</div>
           <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 line-clamp-2">{desc}</div>
         </div>
       </div>
@@ -471,14 +471,14 @@ const CanonicalHreflangTool: React.FC<{ onCopy: (t: string) => void; copied: boo
       </div>
 
       <div className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 bg-neutral-50 dark:bg-neutral-900 font-mono text-xs">
-        <pre className="whitespace-pre-wrap text-[#111111] dark:text-neutral-100">{tags}</pre>
+        <pre className="whitespace-pre-wrap text-[#000000] dark:text-[#FFFFFF]">{tags}</pre>
       </div>
 
       <button
         onClick={() => onCopy(tags)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Canonical & Hreflang Tags
       </button>
     </div>
@@ -586,7 +586,7 @@ const SchemaGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boole
         onClick={() => onCopy(jsonLd)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy JSON-LD Script
       </button>
     </div>
@@ -659,14 +659,14 @@ const UtmBuilderTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
 
       <div className="p-4 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-neutral-50 dark:bg-neutral-900">
         <div className="text-xs font-semibold text-neutral-500 uppercase mb-1">Complete UTM URL</div>
-        <div className="font-mono text-xs break-all text-[#111111] dark:text-neutral-100">{utmUrl}</div>
+        <div className="font-mono text-xs break-all text-[#000000] dark:text-[#FFFFFF]">{utmUrl}</div>
       </div>
 
       <button
         onClick={() => onCopy(utmUrl)}
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 dark:border-neutral-800 rounded-lg text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-900 transition"
       >
-        {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-4 h-4" />}
         Copy Tracked Link
       </button>
     </div>
@@ -707,7 +707,7 @@ const SeoAuditTool: React.FC<{ onCopy: (t: string) => void }> = () => {
           <span className="font-mono">{progressPercent}% ({completedCount} / {items.length} Passed)</span>
         </div>
         <div className="w-full bg-neutral-200 dark:bg-neutral-800 rounded-full h-2 overflow-hidden">
-          <div className="bg-[#111111] dark:bg-white h-full transition-all duration-300" style={{ width: `${progressPercent}%` }} />
+          <div className="bg-[#000000] dark:bg-[#FFFFFF] h-full transition-all duration-300" style={{ width: `${progressPercent}%` }} />
         </div>
       </div>
 
@@ -776,7 +776,7 @@ const SecurityHeadersTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCopy
         {headers.map((h) => (
           <div key={h.name} className="border border-neutral-200 dark:border-neutral-800 rounded-lg p-3.5 bg-neutral-50 dark:bg-neutral-900">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-bold text-[#111111] dark:text-neutral-100">{h.name}</span>
+              <span className="text-xs font-bold text-[#000000] dark:text-[#FFFFFF]">{h.name}</span>
               <button onClick={() => onCopy(`${h.name}: ${h.val}`)} className="text-xs text-neutral-400 hover:text-black dark:hover:text-white">
                 <Copy className="w-3.5 h-3.5" />
               </button>

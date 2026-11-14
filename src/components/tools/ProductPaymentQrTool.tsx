@@ -108,7 +108,7 @@ export const ProductPaymentQrTool: React.FC = () => {
   const [cryptoAddress, setCryptoAddress] = useState('TJ7zK9g8H1YvP6xLmN3qW2rT5eD4sA1bC9');
 
   // QR Design & State
-  const [qrTheme, setQrTheme] = useState<'dark' | 'emerald' | 'sapphire' | 'crimson' | 'purple'>('dark');
+  const [qrTheme, setQrTheme] = useState<'black' | 'dark' | 'charcoal' | 'graphite' | 'neutral'>('black');
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
   const [activeViewTab, setActiveViewTab] = useState<'qr_code' | 'stand_card' | 'bill_receipt'>('stand_card');
 
@@ -191,17 +191,17 @@ export const ProductPaymentQrTool: React.FC = () => {
   // QR Color mapping
   const getQrColors = () => {
     switch (qrTheme) {
-      case 'emerald':
-        return { dark: '#047857', light: '#FFFFFF' };
-      case 'sapphire':
-        return { dark: '#1D4ED8', light: '#FFFFFF' };
-      case 'crimson':
-        return { dark: '#BE123C', light: '#FFFFFF' };
-      case 'purple':
-        return { dark: '#6D28D9', light: '#FFFFFF' };
       case 'dark':
+        return { dark: '#090909', light: '#FFFFFF' };
+      case 'charcoal':
+        return { dark: '#262626', light: '#FFFFFF' };
+      case 'graphite':
+        return { dark: '#404040', light: '#FFFFFF' };
+      case 'neutral':
+        return { dark: '#525252', light: '#FFFFFF' };
+      case 'black':
       default:
-        return { dark: '#111827', light: '#FFFFFF' };
+        return { dark: '#000000', light: '#FFFFFF' };
     }
   };
 
@@ -348,7 +348,7 @@ ${paymentDetailsText}
       setMfsProvider('bKash');
       setMfsAccountType('Merchant');
       setMfsNumber('01712345678');
-      setQrTheme('crimson');
+      setQrTheme('black');
       setActiveViewTab('stand_card');
     } else if (preset === 'bkash_counter') {
       setStoreName('Chittagong Organic Mart');
@@ -365,7 +365,7 @@ ${paymentDetailsText}
       setMfsProvider('Nagad');
       setMfsAccountType('Personal');
       setMfsNumber('01888990011');
-      setQrTheme('emerald');
+      setQrTheme('dark');
       setActiveViewTab('stand_card');
     } else if (preset === 'upi_retail') {
       setStoreName('Apex Books & Stationery');
@@ -381,7 +381,7 @@ ${paymentDetailsText}
       setPaymentMethod('upi');
       setUpiId('apexbooks@okaxis');
       setUpiPayeeName('Apex Books');
-      setQrTheme('sapphire');
+      setQrTheme('charcoal');
       setActiveViewTab('stand_card');
     } else if (preset === 'freelance') {
       setStoreName('Studio Asbily Creative');
@@ -399,7 +399,7 @@ ${paymentDetailsText}
       setBankAccountName('Asbily Creative Studio LLC');
       setBankAccountNumber('48912389102');
       setBankBranchRouting('Routing: 021000021 · SWIFT: CHASUS33');
-      setQrTheme('dark');
+      setQrTheme('black');
       setActiveViewTab('bill_receipt');
     } else if (preset === 'restaurant') {
       setStoreName('Cafe Horizon & Bistro');
@@ -417,7 +417,7 @@ ${paymentDetailsText}
       setMfsProvider('bKash');
       setMfsAccountType('Merchant');
       setMfsNumber('01700112233');
-      setQrTheme('purple');
+      setQrTheme('graphite');
       setActiveViewTab('stand_card');
     }
   };
@@ -427,7 +427,7 @@ ${paymentDetailsText}
       {/* Top Template Presets Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500" />
+          <Sparkles className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
           <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider">
             1-Click Preset Templates:
           </span>
@@ -646,7 +646,7 @@ ${paymentDetailsText}
                       <button
                         onClick={() => removeItem(item.id)}
                         disabled={items.length <= 1}
-                        className={`p-1.5 rounded-lg text-neutral-400 hover:text-rose-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer ${
+                        className={`p-1.5 rounded-lg text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer ${
                           items.length <= 1 ? 'opacity-30 cursor-not-allowed' : ''
                         }`}
                         title="Remove item"
@@ -717,7 +717,7 @@ ${paymentDetailsText}
               <span className="text-neutral-600 dark:text-neutral-300">
                 Grand Total Payable (সর্বমোট টাকা):
               </span>
-              <span className="text-base font-black text-emerald-600 dark:text-emerald-400 font-mono">
+              <span className="text-base font-black text-[#000000] dark:text-[#FFFFFF] font-mono">
                 {currencySymbol}{totalPayable.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currency}
               </span>
             </div>
@@ -744,7 +744,7 @@ ${paymentDetailsText}
                     : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
-                <Smartphone className="w-3.5 h-3.5 text-pink-600" />
+                <Smartphone className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
                 <span>bKash / Nagad / MFS</span>
               </button>
 
@@ -756,7 +756,7 @@ ${paymentDetailsText}
                     : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
-                <Zap className="w-3.5 h-3.5 text-amber-500" />
+                <Zap className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
                 <span>UPI Pay</span>
               </button>
 
@@ -768,7 +768,7 @@ ${paymentDetailsText}
                     : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
-                <Landmark className="w-3.5 h-3.5 text-blue-600" />
+                <Landmark className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
                 <span>Bank Transfer</span>
               </button>
 
@@ -780,7 +780,7 @@ ${paymentDetailsText}
                     : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
-                <Globe className="w-3.5 h-3.5 text-emerald-600" />
+                <Globe className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
                 <span>Web / Pay Link</span>
               </button>
             </div>
@@ -991,11 +991,11 @@ ${paymentDetailsText}
             <span className="text-neutral-500 font-medium">QR Color Palette:</span>
             <div className="flex items-center gap-1.5">
               {[
-                { id: 'dark', color: '#111827', name: 'Dark' },
-                { id: 'emerald', color: '#047857', name: 'Emerald' },
-                { id: 'sapphire', color: '#1D4ED8', name: 'Sapphire' },
-                { id: 'crimson', color: '#BE123C', name: 'Crimson' },
-                { id: 'purple', color: '#6D28D9', name: 'Purple' },
+                { id: 'black', color: '#000000', name: 'Pure Black' },
+                { id: 'dark', color: '#090909', name: 'Dark Ink' },
+                { id: 'charcoal', color: '#262626', name: 'Charcoal' },
+                { id: 'graphite', color: '#404040', name: 'Graphite' },
+                { id: 'neutral', color: '#525252', name: 'Neutral Gray' },
               ].map((th) => (
                 <button
                   key={th.id}
@@ -1014,7 +1014,7 @@ ${paymentDetailsText}
           {activeViewTab === 'stand_card' && (
             <div
               id="printable-stand-card"
-              className="p-6 rounded-3xl border-2 border-neutral-900 dark:border-neutral-700 bg-white dark:bg-[#121214] text-center space-y-4 shadow-xl transition-all"
+              className="p-6 rounded-3xl border-2 border-neutral-900 dark:border-neutral-700 bg-white dark:bg-[#090909] text-center space-y-4 shadow-xl transition-all"
             >
               {/* Header Store Title */}
               <div className="space-y-1">
@@ -1049,7 +1049,7 @@ ${paymentDetailsText}
                 <div className="text-[11px] uppercase tracking-wider text-neutral-400 font-bold">
                   AMOUNT TO PAY
                 </div>
-                <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono tracking-tight">
+                <div className="text-3xl font-black text-[#000000] dark:text-[#FFFFFF] font-mono tracking-tight">
                   {currencySymbol}{totalPayable.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currency}
                 </div>
               </div>
@@ -1089,7 +1089,7 @@ ${paymentDetailsText}
           {activeViewTab === 'bill_receipt' && (
             <div
               id="printable-bill-receipt"
-              className="p-5 rounded-2xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-[#121214] text-xs space-y-4 shadow-lg font-sans"
+              className="p-5 rounded-2xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-[#090909] text-xs space-y-4 shadow-lg font-sans"
             >
               {/* Receipt Header */}
               <div className="flex items-start justify-between pb-3 border-b border-neutral-200 dark:border-neutral-800">
@@ -1133,7 +1133,7 @@ ${paymentDetailsText}
                   <span className="font-mono">{currencySymbol}{subtotal.toLocaleString()}</span>
                 </div>
                 {discountAmount > 0 && (
-                  <div className="flex justify-between text-rose-600">
+                  <div className="flex justify-between text-neutral-600 dark:text-neutral-300">
                     <span>Discount:</span>
                     <span className="font-mono">-{currencySymbol}{discountAmount.toLocaleString()}</span>
                   </div>
@@ -1152,7 +1152,7 @@ ${paymentDetailsText}
                 )}
                 <div className="pt-1.5 border-t border-neutral-200 dark:border-neutral-800 flex justify-between font-black text-sm text-neutral-900 dark:text-white">
                   <span>Total Payable:</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-mono">
+                  <span className="text-[#000000] dark:text-[#FFFFFF] font-mono">
                     {currencySymbol}{totalPayable.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -1202,7 +1202,7 @@ ${paymentDetailsText}
 
           {/* Card View 3: Pure High-Res QR Code */}
           {activeViewTab === 'qr_code' && (
-            <div className="p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121214] text-center space-y-4 shadow-md">
+            <div className="p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#090909] text-center space-y-4 shadow-md">
               <div className="space-y-1">
                 <h3 className="font-bold text-sm text-neutral-900 dark:text-white">
                   Payment QR Code ({currencySymbol}{totalPayable.toFixed(2)})
@@ -1251,9 +1251,9 @@ ${paymentDetailsText}
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={copyFormattedSummary}
-                className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-200 rounded-xl text-xs font-bold hover:bg-emerald-100 transition cursor-pointer"
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 border border-black/15 dark:border-white/15 bg-[#F6F6F6] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] rounded-xl text-xs font-bold hover:bg-[#EDEDED] dark:hover:bg-neutral-800 transition cursor-pointer"
               >
-                {copiedSummary ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5" />}
+                {copiedSummary ? <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" /> : <Share2 className="w-3.5 h-3.5" />}
                 <span>{copiedSummary ? 'Copied WhatsApp!' : 'Copy WhatsApp Text'}</span>
               </button>
 
@@ -1270,7 +1270,7 @@ ${paymentDetailsText}
               onClick={copyRawPayload}
               className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 text-[11px] font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition cursor-pointer"
             >
-              {copiedPayload ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+              {copiedPayload ? <Check className="w-3 h-3 text-[#000000] dark:text-[#FFFFFF]" /> : <Copy className="w-3 h-3" />}
               <span>{copiedPayload ? 'QR Payload Copied' : 'Copy Raw QR Data String'}</span>
             </button>
           </div>
