@@ -126,40 +126,65 @@ export const Hero: React.FC<HeroProps> = ({
         ) : (
           /* Two-Column 3D Spatial + Utility Launchpad Hero (#EDEDED 'n #FFFFFF) */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            {/* Left Column: Core Headline, Search, Quick Shortcuts */}
+            {/* Left Column: Core Headline, CTAs, Search, Trust Highlights */}
             <div className="lg:col-span-7 flex flex-col justify-center space-y-6">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-neutral-600 dark:text-neutral-400">
                   <span className="font-semibold text-[#000000] dark:text-[#FFFFFF] tabular-nums">
-                    {totalToolsCount} Real Browser Utilities
+                    Asbily Tools · {totalToolsCount} Utilities
                   </span>
                   <span aria-hidden="true">·</span>
-                  <span>WebGL 3D & PDF Suite</span>
+                  <span>15 Categories</span>
                   <span aria-hidden="true">·</span>
-                  <span>Zero Server Uploads</span>
+                  <span>Free Tools. Simple Solutions.</span>
                 </div>
 
                 <h1 className="text-3xl sm:text-5xl xl:text-[54px] font-extrabold tracking-tight text-[#000000] dark:text-[#FFFFFF] leading-[1.08]">
-                  Free Tools.{' '}
+                  Essential Tools for{' '}
                   <span className="text-neutral-500 dark:text-neutral-400">
-                    Simple Solutions.
+                    Everyday Work.
                   </span>
                 </h1>
 
                 <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 max-w-xl leading-relaxed">
-                  A complete workstation for 3D mockups, PDF merging & CV creation, transparent cutouts, live currency FX, screen recording, and developer utilities—running privately inside your browser.
+                  Fast, reliable utilities for documents, images, text, code, 3D mockups, and daily calculations—processed locally in your browser with no account required.
                 </p>
               </div>
 
+              {/* Primary & Secondary CTAs */}
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('tools-grid-section');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-5 py-3 rounded-xl bg-[#000000] hover:bg-[#090909] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:hover:bg-[#EDEDED] dark:text-[#000000] text-xs sm:text-sm font-semibold transition cursor-pointer"
+                >
+                  Explore All Tools
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('browse-categories-section');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-5 py-3 rounded-xl border border-black/15 dark:border-white/20 bg-[#FFFFFF] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-xs sm:text-sm font-semibold transition cursor-pointer"
+                >
+                  Browse Categories
+                </button>
+              </div>
+
               {/* Search Input */}
-              <div className="max-w-xl space-y-3">
+              <div id="home-search-tools" className="max-w-xl space-y-3">
                 <div className="relative flex items-center rounded-xl bg-[#FFFFFF] dark:bg-[#090909] border border-black/15 dark:border-white/15 focus-within:border-[#000000] dark:focus-within:border-[#FFFFFF] shadow-xs transition-colors">
                   <Search className="w-5 h-5 absolute left-4 text-neutral-400 pointer-events-none" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    placeholder="Search tools (e.g. 3d mockup, merge pdf, remove bg, usd to bdt)..."
+                    placeholder="Search all 111 tools (e.g. pdf merge, json, remove bg, qr, 3d mockup)..."
+                    aria-label="Search tools"
                     className="w-full pl-12 pr-24 py-3.5 bg-transparent text-sm text-[#000000] dark:text-[#FFFFFF] placeholder:text-neutral-400 focus:outline-none"
                   />
                   <div className="absolute right-3 flex items-center gap-1.5">
@@ -197,19 +222,25 @@ export const Hero: React.FC<HeroProps> = ({
                 </div>
               </div>
 
-              {/* Capability Indicators */}
-              <div className="flex flex-wrap items-center gap-5 pt-1 text-xs text-neutral-600 dark:text-neutral-400 font-medium">
+              {/* Trust Highlights */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs text-neutral-600 dark:text-neutral-400 font-medium">
                 <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
-                  <span>Client-Side Privacy</span>
+                  <Zap className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
+                  <span>Free to Use</span>
                 </div>
+                <span aria-hidden="true" className="opacity-30">·</span>
+                <span>No Account Required</span>
+                <span aria-hidden="true" className="opacity-30">·</span>
                 <div className="flex items-center gap-1.5">
-                  <Zap className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
-                  <span>Instant Processing</span>
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
+                  <span>Local Processing</span>
                 </div>
+                <span aria-hidden="true" className="opacity-30">·</span>
+                <span>Privacy-Focused</span>
+                <span aria-hidden="true" className="opacity-30">·</span>
                 <div className="flex items-center gap-1.5">
-                  <WifiOff className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
-                  <span>Offline Ready PWA</span>
+                  <WifiOff className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
+                  <span>Offline Support for Compatible Tools</span>
                 </div>
               </div>
             </div>

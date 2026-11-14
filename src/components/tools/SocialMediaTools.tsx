@@ -581,7 +581,7 @@ const SocialImageGuideTool: React.FC<{ onCopy: (t: string) => void }> = ({ onCop
       ctx.fillText(`${name} (${w}×${h}px)`, w / 2, h / 2);
       ctx.font = '24px sans-serif';
       ctx.fillStyle = '#525252';
-      ctx.fillText('Asbily Free Tools Canvas Template', w / 2, h / 2 + 50);
+      ctx.fillText('Asbily Tools Canvas Template', w / 2, h / 2 + 50);
 
       canvas.toBlob((blob) => {
         if (blob) {

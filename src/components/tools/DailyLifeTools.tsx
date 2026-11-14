@@ -818,7 +818,7 @@ const BillWarrantyCountdownTool: React.FC = () => {
     const ics = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Asbily Free Tools//Deadline Tracker//EN',
+      'PRODID:-//Asbily Tools//Deadline Tracker//EN',
       'BEGIN:VEVENT',
       `UID:${it.id}@tools.asbily.com`,
       `DTSTAMP:${dt}T090000Z`,

@@ -3,11 +3,29 @@
   "trailingSlash": false,
   "headers": [
     {
-      "source": "/(.*\\.(?:html|js|css|json)$|^[^.]+$)",
+      "source": "/(.*\\.(?:html|js|css|json|webmanifest)$|^[^.]+$)",
       "headers": [
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(sitemap\\.xml|robots\\.txt)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
         }
       ]
     }

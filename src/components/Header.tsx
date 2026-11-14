@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Search, Star, Moon, Sun, MoreVertical, X, Shield, Info, HelpCircle, ArrowRight, Home, FileText, Mail } from 'lucide-react';
 import { CATEGORIES, TOOLS } from '../data/toolsData';
 import { ToolCategory } from '../types';
+import { PWAInstallButton } from './PWAControls';
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -218,6 +219,8 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Zone 3: Quick Actions & Drawer */}
           <div className="flex items-center gap-2 shrink-0">
+            <PWAInstallButton />
+
             <button
               type="button"
               onClick={handleFavoritesSelect}
@@ -266,6 +269,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
               title="Open Navigation Menu"
               aria-label="Navigation Menu"
+              aria-expanded={menuOpen}
             >
               <MoreVertical className="w-4 h-4" />
             </button>

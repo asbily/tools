@@ -49,7 +49,7 @@ export const QrBarcodeTools: React.FC<QrToolProps> = ({ toolId }) => {
 const QrGeneratorTool: React.FC = () => {
   const [type, setType] = useState<'url' | 'text' | 'wifi' | 'email' | 'phone' | 'sms' | 'vcard'>('url');
   const [url, setUrl] = useState('https://asbily.com');
-  const [text, setText] = useState('Hello from Asbily Free Tools!');
+  const [text, setText] = useState('Hello from Asbily Tools!');
 
   // WiFi state
   const [ssid, setSsid] = useState('Home_WiFi_5G');

@@ -52,7 +52,7 @@ export const MediaBrowserTools: React.FC<MediaToolProps> = ({ toolId }) => {
 // -------------------------------------------------------------
 const TextToSpeechTool: React.FC = () => {
   const [text, setText] = useState(
-    'Welcome to Asbily Free Tools! Experience fast, private, and client-side online utilities built for maximum productivity.'
+    'Welcome to Asbily Tools! Experience fast, private, local-first browser utilities built for everyday productivity.'
   );
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string>('');
@@ -136,7 +136,7 @@ const TextToSpeechTool: React.FC = () => {
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Presets:</span>
         <button
-          onClick={() => setPresetText('Welcome to Asbily Free Tools! All calculations and tools run 100% inside your browser.')}
+          onClick={() => setPresetText('Welcome to Asbily Tools! All calculations and tools run locally inside your browser.')}
           className="px-2.5 py-1 rounded-lg text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 transition"
         >
           English Welcome
@@ -608,9 +608,9 @@ const StorageViewerTool: React.FC = () => {
   const [estimate, setEstimate] = useState<{ usedMb: number; quotaMb: number; percent: number } | null>(null);
   const [localItems, setLocalItems] = useState<{ key: string; sizeKb: number; value: string }[]>([]);
   const [confirmClear, setConfirmClear] = useState(false);
+  const [statusMsg, setStatusMsg] = useState<string | null>(null);
 
   const loadStorage = () => {
-    // Storage quota estimate
     if (navigator.storage && navigator.storage.estimate) {
       navigator.storage.estimate().then((est) => {
         const used = (est.usage || 0) / (1024 * 1024);
@@ -621,16 +621,15 @@ const StorageViewerTool: React.FC = () => {
           quotaMb: parseFloat(quota.toFixed(0)),
           percent: parseFloat(pct.toFixed(2)),
         });
-      });
+      }).catch(() => {});
     }
 
-    // LocalStorage inventory
     const items: { key: string; sizeKb: number; value: string }[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
       if (k) {
         const val = localStorage.getItem(k) || '';
-        const size = (val.length * 2) / 1024; // approx bytes in UTF-16
+        const size = (val.length * 2) / 1024;
         items.push({
           key: k,
           sizeKb: parseFloat(size.toFixed(2)),
@@ -648,22 +647,82 @@ const StorageViewerTool: React.FC = () => {
   const deleteKey = (k: string) => {
     localStorage.removeItem(k);
     loadStorage();
+    setStatusMsg(`Removed "${k}" from local storage.`);
   };
 
   const clearAllLocal = () => {
     localStorage.clear();
     setConfirmClear(false);
     loadStorage();
+    setStatusMsg('All localStorage data for this origin was cleared.');
+  };
+
+  const exportBackup = () => {
+    const dump: Record<string, string> = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k) dump[k] = localStorage.getItem(k) || '';
+    }
+    const payload = {
+      app: 'Asbily Tools',
+      exportedAt: new Date().toISOString(),
+      entries: dump,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `asbily-tools-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setStatusMsg(`Exported ${Object.keys(dump).length} local storage entries as JSON backup.`);
+  };
+
+  const importBackup = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text);
+      const entries = parsed?.entries && typeof parsed.entries === 'object' ? parsed.entries : parsed;
+      let count = 0;
+      if (entries && typeof entries === 'object') {
+        Object.entries(entries).forEach(([k, v]) => {
+          if (typeof v === 'string') {
+            localStorage.setItem(k, v);
+            count++;
+          }
+        });
+      }
+      loadStorage();
+      setStatusMsg(`Restored ${count} entries from local backup file.`);
+    } catch {
+      setStatusMsg('Invalid backup JSON file. Please select a valid Asbily Tools backup.');
+    }
+    e.target.value = '';
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      <div className="p-3.5 rounded-xl border border-black/10 dark:border-white/10 bg-[#F6F6F6] dark:bg-[#050505] text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+        Browser storage (LocalStorage) stays strictly on this device, but it is not permanent storage: clearing browser site data or uninstalling your browser can erase saved records. Export a JSON backup regularly if you store important notes or ledgers.
+      </div>
+
+      {statusMsg && (
+        <div className="p-3 rounded-xl border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-xs font-medium text-[#000000] dark:text-[#FFFFFF] flex items-center justify-between gap-2">
+          <span>{statusMsg}</span>
+          <button type="button" onClick={() => setStatusMsg(null)} className="text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] cursor-pointer">
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* Storage Estimate Quota Bar */}
       {estimate && (
         <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm space-y-3">
           <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-neutral-500">
             <span>Browser Storage Quota</span>
-            <span className="font-mono">{estimate.usedMb} MB used of {estimate.quotaMb} MB (~{estimate.percent}%)</span>
+            <span className="font-mono tabular-nums">{estimate.usedMb} MB used of {estimate.quotaMb} MB (~{estimate.percent}%)</span>
           </div>
 
           <div className="w-full h-3 rounded-full bg-[#EDEDED] dark:bg-neutral-800 overflow-hidden">
@@ -673,11 +732,32 @@ const StorageViewerTool: React.FC = () => {
             />
           </div>
 
-          <div className="text-[11px] text-neutral-400">
-            Calculated via W3C StorageManager API. Includes IndexedDB, CacheStorage, and Web Worker allocations.
+          <div className="text-[11px] text-neutral-500 dark:text-neutral-400">
+            Calculated via W3C StorageManager API. Includes LocalStorage, IndexedDB, and CacheStorage allocations.
           </div>
         </div>
       )}
+
+      {/* Backup & Restore Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#F6F6F6] dark:bg-[#050505]">
+        <div className="text-xs font-semibold text-[#000000] dark:text-[#FFFFFF]">
+          Local Data Backup & Restore
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={exportBackup}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#000000] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export JSON Backup</span>
+          </button>
+          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/15 dark:border-white/15 bg-white dark:bg-[#090909] text-xs font-semibold cursor-pointer hover:bg-[#EDEDED] dark:hover:bg-white/10">
+            <span>Restore JSON Backup</span>
+            <input type="file" accept="application/json,.json" onChange={importBackup} className="hidden" />
+          </label>
+        </div>
+      </div>
 
       {/* LocalStorage Items Table */}
       <div className="space-y-3">
@@ -688,9 +768,11 @@ const StorageViewerTool: React.FC = () => {
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={loadStorage}
-              className="p-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition"
+              className="p-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-[#090909] transition cursor-pointer"
               title="Refresh"
+              aria-label="Refresh storage list"
             >
               <RefreshCw className="w-3.5 h-3.5" />
             </button>
@@ -698,12 +780,14 @@ const StorageViewerTool: React.FC = () => {
               confirmClear ? (
                 <div className="flex items-center gap-1.5">
                   <button
+                    type="button"
                     onClick={clearAllLocal}
                     className="px-2.5 py-1 text-xs font-bold bg-[#000000] text-[#FFFFFF] dark:bg-[#FFFFFF] dark:text-[#000000] rounded-lg cursor-pointer"
                   >
                     Confirm Clear
                   </button>
                   <button
+                    type="button"
                     onClick={() => setConfirmClear(false)}
                     className="px-2 py-1 text-xs border border-neutral-300 dark:border-neutral-700 rounded-lg cursor-pointer"
                   >
@@ -712,6 +796,7 @@ const StorageViewerTool: React.FC = () => {
                 </div>
               ) : (
                 <button
+                  type="button"
                   onClick={() => setConfirmClear(true)}
                   className="px-2.5 py-1 text-xs font-semibold text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 rounded-lg transition cursor-pointer"
                 >
@@ -741,9 +826,11 @@ const StorageViewerTool: React.FC = () => {
                     <td className="p-3 text-neutral-500 truncate max-w-xs">{item.value}</td>
                     <td className="p-3 text-right">
                       <button
+                        type="button"
                         onClick={() => deleteKey(item.key)}
-                        className="p-1 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] transition"
+                        className="p-1 text-neutral-400 hover:text-[#000000] dark:hover:text-[#FFFFFF] transition cursor-pointer"
                         title="Delete key"
+                        aria-label={`Delete ${item.key}`}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>

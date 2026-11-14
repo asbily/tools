@@ -21,19 +21,30 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
                 className="w-6 h-6 rounded invert"
               />
               <span className="font-bold text-base text-[#FFFFFF]">
-                Asbily Free Tools
+                Asbily Tools
               </span>
             </div>
             <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
-              Free Tools. Simple Solutions. All-in-one suite of modern, lightning-fast, and completely private browser utilities engineered by <strong className="text-[#FFFFFF]">Asbily Platforms</strong>.
+              Free Tools. Simple Solutions. Local-first browser utilities built and maintained by{' '}
+              <a
+                href="https://asbily.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#FFFFFF] underline decoration-white/30 hover:decoration-white"
+              >
+                Asbily Platforms
+              </a>
+              .
             </p>
             <div className="text-[11px] text-neutral-400 flex items-center gap-1.5 pt-1">
               <ShieldCheck className="w-3.5 h-3.5 text-[#FFFFFF]" />
-              <span>Zero server logging · 100% Client-Side</span>
+              <span>100% Local-First · No External Tracking</span>
             </div>
             <div className="text-[11px] text-neutral-400 flex items-center gap-1.5">
               <Globe className="w-3.5 h-3.5 text-[#FFFFFF]" />
-              <span>Domain Priority: https://tools.asbily.com</span>
+              <a href="https://tools.asbily.com" className="hover:text-[#FFFFFF] transition">
+                https://tools.asbily.com
+              </a>
             </div>
           </div>
 
@@ -118,12 +129,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
           {/* Legal & Platform */}
           <div>
             <div className="text-xs font-semibold text-[#FFFFFF] uppercase tracking-wider mb-3">
-              Company & Legal
+              Asbily Platforms
             </div>
             <ul className="space-y-2 text-xs text-neutral-400">
               <li>
                 <button type="button" onClick={() => onOpenLegal('about')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  About Asbily Platforms
+                  About Us
                 </button>
               </li>
               <li>
@@ -151,17 +162,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
                   Contact & Feedback
                 </button>
               </li>
-              <li>
-                <a
-                  href="https://www.profitableratecpmnetwork.com/u3eqn3p98?key=2892f9f26e049737ea673e48542cacd6"
-                  target="_blank"
-                  rel="noopener sponsored"
-                  className="text-neutral-400 hover:text-[#FFFFFF] transition inline-flex items-center gap-1"
-                >
-                  <span>Featured Partner Deals</span>
-                  <span className="text-[10px] text-neutral-500 uppercase font-mono">· Ad</span>
-                </a>
-              </li>
             </ul>
           </div>
         </div>
@@ -169,10 +169,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <div>
-            © {new Date().getFullYear()} Asbily Platforms. All rights reserved. Brand: Asbily.
+            © {new Date().getFullYear()} Asbily Platforms. All rights reserved. Product: Asbily Tools.
           </div>
           <div className="flex items-center gap-4 text-[11px]">
-            <span>100% Client-Side · Zero Data Stored</span>
+            <span>Local-First Browser Execution · No Server Uploads</span>
           </div>
         </div>
       </div>

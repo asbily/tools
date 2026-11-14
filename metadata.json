@@ -1,6 +1,6 @@
 {
-  "name": "Asbily Free Tools",
-  "description": "Free Tools. Simple Solutions. All-in-one free online tools platform for text, social media, developer utilities, SEO, images, PDF, security, calculators, and productivity by Asbily Platforms.",
+  "name": "Asbily Tools",
+  "description": "Free Tools. Simple Solutions. Local-first browser utilities for text, documents, images, 3D mockups, development, SEO, security, calculators, and everyday productivity by Asbily Platforms.",
   "requestFramePermissions": [
     "camera",
     "microphone"

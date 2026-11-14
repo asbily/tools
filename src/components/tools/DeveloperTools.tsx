@@ -55,7 +55,7 @@ const JsonFormatterTool: React.FC<{
   onDownload: (c: string, f: string, t?: string) => void;
   copied: boolean;
 }> = ({ onCopy, onDownload, copied }) => {
-  const [input, setInput] = useState('{"name":"Asbily Free Tools","platform":"web","active":true,"features":["json","hash","converters"]}');
+  const [input, setInput] = useState('{"name":"Asbily Tools","platform":"web","active":true,"features":["json","hash","converters"]}');
   const [indent, setIndent] = useState<number>(2);
   const [error, setError] = useState<string | null>(null);
 
@@ -182,7 +182,7 @@ const JsonFormatterTool: React.FC<{
 // -------------------------------------------------------------
 const Base64Tool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = ({ onCopy, copied }) => {
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
-  const [input, setInput] = useState('Welcome to Asbily Free Tools');
+  const [input, setInput] = useState('Welcome to Asbily Tools');
   const [error, setError] = useState<string | null>(null);
 
   const output = useMemo(() => {
@@ -1067,7 +1067,7 @@ const UuidGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boolean
 // Component: Hash Generator (SHA-256, SHA-512, SHA-1)
 // -------------------------------------------------------------
 const HashGeneratorTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = ({ onCopy }) => {
-  const [text, setText] = useState('Asbily Free Tools');
+  const [text, setText] = useState('Asbily Tools');
   const [hashes, setHashes] = useState<{ sha256: string; sha512: string; sha1: string; sha384: string }>({
     sha256: '',
     sha512: '',
@@ -1497,7 +1497,7 @@ const MarkdownEditorTool: React.FC<{
   onDownload: (c: string, f: string, t?: string) => void;
   copied: boolean;
 }> = ({ onCopy, onDownload, copied }) => {
-  const [md, setMd] = useState('# Asbily Free Tools\n\nWelcome to **Asbily Free Tools**, a suite of modern *client-side* utilities using `zero` server storage.\n\n> Built for creators, developers, and teams.\n\n### Key Features:\n- 100% Private (Runs in Browser)\n- Minimal Clean UI\n- High Performance\n\n```json\n{\n  "offline": true\n}\n```\n');
+  const [md, setMd] = useState('# Asbily Tools\n\nWelcome to **Asbily Tools**, a suite of modern *client-side* utilities using `zero` server storage.\n\n> Built for creators, developers, and teams.\n\n### Key Features:\n- 100% Private (Runs in Browser)\n- Minimal Clean UI\n- High Performance\n\n```json\n{\n  "offline": true\n}\n```\n');
 
   const escapeHtml = (s: string) =>
     s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

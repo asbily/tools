@@ -546,8 +546,8 @@ const DuplicateRemoverTool: React.FC<{
 // Component: Text Diff
 // -------------------------------------------------------------
 const TextDiffTool: React.FC<{ onCopy: (t: string) => void }> = () => {
-  const [textA, setTextA] = useState('Line 1: Hello World\nLine 2: Asbily Free Tools\nLine 3: Fast & Minimal\nLine 4: Client Side');
-  const [textB, setTextB] = useState('Line 1: Hello World\nLine 2: Asbily Free Tools v2.0\nLine 3: Fast & Minimal\nLine 4: 100% Client Side Private\nLine 5: New Feature Added');
+  const [textA, setTextA] = useState('Line 1: Hello World\nLine 2: Asbily Tools\nLine 3: Fast & Minimal\nLine 4: Client Side');
+  const [textB, setTextB] = useState('Line 1: Hello World\nLine 2: Asbily Tools v2.0\nLine 3: Fast & Minimal\nLine 4: 100% Client Side Private\nLine 5: New Feature Added');
 
   const diffResult = useMemo(() => {
     const linesA = textA.split(/\r\n|\r|\n/);
@@ -797,7 +797,7 @@ const LoremIpsumTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }>
 // Component: Fancy Unicode Text
 // -------------------------------------------------------------
 const FancyTextTool: React.FC<{ onCopy: (t: string) => void; copied: boolean }> = ({ onCopy }) => {
-  const [text, setText] = useState('Asbily Free Tools');
+  const [text, setText] = useState('Asbily Tools');
 
   const charMaps: Record<string, [string, string]> = {
     bold: ['ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', '𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵'],

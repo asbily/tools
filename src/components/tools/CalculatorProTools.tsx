@@ -27,7 +27,7 @@ const CURRENCY_META: { code: string; name: string; symbol: string }[] = [
   { code: 'OMR', name: 'Omani Rial', symbol: '﷼' },
 ];
 
-const FALLBACK_RATES: Record<string, number> = {
+const REFERENCE_RATES: Record<string, number> = {
   USD: 1, BDT: 119.5, EUR: 0.92, GBP: 0.79, INR: 84.1, SAR: 3.75, AED: 3.67,
   CAD: 1.39, AUD: 1.53, JPY: 153.2, SGD: 1.34, MYR: 4.38, CHF: 0.88, CNY: 7.21,
   KRW: 1385, TRY: 34.3, PKR: 277.8, QAR: 3.64, KWD: 0.307, OMR: 0.385,
@@ -39,78 +39,92 @@ export const CurrencyConverterTool: React.FC = () => {
   const [to, setTo] = useState('BDT');
   const [rates, setRates] = useState<Record<string, number>>(() => {
     try {
-      const cached = localStorage.getItem('asbily_fx_rates');
-      return cached ? JSON.parse(cached).rates : FALLBACK_RATES;
+      const cached = localStorage.getItem('asbily_custom_fx_rates');
+      return cached ? { ...REFERENCE_RATES, ...JSON.parse(cached) } : REFERENCE_RATES;
     } catch {
-      return FALLBACK_RATES;
+      return REFERENCE_RATES;
     }
   });
-  const [lastUpdated, setLastUpdated] = useState<string>(() => {
-    try {
-      const cached = localStorage.getItem('asbily_fx_rates');
-      return cached ? JSON.parse(cached).updated : 'Cached baseline';
-    } catch {
-      return 'Cached baseline';
-    }
-  });
-  const [loading, setLoading] = useState(false);
+  const [customPairRate, setCustomPairRate] = useState<string>('');
+  const [copied, setCopied] = useState(false);
 
-  const fetchLiveRates = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('https://open.er-api.com/v6/latest/USD');
-      const data = await res.json();
-      if (data && data.result === 'success' && data.rates) {
-        setRates(data.rates);
-        const nowStr = new Date().toLocaleString();
-        setLastUpdated(`Live · ${nowStr}`);
-        localStorage.setItem('asbily_fx_rates', JSON.stringify({ rates: data.rates, updated: `Live · ${nowStr}` }));
-      }
-    } catch {
-      // Keep cached or fallback rates cleanly
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchLiveRates();
-  }, []);
-
-  const numAmount = parseFloat(amount) || 0;
+  const numAmount = Math.max(0, parseFloat(amount) || 0);
   const fromRate = rates[from] || 1;
   const toRate = rates[to] || 1;
-  const converted = (numAmount / fromRate) * toRate;
-  const unitRate = (1 / fromRate) * toRate;
+  const baseUnitRate = (1 / fromRate) * toRate;
+  const parsedCustom = parseFloat(customPairRate);
+  const effectiveUnitRate = Number.isFinite(parsedCustom) && parsedCustom > 0 ? parsedCustom : baseUnitRate;
+  const converted = numAmount * effectiveUnitRate;
 
   const swapCurrencies = () => {
     setFrom(to);
     setTo(from);
+    setCustomPairRate('');
+  };
+
+  const saveCustomTargetRate = () => {
+    if (!Number.isFinite(parsedCustom) || parsedCustom <= 0) return;
+    const updated = {
+      ...rates,
+      [to]: fromRate * parsedCustom,
+    };
+    setRates(updated);
+    try {
+      localStorage.setItem('asbily_custom_fx_rates', JSON.stringify(updated));
+    } catch {
+      // ignore storage quota errors
+    }
+    setCustomPairRate('');
+  };
+
+  const resetToReference = () => {
+    setAmount('100');
+    setFrom('USD');
+    setTo('BDT');
+    setRates(REFERENCE_RATES);
+    setCustomPairRate('');
+    try {
+      localStorage.removeItem('asbily_custom_fx_rates');
+    } catch {
+      // ignore
+    }
+  };
+
+  const copyConversion = () => {
+    const summary = `${numAmount.toLocaleString()} ${from} = ${converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${to} (1 ${from} = ${effectiveUnitRate.toFixed(4)} ${to})`;
+    navigator.clipboard?.writeText(summary).catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-600 dark:text-neutral-400">
         <span className="flex items-center gap-1.5">
           <Coins className="w-4 h-4 text-[#000000] dark:text-[#FFFFFF]" />
-          <span>Rates: {lastUpdated}</span>
+          <span>Local Reference Rates (Offline-Safe · No External API Calls)</span>
         </span>
         <button
           type="button"
-          onClick={fetchLiveRates}
-          disabled={loading}
+          onClick={resetToReference}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-white/10 font-medium cursor-pointer"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-          <span>{loading ? 'Refreshing...' : 'Refresh Live Rates'}</span>
+          <RefreshCw className="w-3.5 h-3.5" />
+          <span>Reset Reference Rates</span>
         </button>
+      </div>
+
+      <div className="p-3.5 rounded-xl border border-black/10 dark:border-white/10 bg-[#F6F6F6] dark:bg-[#050505] text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+        To preserve 100% local-first privacy and offline reliability, this tool uses built-in reference exchange rates rather than querying external servers. For exact bank or market conversions, enter a custom rate below.
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-11 gap-3 items-end">
         <div className="md:col-span-3">
-          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Amount</label>
+          <label htmlFor="fx-amount" className="block text-xs font-semibold text-neutral-500 uppercase mb-1">Amount</label>
           <input
+            id="fx-amount"
             type="number"
+            min={0}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-[#090909] text-base font-mono tabular-nums font-bold"
@@ -118,10 +132,14 @@ export const CurrencyConverterTool: React.FC = () => {
         </div>
 
         <div className="md:col-span-3">
-          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">From</label>
+          <label htmlFor="fx-from" className="block text-xs font-semibold text-neutral-500 uppercase mb-1">From</label>
           <select
+            id="fx-from"
             value={from}
-            onChange={(e) => setFrom(e.target.value)}
+            onChange={(e) => {
+              setFrom(e.target.value);
+              setCustomPairRate('');
+            }}
             className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-[#090909] text-sm font-medium"
           >
             {CURRENCY_META.map((c) => (
@@ -136,16 +154,21 @@ export const CurrencyConverterTool: React.FC = () => {
             onClick={swapCurrencies}
             className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer"
             title="Swap currencies"
+            aria-label="Swap currencies"
           >
             <ArrowRightLeft className="w-4 h-4" />
           </button>
         </div>
 
         <div className="md:col-span-4">
-          <label className="block text-xs font-semibold text-neutral-500 uppercase mb-1">To</label>
+          <label htmlFor="fx-to" className="block text-xs font-semibold text-neutral-500 uppercase mb-1">To</label>
           <select
+            id="fx-to"
             value={to}
-            onChange={(e) => setTo(e.target.value)}
+            onChange={(e) => {
+              setTo(e.target.value);
+              setCustomPairRate('');
+            }}
             className="w-full p-3 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-white dark:bg-[#090909] text-sm font-medium"
           >
             {CURRENCY_META.map((c) => (
@@ -153,6 +176,33 @@ export const CurrencyConverterTool: React.FC = () => {
             ))}
           </select>
         </div>
+      </div>
+
+      {/* Custom Rate Override */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#090909]">
+        <div className="flex-1">
+          <label htmlFor="fx-custom-rate" className="block text-xs font-semibold text-neutral-500 uppercase mb-1">
+            Custom Rate Override (1 {from} in {to})
+          </label>
+          <input
+            id="fx-custom-rate"
+            type="number"
+            min={0}
+            step="any"
+            value={customPairRate}
+            onChange={(e) => setCustomPairRate(e.target.value)}
+            placeholder={`Reference: ${baseUnitRate.toFixed(4)}`}
+            className="w-full p-2.5 border border-neutral-200 dark:border-neutral-800 rounded-lg bg-white dark:bg-[#090909] text-xs font-mono tabular-nums"
+          />
+        </div>
+        <button
+          type="button"
+          onClick={saveCustomTargetRate}
+          disabled={!parsedCustom || parsedCustom <= 0}
+          className="px-4 py-2.5 rounded-lg bg-[#000000] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold disabled:opacity-40 cursor-pointer"
+        >
+          Save Rate Locally
+        </button>
       </div>
 
       {/* Primary Result Box */}
@@ -165,9 +215,19 @@ export const CurrencyConverterTool: React.FC = () => {
             {converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {to}
           </div>
         </div>
-        <div className="text-xs font-mono tabular-nums text-neutral-500 space-y-1 sm:text-right">
-          <div>1 {from} = {unitRate.toFixed(4)} {to}</div>
-          <div>1 {to} = {(1 / unitRate).toFixed(4)} {from}</div>
+        <div className="flex flex-col sm:items-end gap-2">
+          <div className="text-xs font-mono tabular-nums text-neutral-500 space-y-1 sm:text-right">
+            <div>1 {from} = {effectiveUnitRate.toFixed(4)} {to}</div>
+            <div>1 {to} = {effectiveUnitRate > 0 ? (1 / effectiveUnitRate).toFixed(4) : '0.0000'} {from}</div>
+          </div>
+          <button
+            type="button"
+            onClick={copyConversion}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/15 dark:border-white/15 bg-white dark:bg-[#090909] text-xs font-semibold cursor-pointer"
+          >
+            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+            <span>{copied ? 'Copied' : 'Copy Result'}</span>
+          </button>
         </div>
       </div>
 
@@ -179,16 +239,20 @@ export const CurrencyConverterTool: React.FC = () => {
           .map((code) => {
             const val = (numAmount / fromRate) * (rates[code] || 1);
             return (
-              <div
+              <button
+                type="button"
                 key={code}
-                onClick={() => setTo(code)}
-                className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#090909] hover:border-[#000000] dark:hover:border-[#FFFFFF] transition cursor-pointer"
+                onClick={() => {
+                  setTo(code);
+                  setCustomPairRate('');
+                }}
+                className="text-left p-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#090909] hover:border-[#000000] dark:hover:border-[#FFFFFF] transition cursor-pointer"
               >
                 <div className="text-[11px] font-semibold text-neutral-400">{code}</div>
                 <div className="text-sm font-bold font-mono tabular-nums mt-0.5">
                   {val.toLocaleString(undefined, { maximumFractionDigits: 2 })}
                 </div>
-              </div>
+              </button>
             );
           })}
       </div>

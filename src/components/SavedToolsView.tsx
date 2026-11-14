@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, Star, Search, Trash2, Share2, Check, Compass } from 'lucide-react';
+import { ArrowLeft, Star, Search, Trash2, Share2, Check, Compass, Download } from 'lucide-react';
 import { ToolItem } from '../types';
 import { ToolCard } from './ToolCard';
 
@@ -23,6 +23,7 @@ export const SavedToolsView: React.FC<SavedToolsViewProps> = ({
   const [filterQuery, setFilterQuery] = useState('');
   const [selectedCat, setSelectedCat] = useState<string>('all');
   const [copiedPage, setCopiedPage] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
 
   const categoriesPresent = useMemo(() => {
     const map = new Map<string, string>();
@@ -58,6 +59,22 @@ export const SavedToolsView: React.FC<SavedToolsViewProps> = ({
     setTimeout(() => setCopiedPage(false), 2000);
   };
 
+  const handleExportSavedBackup = () => {
+    const payload = {
+      app: 'Asbily Tools',
+      exportedAt: new Date().toISOString(),
+      favorites: favoriteTools.map((t) => ({ id: t.id, name: t.name, category: t.category })),
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `asbily-saved-tools-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    onShowToast?.('Saved tools JSON exported locally.', 'success');
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-8 animate-in fade-in duration-200">
       {/* Top Bar */}
@@ -71,7 +88,7 @@ export const SavedToolsView: React.FC<SavedToolsViewProps> = ({
           <span>Back to All Tools</span>
         </button>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={handleShareSavedPage}
@@ -82,14 +99,47 @@ export const SavedToolsView: React.FC<SavedToolsViewProps> = ({
           </button>
 
           {favoriteTools.length > 0 && (
-            <button
-              type="button"
-              onClick={onClearAllFavorites}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-xs font-medium text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Clear All</span>
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={handleExportSavedBackup}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-xs font-medium text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Backup JSON</span>
+              </button>
+
+              {confirmClear ? (
+                <div className="inline-flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClearAllFavorites();
+                      setConfirmClear(false);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-[#000000] dark:bg-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000] text-xs font-semibold cursor-pointer"
+                  >
+                    Confirm Clear ({favoriteTools.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmClear(false)}
+                    className="px-2.5 py-1.5 rounded-lg border border-black/15 dark:border-white/15 text-xs font-medium cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setConfirmClear(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-xs font-medium text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Clear All</span>
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>
