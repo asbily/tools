@@ -22,6 +22,7 @@ import {
   ShieldCheck,
   Globe
 } from 'lucide-react';
+import { VoiceRecorderTool, ScreenRecorderTool } from './MediaProTools';
 
 interface MediaToolProps {
   toolId: string;
@@ -40,6 +41,8 @@ export const MediaBrowserTools: React.FC<MediaToolProps> = ({ toolId }) => {
   if (toolId === 'speech-to-text') return <SpeechToTextTool onCopy={copyText} copied={copied} />;
   if (toolId === 'device-inspector') return <DeviceInspectorTool onCopy={copyText} copied={copied} />;
   if (toolId === 'storage-viewer') return <StorageViewerTool onCopy={copyText} />;
+  if (toolId === 'voice-recorder') return <VoiceRecorderTool />;
+  if (toolId === 'screen-recorder') return <ScreenRecorderTool />;
 
   return <div className="text-neutral-500">Media tool not found.</div>;
 };

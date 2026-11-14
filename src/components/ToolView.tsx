@@ -14,6 +14,7 @@ import { StudentTools } from './tools/StudentTools';
 import { BusinessProductivityTools } from './tools/BusinessProductivityTools';
 import { QrBarcodeTools } from './tools/QrBarcodeTools';
 import { MediaBrowserTools } from './tools/MediaBrowserTools';
+import { ThreeDTools } from './tools/ThreeDTools';
 import { ToolCard } from './ToolCard';
 import { AdSlot } from './AdSlot';
 
@@ -38,15 +39,17 @@ export const ToolView: React.FC<ToolViewProps> = ({
 }) => {
   const [copiedShare, setCopiedShare] = useState(false);
 
-  const handleShare = () => {
-    const origin = window.location.origin.includes('localhost') || window.location.origin.includes('run.app')
+  const handleShare = async () => {
+    const base = window.location.origin && window.location.origin.startsWith('http')
       ? window.location.origin
       : 'https://tools.asbily.com';
-    const url = `${origin}/${tool.category}/${tool.id}`;
-    navigator.clipboard.writeText(url);
+    const url = `${base}/${tool.category}/${tool.id}`;
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url).catch(() => {});
+    }
     setCopiedShare(true);
     if (onShowToast) {
-      onShowToast(`Link copied: ${url}`);
+      onShowToast(`Tool link copied: ${url}`);
     }
     setTimeout(() => setCopiedShare(false), 2000);
   };
@@ -81,6 +84,8 @@ export const ToolView: React.FC<ToolViewProps> = ({
         return <BusinessProductivityTools toolId={tool.id} />;
       case 'qr':
         return <QrBarcodeTools toolId={tool.id} />;
+      case '3d':
+        return <ThreeDTools toolId={tool.id} />;
       case 'media':
         return <MediaBrowserTools toolId={tool.id} />;
       default:
@@ -150,15 +155,15 @@ export const ToolView: React.FC<ToolViewProps> = ({
 
       {/* Tool Header Banner */}
       <div className="space-y-3 w-full max-w-full overflow-hidden">
-        <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 tracking-wider uppercase">
-          <span>{tool.categoryLabel}</span>
+        <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+          <span className="font-semibold text-neutral-700 dark:text-neutral-300">{tool.categoryLabel}</span>
           <span aria-hidden="true" className="opacity-40">·</span>
-          <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium normal-case">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            100% Client-Side Private
+          <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>100% Client-Side Private</span>
           </span>
           <span aria-hidden="true" className="opacity-40">·</span>
-          <span className="font-mono text-neutral-400 dark:text-neutral-500 normal-case">
+          <span className="font-mono text-neutral-400 dark:text-neutral-500">
             /{tool.category}/{tool.id}
           </span>
         </div>

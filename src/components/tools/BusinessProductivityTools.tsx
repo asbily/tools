@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Copy, Check, Plus, Trash2, Play, Pause, RotateCcw, DollarSign, Building, Clock, CheckSquare, Dices, Shuffle } from 'lucide-react';
+import { WorldClockPlannerTool, HabitTrackerTool, TypingSpeedTestTool } from './ProductivityProTools';
 
 interface BusinessToolProps {
   toolId: string;
@@ -21,6 +22,9 @@ export const BusinessProductivityTools: React.FC<BusinessToolProps> = ({ toolId 
   if (toolId === 'pomodoro-timer') return <PomodoroTimerTool />;
   if (toolId === 'stopwatch') return <StopwatchTool />;
   if (toolId === 'random-picker') return <RandomPickerTool />;
+  if (toolId === 'world-clock-planner') return <WorldClockPlannerTool />;
+  if (toolId === 'habit-tracker') return <HabitTrackerTool />;
+  if (toolId === 'typing-speed-test') return <TypingSpeedTestTool />;
 
   return <div className="text-neutral-500">Business/Productivity tool not found.</div>;
 };

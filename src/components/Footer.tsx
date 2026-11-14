@@ -79,9 +79,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory, o
 
           {/* Sitemaps & Public SEO Architecture */}
           <div>
-            <div className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <div className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 uppercase tracking-wider mb-3">
               <span>Public Sitemap & Robots</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
             </div>
             <ul className="space-y-2 text-xs text-neutral-500 dark:text-neutral-400">
               <li>

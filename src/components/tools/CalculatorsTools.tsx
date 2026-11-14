@@ -15,6 +15,7 @@ import {
   Clock,
   Sparkles
 } from 'lucide-react';
+import { CurrencyConverterTool, HealthBmiTool, BillSplitTaxTool } from './CalculatorProTools';
 
 interface CalcToolProps {
   toolId: string;
@@ -28,6 +29,9 @@ export const CalculatorsTools: React.FC<CalcToolProps> = ({ toolId }) => {
   if (toolId === 'loan-calculator') return <LoanCalculatorTool />;
   if (toolId === 'electricity-calc') return <ElectricityCalcTool />;
   if (toolId === 'unit-converter') return <UnitConverterTool />;
+  if (toolId === 'currency-converter') return <CurrencyConverterTool />;
+  if (toolId === 'health-bmi-calculator') return <HealthBmiTool />;
+  if (toolId === 'bill-split-tax') return <BillSplitTaxTool />;
 
   return <div className="text-neutral-500">Calculator tool not found.</div>;
 };

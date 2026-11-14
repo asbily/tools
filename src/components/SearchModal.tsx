@@ -99,7 +99,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               setSelectedIndex(0);
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Search all 40+ free tools by name, tag, or function..."
+            placeholder={`Search all ${tools.length} free tools by name, tag, or function...`}
             className="flex-1 bg-transparent border-none text-sm text-[#111111] dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none"
           />
           {query && (
@@ -170,7 +170,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                   onMouseEnter={() => setSelectedIndex(idx)}
                   className={`p-3 sm:p-3.5 rounded-xl cursor-pointer flex items-center justify-between group transition ${
                     isSelected
-                      ? 'bg-neutral-100 dark:bg-neutral-900 border-l-2 border-neutral-900 dark:border-white'
+                      ? 'bg-indigo-50 dark:bg-indigo-950/35'
                       : 'hover:bg-neutral-50 dark:hover:bg-neutral-900/40'
                   }`}
                 >

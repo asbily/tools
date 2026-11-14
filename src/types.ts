@@ -1,5 +1,6 @@
 export type ToolCategory =
   | 'all'
+  | '3d'
   | 'text'
   | 'social'
   | 'developer'
