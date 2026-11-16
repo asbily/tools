@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TOOLS, CATEGORIES } from './data/toolsData';
+import { getToolGuide } from './data/toolGuides';
 import { ToolCategory, ToolItem } from './types';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -246,11 +247,13 @@ export default function App() {
     return () => window.removeEventListener('popstate', syncRouteFromUrl);
   }, []);
 
-  // Update dynamic page title, meta, canonical URL, and JSON-LD structured data
+  // Update dynamic page title, meta, canonical URL, hreflang, and JSON-LD structured data
   useEffect(() => {
     let pageTitle = 'Asbily Tools — Free Online Tools for Everyday Work';
     let pageDesc =
       'Discover free, practical browser tools for productivity, business, development, PDF documents, images, 3D mockups, and daily tasks. Local-first processing with no account required.';
+    let pageKeywords =
+      'Asbily Tools, free online tools, browser utilities, PDF merge split, image compressor, background remover, JSON formatter, QR code generator, 3D mockup studio, calculators, developer tools';
     let canonicalPath = '/';
     let robotsContent = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
@@ -268,6 +271,7 @@ export default function App() {
         url: 'https://tools.asbily.com/',
         name: 'Asbily Tools',
         description: 'Free Tools. Simple Solutions. Browser-native utilities running locally on your device.',
+        inLanguage: 'en',
         publisher: { '@id': 'https://tools.asbily.com/#organization' },
       },
     ];
@@ -282,12 +286,14 @@ export default function App() {
       if (info) {
         pageTitle = info.title;
         pageDesc = info.description;
+        pageKeywords = `${info.label}, Asbily Tools, Asbily Platforms, local-first browser tools`;
         canonicalPath = `/${info.id}`;
         graphItems.push({
           '@type': 'WebPage',
           url: `https://tools.asbily.com${canonicalPath}`,
           name: info.title,
           description: info.description,
+          inLanguage: 'en',
           isPartOf: { '@id': 'https://tools.asbily.com/#website' },
         });
         graphItems.push({
@@ -297,11 +303,61 @@ export default function App() {
             { '@type': 'ListItem', position: 2, name: info.label, item: `https://tools.asbily.com${canonicalPath}` },
           ],
         });
+        if (info.id === 'faq') {
+          graphItems.push({
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: 'Is Asbily Tools free and account-free?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Yes. Every utility in Asbily Tools is free to use directly in your browser without creating an account.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Does Asbily Tools work offline?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Initial access requires an internet connection to load and cache the application shell and bundled libraries. Once loaded or installed as a PWA, compatible client-side tools continue working offline.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Are my files or passwords uploaded anywhere?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'No. File processing, PDF manipulation, image editing, 3D rendering, and cryptographic operations run locally inside your browser.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Is data saved in LocalStorage permanent?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'No. Browser LocalStorage stays on your device, but clearing site data or switching browsers removes it. Use the JSON backup export in Browser Storage Explorer to keep safe copies.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'How does the Currency Converter work without external APIs?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'To protect privacy and work offline, it uses built-in reference rates and lets you enter and save exact custom exchange rates locally.',
+                },
+              },
+            ],
+          });
+        }
       }
     } else if (activeTool) {
+      const guide = getToolGuide(activeTool);
       pageTitle = `${activeTool.name} — Free Online Tool | Asbily Tools`;
       pageDesc = `${activeTool.shortDesc} Runs locally in your browser with no server upload or account required.`;
+      pageKeywords = `${activeTool.name}, ${activeTool.categoryLabel}, ${activeTool.tags.join(', ')}, free online tool, Asbily Tools`;
       canonicalPath = `/${activeTool.category}/${activeTool.id}`;
+
       graphItems.push({
         '@type': 'WebApplication',
         url: `https://tools.asbily.com${canonicalPath}`,
@@ -310,8 +366,11 @@ export default function App() {
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'All modern web browsers',
         browserRequirements: 'Requires JavaScript',
+        isAccessibleForFree: true,
+        inLanguage: 'en',
         publisher: { '@id': 'https://tools.asbily.com/#organization' },
       });
+
       graphItems.push({
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -330,18 +389,62 @@ export default function App() {
           },
         ],
       });
+
+      if (guide.steps.length > 0) {
+        graphItems.push({
+          '@type': 'HowTo',
+          name: `How to use ${activeTool.name}`,
+          description: activeTool.shortDesc,
+          step: guide.steps.map((stepText, idx) => ({
+            '@type': 'HowToStep',
+            position: idx + 1,
+            text: stepText,
+          })),
+        });
+      }
+
+      if (guide.faqs.length > 0) {
+        graphItems.push({
+          '@type': 'FAQPage',
+          mainEntity: guide.faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.q,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: faq.a,
+            },
+          })),
+        });
+      }
     } else if (selectedCategory && selectedCategory !== 'all') {
       const cat = CATEGORIES.find((c) => c.id === selectedCategory);
+      const catTools = TOOLS.filter((t) => t.category === selectedCategory);
       pageTitle = `${cat?.name || selectedCategory} — Free Online Tools | Asbily Tools`;
       pageDesc = `${cat?.description || 'Browse local-first browser utilities'}. Private client-side tools by Asbily Platforms.`;
+      pageKeywords = `${cat?.name || selectedCategory}, ${catTools.slice(0, 8).map((t) => t.name).join(', ')}, Asbily Tools`;
       canonicalPath = `/${selectedCategory}`;
+
       graphItems.push({
         '@type': 'CollectionPage',
         url: `https://tools.asbily.com${canonicalPath}`,
         name: `${cat?.name || selectedCategory} — Asbily Tools`,
         description: pageDesc,
+        inLanguage: 'en',
         isPartOf: { '@id': 'https://tools.asbily.com/#website' },
       });
+
+      graphItems.push({
+        '@type': 'ItemList',
+        name: `${cat?.name || selectedCategory} Directory`,
+        numberOfItems: catTools.length,
+        itemListElement: catTools.map((t, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: t.name,
+          url: `https://tools.asbily.com/${t.category}/${t.id}`,
+        })),
+      });
+
       graphItems.push({
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -363,7 +466,59 @@ export default function App() {
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'All modern web browsers',
         browserRequirements: 'Requires JavaScript',
+        isAccessibleForFree: true,
+        inLanguage: 'en',
         publisher: { '@id': 'https://tools.asbily.com/#organization' },
+      });
+
+      graphItems.push({
+        '@type': 'ItemList',
+        name: 'Asbily Tools Categories',
+        numberOfItems: CATEGORIES.filter((c) => c.id !== 'all').length,
+        itemListElement: CATEGORIES.filter((c) => c.id !== 'all').map((c, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: c.name,
+          url: `https://tools.asbily.com/${c.id}`,
+        })),
+      });
+
+      graphItems.push({
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'Do I need an account or subscription to use Asbily Tools?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No. Every tool on tools.asbily.com opens directly in your browser without registration, login walls, or paywalls.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Are uploaded files, PDFs, or text sent to any server?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No. File parsing, image editing, PDF merging, cryptographic hashing, and 3D rendering run locally inside your browser.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Will Asbily Tools work on my first visit without internet?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No. Your browser must first load the website online so the Service Worker can cache the app shell and assets. After caching, compatible tools work offline.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How safe is data saved inside LocalStorage?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'LocalStorage stays on your device, not on our servers, but clearing browser site data can erase it. Use JSON or CSV exports for permanent backups.',
+            },
+          },
+        ],
       });
     }
 
@@ -373,8 +528,23 @@ export default function App() {
     const canonicalEl = document.querySelector('link[rel="canonical"]');
     if (canonicalEl) canonicalEl.setAttribute('href', fullCanonicalUrl);
 
+    const altEnEl = document.querySelector('link[rel="alternate"][hreflang="en"]');
+    if (altEnEl) altEnEl.setAttribute('href', fullCanonicalUrl);
+
+    const altDefaultEl = document.querySelector('link[rel="alternate"][hreflang="x-default"]');
+    if (altDefaultEl) altDefaultEl.setAttribute('href', fullCanonicalUrl);
+
     const robotsEl = document.querySelector('meta[name="robots"]');
     if (robotsEl) robotsEl.setAttribute('content', robotsContent);
+
+    const googlebotEl = document.querySelector('meta[name="googlebot"]');
+    if (googlebotEl) googlebotEl.setAttribute('content', robotsContent);
+
+    const bingbotEl = document.querySelector('meta[name="bingbot"]');
+    if (bingbotEl) bingbotEl.setAttribute('content', robotsContent);
+
+    const keywordsEl = document.querySelector('meta[name="keywords"]');
+    if (keywordsEl) keywordsEl.setAttribute('content', pageKeywords);
 
     const descEl = document.querySelector('meta[name="description"]');
     if (descEl) descEl.setAttribute('content', pageDesc);
@@ -763,12 +933,15 @@ export default function App() {
                         {CATEGORIES.filter((c) => c.id !== 'all').map((cat) => {
                           const catCount = TOOLS.filter((t) => t.category === cat.id).length;
                           return (
-                            <button
+                            <a
                               key={cat.id}
-                              type="button"
-                              onClick={() => {
-                                handleSelectCategory(cat.id);
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              href={`/${cat.id}`}
+                              onClick={(e) => {
+                                if (!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+                                  e.preventDefault();
+                                  handleSelectCategory(cat.id);
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }
                               }}
                               className="group text-left p-4 sm:p-5 rounded-2xl border border-black/10 dark:border-white/10 bg-[#F6F6F6] dark:bg-[#050505] hover:border-[#000000] dark:hover:border-[#FFFFFF] transition-colors flex flex-col justify-between gap-3 cursor-pointer"
                             >
@@ -789,7 +962,7 @@ export default function App() {
                                 <span>Open Suite</span>
                                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                               </div>
-                            </button>
+                            </a>
                           );
                         })}
                       </div>

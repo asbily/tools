@@ -1,4 +1,64 @@
+# Asbily Tools — Robots & Crawler Policy
+# Canonical Host: https://tools.asbily.com
+
 User-agent: *
 Allow: /
+Disallow: /saved
+Disallow: /favorites
+Disallow: /*?q=
+Disallow: /*?search=
 
+# Major Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+User-agent: Slurp
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+User-agent: Yandex
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+Host: https://tools.asbily.com
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+User-agent: Applebot
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+User-agent: Yeti
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+User-agent: SeznamBot
+Allow: /
+Disallow: /saved
+Disallow: /favorites
+
+# Sitemap Index & Segmented Sitemaps
 Sitemap: https://tools.asbily.com/sitemap.xml
+Sitemap: https://tools.asbily.com/sitemap-pages.xml
+Sitemap: https://tools.asbily.com/sitemap-tools.xml

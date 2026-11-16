@@ -1,0 +1,37 @@
+# Asbily Tools
+
+> Free Tools. Simple Solutions. Local-first browser utilities published by Asbily Platforms at https://tools.asbily.com.
+
+## Overview
+- Publisher: Asbily Platforms (https://asbily.com)
+- Product URL: https://tools.asbily.com
+- Total Utilities: 111 browser-native tools across 15 categories
+- Privacy Model: 100% local client-side processing via HTML5 Canvas, Web Crypto, File APIs, Three.js WebGL, jsPDF, and pdf-lib. No user files or inputs are sent to remote servers.
+- Offline Support: Installable PWA; works offline for compatible tools once cached on initial online load.
+
+## Primary Directory Pages
+- Home: https://tools.asbily.com/
+- About Asbily Tools: https://tools.asbily.com/about
+- Privacy Policy: https://tools.asbily.com/privacy
+- Terms of Use: https://tools.asbily.com/terms
+- Disclaimer: https://tools.asbily.com/disclaimer
+- Frequently Asked Questions: https://tools.asbily.com/faq
+- Contact & Feedback: https://tools.asbily.com/contact
+- XML Sitemap Index: https://tools.asbily.com/sitemap.xml
+
+## Categories
+- 3D Studio: https://tools.asbily.com/3d
+- Text Tools: https://tools.asbily.com/text
+- Social Media: https://tools.asbily.com/social
+- Developer Tools: https://tools.asbily.com/developer
+- SEO & Web: https://tools.asbily.com/seo
+- Image & Design: https://tools.asbily.com/image
+- PDF & Documents: https://tools.asbily.com/pdf
+- Security & Privacy: https://tools.asbily.com/security
+- Calculators & Units: https://tools.asbily.com/calculator
+- Student Tools: https://tools.asbily.com/student
+- Business & Enterprise: https://tools.asbily.com/business
+- Everyday & Daily Life: https://tools.asbily.com/daily
+- Productivity: https://tools.asbily.com/productivity
+- QR & Barcodes: https://tools.asbily.com/qr
+- Media & Browser: https://tools.asbily.com/media

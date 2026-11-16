@@ -1,12 +1,28 @@
 import React from 'react';
 import { ShieldCheck, Globe } from 'lucide-react';
+import { LegalTab } from './LegalModal';
+import { ToolCategory } from '../types';
 
 interface FooterProps {
-  onOpenLegal: (tab: 'about' | 'privacy' | 'terms' | 'disclaimer' | 'faq' | 'contact') => void;
-  onSelectCategory: (cat: any) => void;
+  onOpenLegal: (tab: LegalTab) => void;
+  onSelectCategory: (cat: ToolCategory) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory }) => {
+  const handleCategoryLink = (e: React.MouseEvent<HTMLAnchorElement>, cat: ToolCategory) => {
+    if (!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+      e.preventDefault();
+      onSelectCategory(cat);
+    }
+  };
+
+  const handleLegalLink = (e: React.MouseEvent<HTMLAnchorElement>, tab: LegalTab) => {
+    if (!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+      e.preventDefault();
+      onOpenLegal(tab);
+    }
+  };
+
   return (
     <footer className="border-t border-white/10 bg-[#050505] text-[#FFFFFF] mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
@@ -54,36 +70,24 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
               Tool Suites
             </div>
             <ul className="space-y-2 text-xs text-neutral-400">
-              <li>
-                <button type="button" onClick={() => onSelectCategory('3d')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  3D & Spatial Studio
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('text')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Text & Unicode Tools
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('developer')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Developer JSON & Crypto
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('seo')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  SEO & Meta Tag Generators
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('image')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Image Compressor & Editors
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('pdf')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  PDF Merge, Split & CV
-                </button>
-              </li>
+              {[
+                { id: '3d' as ToolCategory, label: '3D & Spatial Studio' },
+                { id: 'text' as ToolCategory, label: 'Text & Unicode Tools' },
+                { id: 'developer' as ToolCategory, label: 'Developer JSON & Crypto' },
+                { id: 'seo' as ToolCategory, label: 'SEO & Meta Tag Generators' },
+                { id: 'image' as ToolCategory, label: 'Image Compressor & Editors' },
+                { id: 'pdf' as ToolCategory, label: 'PDF Merge, Split & CV' },
+              ].map((cat) => (
+                <li key={cat.id}>
+                  <a
+                    href={`/${cat.id}`}
+                    onClick={(e) => handleCategoryLink(e, cat.id)}
+                    className="hover:text-[#FFFFFF] transition"
+                  >
+                    {cat.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -93,36 +97,24 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
               Business & Everyday
             </div>
             <ul className="space-y-2 text-xs text-neutral-400">
-              <li>
-                <button type="button" onClick={() => onSelectCategory('business')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Business, Payroll & Inventory
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('daily')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Everyday Life, Land & Khata
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('calculator')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Finance & Scientific Calculators
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('productivity')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Productivity & Time Tracking
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('qr')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  QR, Barcode & Payment Stands
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onSelectCategory('media')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Audio, Media & Diagnostics
-                </button>
-              </li>
+              {[
+                { id: 'business' as ToolCategory, label: 'Business, Payroll & Inventory' },
+                { id: 'daily' as ToolCategory, label: 'Everyday Life, Land & Khata' },
+                { id: 'calculator' as ToolCategory, label: 'Finance & Scientific Calculators' },
+                { id: 'productivity' as ToolCategory, label: 'Productivity & Time Tracking' },
+                { id: 'qr' as ToolCategory, label: 'QR, Barcode & Payment Stands' },
+                { id: 'media' as ToolCategory, label: 'Audio, Media & Diagnostics' },
+              ].map((cat) => (
+                <li key={cat.id}>
+                  <a
+                    href={`/${cat.id}`}
+                    onClick={(e) => handleCategoryLink(e, cat.id)}
+                    className="hover:text-[#FFFFFF] transition"
+                  >
+                    {cat.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -132,35 +124,28 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
               Asbily Platforms
             </div>
             <ul className="space-y-2 text-xs text-neutral-400">
+              {[
+                { id: 'about' as LegalTab, label: 'About Us' },
+                { id: 'privacy' as LegalTab, label: 'Privacy Policy' },
+                { id: 'terms' as LegalTab, label: 'Terms of Use' },
+                { id: 'disclaimer' as LegalTab, label: 'Disclaimer' },
+                { id: 'faq' as LegalTab, label: 'Frequently Asked Questions' },
+                { id: 'contact' as LegalTab, label: 'Contact & Feedback' },
+              ].map((item) => (
+                <li key={item.id}>
+                  <a
+                    href={`/${item.id}`}
+                    onClick={(e) => handleLegalLink(e, item.id)}
+                    className="hover:text-[#FFFFFF] transition"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
               <li>
-                <button type="button" onClick={() => onOpenLegal('about')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  About Us
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onOpenLegal('privacy')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Privacy Policy
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onOpenLegal('terms')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Terms of Use
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onOpenLegal('disclaimer')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Disclaimer
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onOpenLegal('faq')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Frequently Asked Questions
-                </button>
-              </li>
-              <li>
-                <button type="button" onClick={() => onOpenLegal('contact')} className="hover:text-[#FFFFFF] transition cursor-pointer">
-                  Contact & Feedback
-                </button>
+                <a href="/sitemap.xml" className="hover:text-[#FFFFFF] transition">
+                  XML Sitemap
+                </a>
               </li>
             </ul>
           </div>

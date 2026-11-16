@@ -275,14 +275,22 @@ export const ToolCard: React.FC<ToolCardProps> = ({
     setTimeout(() => setCopiedLink(false), 2000);
   };
 
+  const toolHref = `/${tool.category}/${tool.id}`;
+
+  const handleAnchorOpen = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+      e.preventDefault();
+      onOpen(tool);
+    }
+  };
+
   return (
-    <div
+    <article
       ref={cardRef}
-      onClick={() => onOpen(tool)}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       style={{ transform: tiltStyle.transform }}
-      className="card-3d-tilt group relative border border-black/10 dark:border-white/10 rounded-2xl p-5 bg-[#FFFFFF] dark:bg-[#090909] hover:border-[#000000] dark:hover:border-[#FFFFFF] hover:shadow-xl hover:shadow-black/5 cursor-pointer flex flex-col justify-between overflow-hidden"
+      className="card-3d-tilt group relative border border-black/10 dark:border-white/10 rounded-2xl p-5 bg-[#FFFFFF] dark:bg-[#090909] hover:border-[#000000] dark:hover:border-[#FFFFFF] hover:shadow-xl hover:shadow-black/5 flex flex-col justify-between overflow-hidden"
     >
       {/* Subtle 3D specular highlight */}
       <div
@@ -290,11 +298,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({
       />
 
       <div className="relative z-10">
-        {/* Top Row: 3D-elevated Icon & Actions */}
+        {/* Top Row: Icon Link & Action Buttons */}
         <div className="flex items-start justify-between gap-2 mb-3.5">
-          <div className="w-11 h-11 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] border border-black/10 dark:border-white/15 flex items-center justify-center text-[#000000] dark:text-[#FFFFFF] group-hover:bg-[#000000] group-hover:text-[#FFFFFF] dark:group-hover:bg-[#FFFFFF] dark:group-hover:text-[#000000] transition-colors">
+          <a
+            href={toolHref}
+            onClick={handleAnchorOpen}
+            aria-label={`Open ${tool.name}`}
+            className="w-11 h-11 rounded-xl bg-[#F6F6F6] dark:bg-[#050505] border border-black/10 dark:border-white/15 flex items-center justify-center text-[#000000] dark:text-[#FFFFFF] group-hover:bg-[#000000] group-hover:text-[#FFFFFF] dark:group-hover:bg-[#FFFFFF] dark:group-hover:text-[#000000] transition-colors"
+          >
             <IconComponent className="w-5 h-5" />
-          </div>
+          </a>
 
           <div className="flex items-center gap-1">
             <button
@@ -352,15 +365,17 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           ) : null}
         </div>
 
-        {/* Title */}
-        <h3 className="font-bold text-[15px] text-[#000000] dark:text-[#FFFFFF] transition-colors line-clamp-1">
-          {tool.name}
-        </h3>
+        <a href={toolHref} onClick={handleAnchorOpen} className="block group/link focus:outline-none">
+          {/* Title */}
+          <h3 className="font-bold text-[15px] text-[#000000] dark:text-[#FFFFFF] group-hover/link:underline transition-colors line-clamp-1">
+            {tool.name}
+          </h3>
 
-        {/* Description */}
-        <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1.5 line-clamp-2 leading-relaxed">
-          {tool.shortDesc}
-        </p>
+          {/* Description */}
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1.5 line-clamp-2 leading-relaxed">
+            {tool.shortDesc}
+          </p>
+        </a>
 
         {/* Quiet Tags */}
         {tool.tags && tool.tags.length > 0 && (
@@ -376,12 +391,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({
       </div>
 
       {/* Action Footer */}
-      <div className="relative z-10 pt-3.5 mt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#000000] dark:text-[#FFFFFF]">
+      <a
+        href={toolHref}
+        onClick={handleAnchorOpen}
+        className="relative z-10 pt-3.5 mt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-semibold text-[#000000] dark:text-[#FFFFFF]"
+      >
         <span>Open Tool</span>
         <div className="w-7 h-7 rounded-lg bg-[#F6F6F6] dark:bg-[#050505] border border-black/10 dark:border-white/15 flex items-center justify-center text-[#000000] dark:text-[#FFFFFF] group-hover:bg-[#000000] group-hover:text-[#FFFFFF] dark:group-hover:bg-[#FFFFFF] dark:group-hover:text-[#000000] transition-colors">
           <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />
         </div>
-      </div>
-    </div>
+      </a>
+    </article>
   );
 };
