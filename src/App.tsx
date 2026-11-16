@@ -19,6 +19,7 @@ import { LegalContent, LegalModal, LegalTab } from './components/LegalModal';
 import { OfflineIndicator, SwUpdateBanner } from './components/PWAControls';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { AdSlot } from './components/AdSlot';
+import { initPopunderSchedule, checkAndArmPopunder } from './utils/popunderManager';
 import {
   Sparkles,
   Clock,
@@ -588,6 +589,16 @@ export default function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Initialize Adsterra Popunder (once on first interaction, then every 20 minutes = 3x/hour)
+  useEffect(() => {
+    return initPopunderSchedule();
+  }, []);
+
+  // Re-check 20-minute Popunder window on SPA navigation transitions
+  useEffect(() => {
+    checkAndArmPopunder();
+  }, [activeTool, selectedCategory, isSavedPage, activeInfoPage]);
 
   const clearRecentlyUsed = () => {
     setRecentlyUsed([]);

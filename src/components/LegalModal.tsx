@@ -93,7 +93,7 @@ export const LegalContent: React.FC<{ activeTab: LegalTab }> = ({ activeTab }) =
         <div className="space-y-2">
           <h3 className="font-bold text-[#000000] dark:text-[#FFFFFF]">3. Cookies, Advertising & Third-Party Requests</h3>
           <p>
-            To keep Asbily Tools free to use without paywalls, the site displays clearly labeled advertisements and sponsored links served via third-party advertising partners (Adsterra / <span className="font-mono">profitableratecpmnetwork.com</span>). These advertising scripts may set standard cookies or receive standard browser request metadata according to their own privacy policies. Your actual files, documents, text, passwords, and calculations processed inside our tools are never shared with advertising partners. Standard static hosting infrastructure may also generate routine edge access logs.
+            To keep Asbily Tools free to use without paywalls, the site displays clearly labeled banner, native, social bar, partner links, and periodic popunder advertisements (capped at a 20-minute interval) served via Adsterra (<span className="font-mono">profitableratecpmnetwork.com</span> / <span className="font-mono">highrevenueformat.com</span>). These advertising scripts may set standard cookies or receive standard browser request metadata according to their own privacy policies. Your actual files, documents, text, passwords, and calculations processed inside our tools are never shared with advertising partners. Standard static hosting infrastructure may also generate routine edge access logs.
           </p>
         </div>
 

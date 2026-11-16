@@ -124,124 +124,129 @@ export const ToolView: React.FC<ToolViewProps> = ({
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-3 sm:px-6 py-8 space-y-8 overflow-hidden">
-      {/* Top Breadcrumb & Action Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-black/10 dark:border-white/10 w-full max-w-full">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-          <button
-            type="button"
-            onClick={onBack}
-            className="hover:text-[#000000] dark:hover:text-[#FFFFFF] transition flex items-center gap-1 cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Tools</span>
-          </button>
-          <ChevronRight className="w-3.5 h-3.5 opacity-40" />
-          <button
-            type="button"
-            onClick={() => (onSelectCategory ? onSelectCategory(tool.category) : onBack())}
-            className="uppercase text-[11px] tracking-wider hover:text-[#000000] dark:hover:text-[#FFFFFF] transition cursor-pointer"
-          >
-            {tool.categoryLabel}
-          </button>
-          <ChevronRight className="w-3.5 h-3.5 opacity-40" />
-          <span className="text-[#000000] dark:text-[#FFFFFF] font-semibold truncate max-w-[150px] sm:max-w-none">
-            {tool.name}
-          </span>
-        </nav>
+    <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-6 py-8 overflow-hidden 2xl:grid 2xl:grid-cols-[172px_minmax(0,1fr)_172px] 2xl:gap-6 2xl:items-start">
+      <aside className="hidden 2xl:flex flex-col items-center sticky top-24">
+        <AdSlot slotName="Sponsored Skyscraper" type="160x600" />
+      </aside>
 
-        {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={handleResetWorkspace}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-black/15 dark:border-white/15 rounded-lg text-xs font-medium hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer text-[#000000] dark:text-[#FFFFFF]"
-            title="Reset workspace inputs"
-          >
-            <RotateCcw className="w-3.5 h-3.5 text-neutral-500" />
-            <span>Reset</span>
-          </button>
+      <div className="w-full max-w-5xl mx-auto space-y-8 overflow-hidden">
+        {/* Top Breadcrumb & Action Controls Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-black/10 dark:border-white/10 w-full max-w-full">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+            <button
+              type="button"
+              onClick={onBack}
+              className="hover:text-[#000000] dark:hover:text-[#FFFFFF] transition flex items-center gap-1 cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Tools</span>
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 opacity-40" />
+            <button
+              type="button"
+              onClick={() => (onSelectCategory ? onSelectCategory(tool.category) : onBack())}
+              className="uppercase text-[11px] tracking-wider hover:text-[#000000] dark:hover:text-[#FFFFFF] transition cursor-pointer"
+            >
+              {tool.categoryLabel}
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 opacity-40" />
+            <span className="text-[#000000] dark:text-[#FFFFFF] font-semibold truncate max-w-[150px] sm:max-w-none">
+              {tool.name}
+            </span>
+          </nav>
 
-          <button
-            type="button"
-            onClick={() => {
-              onToggleFavorite(tool.id);
-              if (onShowToast) {
-                onShowToast(isFavorite ? 'Removed from saved' : 'Saved to your collection', 'info');
-              }
-            }}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-medium transition cursor-pointer ${
-              isFavorite
-                ? 'bg-[#000000] dark:bg-[#FFFFFF] border-[#000000] dark:border-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000]'
-                : 'border-black/15 dark:border-white/15 hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-[#000000] dark:text-[#FFFFFF]'
-            }`}
-          >
-            <Star
-              className={`w-3.5 h-3.5 ${
-                isFavorite ? 'fill-current' : 'text-neutral-500'
+          {/* Action Controls */}
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={handleResetWorkspace}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-black/15 dark:border-white/15 rounded-lg text-xs font-medium hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer text-[#000000] dark:text-[#FFFFFF]"
+              title="Reset workspace inputs"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-neutral-500" />
+              <span>Reset</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                onToggleFavorite(tool.id);
+                if (onShowToast) {
+                  onShowToast(isFavorite ? 'Removed from saved' : 'Saved to your collection', 'info');
+                }
+              }}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-medium transition cursor-pointer ${
+                isFavorite
+                  ? 'bg-[#000000] dark:bg-[#FFFFFF] border-[#000000] dark:border-[#FFFFFF] text-[#FFFFFF] dark:text-[#000000]'
+                  : 'border-black/15 dark:border-white/15 hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-[#000000] dark:text-[#FFFFFF]'
               }`}
-            />
-            <span>{isFavorite ? 'Saved' : 'Save'}</span>
-          </button>
+            >
+              <Star
+                className={`w-3.5 h-3.5 ${
+                  isFavorite ? 'fill-current' : 'text-neutral-500'
+                }`}
+              />
+              <span>{isFavorite ? 'Saved' : 'Save'}</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={handleShare}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-black/15 dark:border-white/15 rounded-lg text-xs font-medium hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer text-[#000000] dark:text-[#FFFFFF]"
-          >
-            {copiedShare ? (
-              <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
-            ) : (
-              <Share2 className="w-3.5 h-3.5 text-neutral-500" />
-            )}
-            <span>{copiedShare ? 'Copied Link' : 'Share'}</span>
-          </button>
+            <button
+              type="button"
+              onClick={handleShare}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-black/15 dark:border-white/15 rounded-lg text-xs font-medium hover:bg-[#F6F6F6] dark:hover:bg-white/10 transition cursor-pointer text-[#000000] dark:text-[#FFFFFF]"
+            >
+              {copiedShare ? (
+                <Check className="w-3.5 h-3.5 text-[#000000] dark:text-[#FFFFFF]" />
+              ) : (
+                <Share2 className="w-3.5 h-3.5 text-neutral-500" />
+              )}
+              <span>{copiedShare ? 'Copied Link' : 'Share'}</span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Tool Header Banner */}
-      <div className="space-y-3 w-full max-w-full overflow-hidden">
-        <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-          <span className="font-semibold text-[#000000] dark:text-[#FFFFFF]">{tool.categoryLabel}</span>
-          <span aria-hidden="true" className="opacity-40">·</span>
-          <span className="inline-flex items-center gap-1 text-[#000000] dark:text-[#FFFFFF]">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>100% Local-First Browser Execution</span>
-          </span>
-          <span aria-hidden="true" className="opacity-40">·</span>
-          <span className="font-mono text-neutral-500 dark:text-neutral-400">
-            /{tool.category}/{tool.id}
-          </span>
+        {/* Tool Header Banner */}
+        <div className="space-y-3 w-full max-w-full overflow-hidden">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+            <span className="font-semibold text-[#000000] dark:text-[#FFFFFF]">{tool.categoryLabel}</span>
+            <span aria-hidden="true" className="opacity-40">·</span>
+            <span className="inline-flex items-center gap-1 text-[#000000] dark:text-[#FFFFFF]">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>100% Local-First Browser Execution</span>
+            </span>
+            <span aria-hidden="true" className="opacity-40">·</span>
+            <span className="font-mono text-neutral-500 dark:text-neutral-400">
+              /{tool.category}/{tool.id}
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-[#000000] dark:text-[#FFFFFF] tracking-tight">
+            {tool.name}
+          </h1>
+          <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-3xl">
+            {tool.shortDesc}
+          </p>
         </div>
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-[#000000] dark:text-[#FFFFFF] tracking-tight">
-          {tool.name}
-        </h1>
-        <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-3xl">
-          {tool.shortDesc}
-        </p>
-      </div>
 
-      <AdSlot slotName="Sponsored Advertisement" type="responsive-header" />
+        <AdSlot slotName="Sponsored Advertisement" type="responsive-header" />
 
-      {/* Main Tool Interactive Workspace */}
-      <section
-        aria-label={`${tool.name} Workspace`}
-        className="border border-black/10 dark:border-white/10 rounded-2xl p-4 sm:p-8 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm w-full max-w-full overflow-hidden"
-      >
-        <Suspense
-          fallback={
-            <div className="py-12 text-center text-xs text-neutral-500 dark:text-neutral-400 font-medium">
-              Loading {tool.name} workspace...
-            </div>
-          }
+        {/* Main Tool Interactive Workspace */}
+        <section
+          aria-label={`${tool.name} Workspace`}
+          className="border border-black/10 dark:border-white/10 rounded-2xl p-4 sm:p-8 bg-[#FFFFFF] dark:bg-[#090909] shadow-sm w-full max-w-full overflow-hidden"
         >
-          {renderToolComponent()}
-        </Suspense>
-      </section>
+          <Suspense
+            fallback={
+              <div className="py-12 text-center text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+                Loading {tool.name} workspace...
+              </div>
+            }
+          >
+            {renderToolComponent()}
+          </Suspense>
+        </section>
 
-      <div className="flex justify-center py-2 w-full max-w-full overflow-hidden">
-        <AdSlot slotName="Sponsored Solution" type="300x250" />
-      </div>
+        <div className="flex justify-center py-2 w-full max-w-full overflow-hidden">
+          <AdSlot slotName="Sponsored Solution" type="300x250" />
+        </div>
 
       {/* Usage Instructions & Examples */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -352,6 +357,13 @@ export const ToolView: React.FC<ToolViewProps> = ({
           </div>
         </section>
       )}
+
+        <AdSlot slotName="Sponsored Recommendations" type="native" />
+      </div>
+
+      <aside className="hidden 2xl:flex flex-col items-center sticky top-24">
+        <AdSlot slotName="Sponsored Sidebar" type="160x300" />
+      </aside>
     </div>
   );
 };
