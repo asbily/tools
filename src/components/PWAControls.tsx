@@ -13,10 +13,11 @@ export const PWAInstallButton: React.FC = () => {
       <button
         type="button"
         onClick={install}
-        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-xs font-semibold transition whitespace-nowrap shrink-0 cursor-pointer"
+        className="inline-flex items-center justify-center gap-1.5 p-1.5 sm:px-3 sm:py-2 rounded-lg border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-xs font-semibold transition whitespace-nowrap shrink-0 cursor-pointer"
         aria-label="Install Asbily Tools app"
+        title="Install Asbily Tools app"
       >
-        <Download className="w-3.5 h-3.5" />
+        <Download className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
         <span className="hidden sm:inline">Install App</span>
       </button>
     );
@@ -28,10 +29,11 @@ export const PWAInstallButton: React.FC = () => {
         <button
           type="button"
           onClick={() => setShowIOSGuide(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-xs font-semibold transition whitespace-nowrap shrink-0 cursor-pointer"
+          className="inline-flex items-center justify-center gap-1.5 p-1.5 sm:px-3 sm:py-2 rounded-lg border border-black/15 dark:border-white/15 bg-[#FFFFFF] dark:bg-[#090909] text-[#000000] dark:text-[#FFFFFF] hover:bg-[#F6F6F6] dark:hover:bg-white/10 text-xs font-semibold transition whitespace-nowrap shrink-0 cursor-pointer"
           aria-label="Install on iOS"
+          title="Install on iOS"
         >
-          <Download className="w-3.5 h-3.5" />
+          <Download className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
           <span className="hidden sm:inline">Install</span>
         </button>
 
