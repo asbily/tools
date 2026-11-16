@@ -91,9 +91,9 @@ export const LegalContent: React.FC<{ activeTab: LegalTab }> = ({ activeTab }) =
         </div>
 
         <div className="space-y-2">
-          <h3 className="font-bold text-[#000000] dark:text-[#FFFFFF]">3. Cookies & Third-Party Requests</h3>
+          <h3 className="font-bold text-[#000000] dark:text-[#FFFFFF]">3. Cookies, Advertising & Third-Party Requests</h3>
           <p>
-            Asbily Tools does not load third-party advertising networks, behavioral tracking pixels, or external analytics scripts inside the application. Note that standard static web hosting infrastructure (such as DNS, TLS termination, and CDN edge delivery when you first load the website) may generate standard server access logs managed by the hosting provider.
+            To keep Asbily Tools free to use without paywalls, the site displays clearly labeled advertisements and sponsored links served via third-party advertising partners (Adsterra / <span className="font-mono">profitableratecpmnetwork.com</span>). These advertising scripts may set standard cookies or receive standard browser request metadata according to their own privacy policies. Your actual files, documents, text, passwords, and calculations processed inside our tools are never shared with advertising partners. Standard static hosting infrastructure may also generate routine edge access logs.
           </p>
         </div>
 

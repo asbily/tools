@@ -16,6 +16,7 @@ import { ToolCategory, ToolItem } from '../types';
 import { TOOLS } from '../data/toolsData';
 import { getToolGuide } from '../data/toolGuides';
 import { ToolCard } from './ToolCard';
+import { AdSlot } from './AdSlot';
 
 const TextTools = lazy(() => import('./tools/TextTools').then((m) => ({ default: m.TextTools })));
 const SocialMediaTools = lazy(() => import('./tools/SocialMediaTools').then((m) => ({ default: m.SocialMediaTools })));
@@ -220,6 +221,8 @@ export const ToolView: React.FC<ToolViewProps> = ({
         </p>
       </div>
 
+      <AdSlot slotName="Sponsored Advertisement" type="responsive-header" />
+
       {/* Main Tool Interactive Workspace */}
       <section
         aria-label={`${tool.name} Workspace`}
@@ -235,6 +238,10 @@ export const ToolView: React.FC<ToolViewProps> = ({
           {renderToolComponent()}
         </Suspense>
       </section>
+
+      <div className="flex justify-center py-2 w-full max-w-full overflow-hidden">
+        <AdSlot slotName="Sponsored Solution" type="300x250" />
+      </div>
 
       {/* Usage Instructions & Examples */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

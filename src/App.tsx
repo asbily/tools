@@ -18,6 +18,7 @@ import { SearchModal } from './components/SearchModal';
 import { LegalContent, LegalModal, LegalTab } from './components/LegalModal';
 import { OfflineIndicator, SwUpdateBanner } from './components/PWAControls';
 import { ToastContainer, ToastMessage } from './components/Toast';
+import { AdSlot } from './components/AdSlot';
 import {
   Sparkles,
   Clock,
@@ -833,6 +834,8 @@ export default function App() {
                 />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-14 w-full max-w-full overflow-hidden">
+                  <AdSlot slotName="Sponsored Advertisement" type="responsive-header" />
+
                   {/* Quick Local Workspace Bar */}
                   {isDefaultHome && (favoriteToolItems.length > 0 || recentToolItems.length > 0) && (
                     <section className="p-4 sm:p-5 rounded-2xl border border-black/10 dark:border-white/10 bg-[#F6F6F6] dark:bg-[#050505] flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -1076,15 +1079,51 @@ export default function App() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 w-full max-w-full">
-                        {displayedTools.map((tool) => (
-                          <ToolCard
-                            key={tool.id}
-                            tool={tool}
-                            onOpen={handleOpenTool}
-                            isFavorite={favorites.includes(tool.id)}
-                            onToggleFavorite={toggleFavorite}
-                            onShowToast={showToast}
-                          />
+                        {displayedTools.map((tool, index) => (
+                          <React.Fragment key={tool.id}>
+                            <ToolCard
+                              tool={tool}
+                              onOpen={handleOpenTool}
+                              isFavorite={favorites.includes(tool.id)}
+                              onToggleFavorite={toggleFavorite}
+                              onShowToast={showToast}
+                            />
+                            {index === 5 && displayedTools.length > 6 && (
+                              <AdSlot
+                                slotName="Sponsored In-Feed Banner"
+                                type="in-feed-banner"
+                                className="col-span-full"
+                              />
+                            )}
+                            {index === 13 && displayedTools.length > 14 && (
+                              <AdSlot
+                                slotName="Sponsored Card"
+                                type="300x250"
+                                className="mx-auto h-full flex flex-col justify-center"
+                              />
+                            )}
+                            {index === 21 && displayedTools.length > 22 && (
+                              <AdSlot
+                                slotName="Sponsored In-Feed Banner"
+                                type="in-feed-banner"
+                                className="col-span-full"
+                              />
+                            )}
+                            {index === 29 && displayedTools.length > 30 && (
+                              <AdSlot
+                                slotName="Sponsored Card"
+                                type="300x250"
+                                className="mx-auto h-full flex flex-col justify-center"
+                              />
+                            )}
+                            {index === 37 && displayedTools.length > 38 && (
+                              <AdSlot
+                                slotName="Sponsored In-Feed Banner"
+                                type="in-feed-banner"
+                                className="col-span-full"
+                              />
+                            )}
+                          </React.Fragment>
                         ))}
                       </div>
                     )}
@@ -1278,6 +1317,10 @@ export default function App() {
                       </div>
                     </section>
                   )}
+
+                  <div className="flex justify-center w-full max-w-full overflow-hidden">
+                    <AdSlot slotName="Sponsored Recommendations" type="native" />
+                  </div>
                 </div>
               </div>
             )}

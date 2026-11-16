@@ -147,6 +147,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
                   XML Sitemap
                 </a>
               </li>
+              <li>
+                <a
+                  href="https://www.profitableratecpmnetwork.com/u3eqn3p98?key=2892f9f26e049737ea673e48542cacd6"
+                  target="_blank"
+                  rel="noopener sponsored"
+                  className="text-neutral-400 hover:text-[#FFFFFF] transition inline-flex items-center gap-1"
+                >
+                  <span>Featured Partner Deals</span>
+                  <span className="text-[10px] text-neutral-500 uppercase font-mono">· Ad</span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
