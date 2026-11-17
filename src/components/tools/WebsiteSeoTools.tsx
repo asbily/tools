@@ -1,5 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Copy, Check, Download, Eye, ExternalLink, CheckCircle2, Shield, Globe, Search, Share2 } from 'lucide-react';
+import {
+  UrlCheckerTool,
+  WebsiteStatusCheckerTool,
+  KeywordAnalysisTool,
+  WebsitePerformanceCheckerTool,
+} from './ExtraSuiteTools';
 
 interface SeoToolProps {
   toolId: string;
@@ -33,6 +39,10 @@ export const WebsiteSeoTools: React.FC<SeoToolProps> = ({ toolId }) => {
   if (toolId === 'utm-builder') return <UtmBuilderTool onCopy={copyText} copied={copied} />;
   if (toolId === 'seo-audit') return <SeoAuditTool onCopy={copyText} />;
   if (toolId === 'security-headers') return <SecurityHeadersTool onCopy={copyText} />;
+  if (toolId === 'url-checker') return <UrlCheckerTool />;
+  if (toolId === 'website-status-checker') return <WebsiteStatusCheckerTool />;
+  if (toolId === 'keyword-analysis') return <KeywordAnalysisTool />;
+  if (toolId === 'website-performance-checker') return <WebsitePerformanceCheckerTool />;
 
   return <div className="text-neutral-500">SEO tool not found.</div>;
 };

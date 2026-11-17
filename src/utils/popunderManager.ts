@@ -2,17 +2,18 @@ const POPUNDER_SCRIPT_URL =
   'https://pl30616999.profitableratecpmnetwork.com/ca/52/c3/ca52c325704866c7ae29f34363091f05.js';
 
 /**
- * 1 hour divided into 3 equal intervals = 20 minutes (1,200,000 ms).
- * Triggers once on the user's first interaction, then re-arms every 20 minutes.
+ * 1 hour divided into 3 equal parts = 20 minutes (1,200,000 ms).
+ * Triggers once on the user's first interaction after load, then once every 20 minutes.
  */
 export const POPUNDER_INTERVAL_MS = 20 * 60 * 1000;
 
 const STORAGE_KEY = 'asbily_popunder_last_at';
-const GRACE_WINDOW_MS = 1800;
+const GRACE_WINDOW_MS = 2000;
 
 let memoryLastAt = 0;
 let initialized = false;
 let armed = false;
+let scriptLoaded = false;
 let graceUntil = 0;
 let rearmTimer: number | null = null;
 
@@ -51,10 +52,17 @@ function injectPopunderScript(): void {
   const existing = document.querySelectorAll('script[data-asbily-popunder="true"]');
   existing.forEach((node) => node.remove());
 
+  scriptLoaded = false;
   const script = document.createElement('script');
   script.src = POPUNDER_SCRIPT_URL;
   script.async = true;
   script.setAttribute('data-asbily-popunder', 'true');
+  script.onload = () => {
+    scriptLoaded = true;
+  };
+  script.onerror = () => {
+    scriptLoaded = false;
+  };
   (document.head || document.body || document.documentElement).appendChild(script);
 }
 
@@ -95,7 +103,7 @@ export function initPopunderSchedule(): () => void {
   }
   initialized = true;
 
-  // Guard window.open so any extra programmatic popunder call during the 20-minute cooldown is ignored.
+  // Guard programmatic window.open calls during the 20-minute cooldown window
   const originalWindowOpen = window.open.bind(window);
   window.open = ((...args: Parameters<typeof window.open>) => {
     const now = Date.now();
@@ -103,20 +111,24 @@ export function initPopunderSchedule(): () => void {
       writeLastShownAt(now);
       armed = false;
       scheduleNextArm();
-      return originalWindowOpen(...args);
+      try {
+        return originalWindowOpen(...args);
+      } catch {
+        return null;
+      }
     }
     return null;
   }) as typeof window.open;
 
   const handleUserInteraction = () => {
     const now = Date.now();
-    if (armed && isPopunderDue(now)) {
+    // Only disarm & start the 20-minute cooldown after the Adsterra script has actually loaded
+    if (armed && scriptLoaded && isPopunderDue(now)) {
       graceUntil = now + GRACE_WINDOW_MS;
       armed = false;
       writeLastShownAt(now);
       scheduleNextArm();
     } else if (!armed && isPopunderDue(now)) {
-      // Background timer was throttled; re-arm immediately for the next interaction
       checkAndArmPopunder();
     }
   };
@@ -131,7 +143,6 @@ export function initPopunderSchedule(): () => void {
   document.addEventListener('click', handleUserInteraction, { capture: true, passive: true });
   document.addEventListener('visibilitychange', handleVisibility);
 
-  // Initial check on entry
   checkAndArmPopunder();
 
   return () => {

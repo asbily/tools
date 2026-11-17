@@ -7,6 +7,8 @@ export type ToolCategory =
   | 'seo'
   | 'image'
   | 'pdf'
+  | 'ai'
+  | 'converter'
   | 'security'
   | 'calculator'
   | 'student'

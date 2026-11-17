@@ -294,6 +294,35 @@ const CATEGORY_DEFAULTS: Record<string, ToolGuide> = {
       { q: 'Does speech recognition work in every browser?', a: 'Web Speech API support varies by browser and operating system; modern Chromium browsers provide the broadest support.' },
     ],
   },
+  ai: {
+    steps: [
+      'Enter your topic, draft text, prompt, or code snippet in the workspace.',
+      'Select your preferred tone, language, style, or analysis mode.',
+      'Review the generated output, apply quick edits or fixes, and copy or download locally.',
+    ],
+    examples: [
+      'Summarize long articles offline with TF-IDF scoring, check grammar typos, or render procedural Canvas artwork.',
+    ],
+    privacyNote: 'All text generation, summarization, translation, grammar checks, and Canvas rendering execute locally in your browser with zero external AI API calls.',
+    faqs: [
+      { q: 'Does this send my text or prompts to an external AI server?', a: 'No. Every AI utility here runs deterministically inside your local browser memory and works offline once cached.' },
+      { q: 'Do I need an API key?', a: 'No API key or account is required.' },
+    ],
+  },
+  converter: {
+    steps: [
+      'Drop or choose a local file (PNG, JPG, WebP, MP4, WAV, CSV, JSON, or TXT) from your device.',
+      'Select your desired output quality, bitrate, or formatting options.',
+      'Convert in-browser and download the converted file immediately.',
+    ],
+    examples: [
+      'Transcode WAV/MP4 audio to MP3 offline, batch-convert PNG/JPG/WebP images, or export TXT notes to PDF.',
+    ],
+    privacyNote: 'All file transcoding and document exports run client-side via Canvas, Web Audio API, jsPDF, and bundled encoders without uploading files.',
+    faqs: [
+      { q: 'Are large video or audio files uploaded anywhere?', a: 'Never. Decoding and MP3 encoding happen completely inside your browser memory.' },
+    ],
+  },
 };
 
 export function getToolGuide(tool: ToolItem): ToolGuide {

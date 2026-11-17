@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 
 import { ProductPaymentQrTool } from './ProductPaymentQrTool';
+import { WifiQrTool, UrlQrTool, BarcodeReaderTool } from './ExtraSuiteTools';
 
 interface QrToolProps {
   toolId: string;
@@ -39,6 +40,9 @@ export const QrBarcodeTools: React.FC<QrToolProps> = ({ toolId }) => {
   if (toolId === 'product-payment-qr') return <ProductPaymentQrTool />;
   if (toolId === 'barcode-generator') return <BarcodeGeneratorTool />;
   if (toolId === 'qr-scanner') return <QrScannerTool />;
+  if (toolId === 'wifi-qr-generator') return <WifiQrTool />;
+  if (toolId === 'url-qr-generator') return <UrlQrTool />;
+  if (toolId === 'barcode-reader') return <BarcodeReaderTool />;
 
   return <div className="text-neutral-500">QR/Barcode tool not found.</div>;
 };

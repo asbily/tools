@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Copy, Check, Plus, Trash2, Play, Pause, RotateCcw, Dices, Download } from 'lucide-react';
 import { WorldClockPlannerTool, HabitTrackerTool, TypingSpeedTestTool } from './ProductivityProTools';
 import { BusinessEnterpriseTools } from './BusinessEnterpriseTools';
+import { ReceiptGeneratorTool, TaxCalculatorTool } from './ExtraSuiteTools';
 
 interface BusinessToolProps {
   toolId: string;
@@ -36,6 +37,8 @@ export const BusinessProductivityTools: React.FC<BusinessToolProps> = ({ toolId 
   if (toolId === 'world-clock-planner') return <WorldClockPlannerTool />;
   if (toolId === 'habit-tracker') return <HabitTrackerTool />;
   if (toolId === 'typing-speed-test') return <TypingSpeedTestTool />;
+  if (toolId === 'receipt-generator') return <ReceiptGeneratorTool />;
+  if (toolId === 'tax-calculator') return <TaxCalculatorTool />;
 
   return <div className="text-neutral-500">Business/Productivity tool not found.</div>;
 };

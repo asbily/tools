@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Copy, Check, Download, Hash, Sparkles, Sliders, ExternalLink, Bookmark, Info } from 'lucide-react';
+import { UsernameGeneratorTool, SocialImageResizerTool } from './ExtraSuiteTools';
 
 interface SocialMediaToolProps {
   toolId: string;
@@ -32,6 +33,14 @@ export const SocialMediaTools: React.FC<SocialMediaToolProps> = ({ toolId }) => 
 
   if (toolId === 'social-image-guide') {
     return <SocialImageGuideTool onCopy={copyText} />;
+  }
+
+  if (toolId === 'username-generator') {
+    return <UsernameGeneratorTool />;
+  }
+
+  if (toolId === 'social-image-resizer') {
+    return <SocialImageResizerTool />;
   }
 
   return <div className="text-neutral-500">Tool component not found.</div>;

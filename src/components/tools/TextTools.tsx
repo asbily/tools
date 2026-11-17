@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Copy, Check, RotateCcw, Download, ArrowRight, Sparkles } from 'lucide-react';
+import { CharacterCounterTool } from './ExtraSuiteTools';
 
 interface TextToolProps {
   toolId: string;
@@ -27,6 +28,10 @@ export const TextTools: React.FC<TextToolProps> = ({ toolId }) => {
   // 1. Word & Character Counter
   if (toolId === 'word-counter') {
     return <WordCounterTool onCopy={copyText} onDownload={downloadFile} copied={copied} />;
+  }
+
+  if (toolId === 'character-counter') {
+    return <CharacterCounterTool />;
   }
 
   // 2. Case Converter

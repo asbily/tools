@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Copy, Check, Download, Upload, Sliders, Image as ImageIcon, Pipette, Eye, RefreshCw, ZoomIn } from 'lucide-react';
 import { ImageEditorProTool, BgColorRemoverTool } from './ImageProTools';
+import { ImageResizerTool } from './ExtraSuiteTools';
 
 interface ImageToolProps {
   toolId: string;
@@ -23,6 +24,7 @@ export const ImageDesignTools: React.FC<ImageToolProps> = ({ toolId }) => {
   if (toolId === 'palette-extractor') return <PaletteExtractorTool onCopy={copyText} />;
   if (toolId === 'watermark-tool') return <WatermarkTool />;
   if (toolId === 'color-picker') return <ColorPickerTool onCopy={copyText} />;
+  if (toolId === 'image-resizer') return <ImageResizerTool />;
   if (toolId === 'image-editor-pro') return <ImageEditorProTool />;
   if (toolId === 'bg-color-remover') return <BgColorRemoverTool />;
 

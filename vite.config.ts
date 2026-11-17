@@ -263,7 +263,7 @@ function asbilyStaticSeoAndPwaPlugin(): Plugin {
           changefreq: 'daily',
           priority: '1.0',
           imageTitle: 'Asbily Tools — Free Online Tools for Everyday Work',
-          imageCaption: `${TOOLS.length} local-first browser tools across 15 categories by Asbily Platforms.`,
+          imageCaption: `${TOOLS.length} local-first browser tools across ${CATEGORIES.filter((c) => c.id !== 'all').length} categories by Asbily Platforms.`,
         },
       ];
       const toolSitemapEntries: SitemapUrlEntry[] = [];
@@ -325,7 +325,7 @@ function asbilyStaticSeoAndPwaPlugin(): Plugin {
             })),
           },
         ],
-        fallbackHtml: `<main style="max-width:960px;margin:0 auto;padding:32px 16px;font-family:system-ui,sans-serif"><h1>Asbily Tools — Essential Tools for Everyday Work</h1><p>Free Tools. Simple Solutions. ${TOOLS.length} local-first browser utilities across 15 categories by Asbily Platforms.</p><h2>Categories</h2><ul>${categoryLinksHtml}</ul><h2>All Browser Tools</h2><ul>${allToolLinksHtml}</ul><h2>Information</h2><ul>${infoLinksHtml}</ul></main>`,
+        fallbackHtml: `<main style="max-width:960px;margin:0 auto;padding:32px 16px;font-family:system-ui,sans-serif"><h1>Asbily Tools — Essential Tools for Everyday Work</h1><p>Free Tools. Simple Solutions. ${TOOLS.length} local-first browser utilities across ${CATEGORIES.filter((c) => c.id !== 'all').length} categories by Asbily Platforms.</p><h2>Categories</h2><ul>${categoryLinksHtml}</ul><h2>All Browser Tools</h2><ul>${allToolLinksHtml}</ul><h2>Information</h2><ul>${infoLinksHtml}</ul></main>`,
       });
       fs.writeFileSync(indexHtmlPath, rootHtml, 'utf8');
 
@@ -574,7 +574,7 @@ function asbilyStaticSeoAndPwaPlugin(): Plugin {
       if (fs.existsSync(assetsDir) && fs.existsSync(swDistPath)) {
         const assetFiles = fs
           .readdirSync(assetsDir)
-          .filter((f) => /\.(js|css|svg|png|webp|woff2?)$/i.test(f))
+          .filter((f) => /\.(js|mjs|css|svg|png|webp|woff2?)$/i.test(f))
           .map((f) => `/assets/${f}`);
         const swContent = fs.readFileSync(swDistPath, 'utf8');
         const injectedSw = swContent.replace(

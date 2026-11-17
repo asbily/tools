@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Copy, Check, Download, Play, RefreshCw, FileText, Code2, AlertTriangle, ArrowRightLeft } from 'lucide-react';
 import { ZipArchiveTool } from './ZipArchiveTool';
+import { CodeMinifyFormatTool } from './ExtraSuiteTools';
 
 interface DeveloperToolProps {
   toolId: string;
@@ -43,6 +44,9 @@ export const DeveloperTools: React.FC<DeveloperToolProps> = ({ toolId }) => {
   if (toolId === 'markdown-editor') return <MarkdownEditorTool onCopy={copyText} onDownload={downloadFile} copied={copied} />;
   if (toolId === 'css-generators') return <CssGeneratorsTool onCopy={copyText} copied={copied} />;
   if (toolId === 'zip-archive-manager') return <ZipArchiveTool />;
+  if (toolId === 'html-formatter') return <CodeMinifyFormatTool mode="html" />;
+  if (toolId === 'css-minifier') return <CodeMinifyFormatTool mode="css" />;
+  if (toolId === 'js-minifier') return <CodeMinifyFormatTool mode="js" />;
 
   return <div className="text-neutral-500">Developer tool not found.</div>;
 };

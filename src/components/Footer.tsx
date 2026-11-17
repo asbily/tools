@@ -54,7 +54,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal, onSelectCategory })
             </p>
             <div className="text-[11px] text-neutral-400 flex items-center gap-1.5 pt-1">
               <ShieldCheck className="w-3.5 h-3.5 text-[#FFFFFF]" />
-              <span>100% Local-First · No External Tracking</span>
+              <span>100% Local-First Tools · Zero File Uploads</span>
             </div>
             <div className="text-[11px] text-neutral-400 flex items-center gap-1.5">
               <Globe className="w-3.5 h-3.5 text-[#FFFFFF]" />

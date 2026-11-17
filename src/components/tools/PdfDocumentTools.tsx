@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { jsPDF } from 'jspdf';
 import { Download, Upload, Plus, Trash2, ArrowUp, ArrowDown } from 'lucide-react';
 import { PdfMergeSplitTool, PdfInspectorProTool, ResumeBuilderTool } from './PdfProTools';
+import { PdfCompressorTool, PdfToImageTool, PdfConverterTool } from './PdfConverterProTools';
 
 interface PdfToolProps {
   toolId: string;
@@ -15,6 +16,9 @@ export const PdfDocumentTools: React.FC<PdfToolProps> = ({ toolId }) => {
   if (toolId === 'pdf-info') return <PdfInspectorProTool />;
   if (toolId === 'pdf-merge-split') return <PdfMergeSplitTool />;
   if (toolId === 'resume-builder') return <ResumeBuilderTool />;
+  if (toolId === 'pdf-compress') return <PdfCompressorTool />;
+  if (toolId === 'pdf-to-image') return <PdfToImageTool />;
+  if (toolId === 'pdf-converter') return <PdfConverterTool />;
 
   return <div className="text-neutral-500">PDF tool not found.</div>;
 };

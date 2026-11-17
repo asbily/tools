@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Copy, Check, RefreshCw, Shield, Key, Lock, AlertTriangle, Download, FileCheck, CheckCircle2 } from 'lucide-react';
+import { RandomStringGeneratorTool } from './ExtraSuiteTools';
 
 interface SecurityToolProps {
   toolId: string;
@@ -29,6 +30,7 @@ export const SecurityPrivacyTools: React.FC<SecurityToolProps> = ({ toolId }) =>
   if (toolId === 'passphrase-generator') return <PassphraseGeneratorTool onCopy={copyText} copied={copied} />;
   if (toolId === 'file-checksum') return <FileChecksumTool onCopy={copyText} />;
   if (toolId === 'privacy-generator') return <PrivacyGeneratorTool onCopy={copyText} onDownload={downloadFile} copied={copied} />;
+  if (toolId === 'random-string-generator') return <RandomStringGeneratorTool />;
 
   return <div className="text-neutral-500">Security tool not found.</div>;
 };

@@ -34,6 +34,10 @@ const QrBarcodeTools = lazy(() => import('./tools/QrBarcodeTools').then((m) => (
 const MediaBrowserTools = lazy(() => import('./tools/MediaBrowserTools').then((m) => ({ default: m.MediaBrowserTools })));
 const ThreeDTools = lazy(() => import('./tools/ThreeDTools').then((m) => ({ default: m.ThreeDTools })));
 const DailyLifeTools = lazy(() => import('./tools/DailyLifeTools').then((m) => ({ default: m.DailyLifeTools })));
+const AiTools = lazy(() => import('./tools/AiTools').then((m) => ({ default: m.AiTools })));
+const FileConverterTools = lazy(() =>
+  import('./tools/FileConverterTools').then((m) => ({ default: m.FileConverterTools }))
+);
 
 interface ToolViewProps {
   tool: ToolItem;
@@ -118,14 +122,18 @@ export const ToolView: React.FC<ToolViewProps> = ({
         return <ThreeDTools key={`${tool.id}-${workspaceKey}`} toolId={tool.id} />;
       case 'media':
         return <MediaBrowserTools key={`${tool.id}-${workspaceKey}`} toolId={tool.id} />;
+      case 'ai':
+        return <AiTools key={`${tool.id}-${workspaceKey}`} toolId={tool.id} />;
+      case 'converter':
+        return <FileConverterTools key={`${tool.id}-${workspaceKey}`} toolId={tool.id} />;
       default:
         return <div className="text-neutral-500">Tool module unavailable.</div>;
     }
   };
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-6 py-8 overflow-hidden 2xl:grid 2xl:grid-cols-[172px_minmax(0,1fr)_172px] 2xl:gap-6 2xl:items-start">
-      <aside className="hidden 2xl:flex flex-col items-center sticky top-24">
+    <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-6 py-8 overflow-x-clip xl:grid xl:grid-cols-[176px_minmax(0,1fr)_176px] xl:gap-6 xl:items-start">
+      <aside className="hidden xl:flex flex-col items-center sticky top-24">
         <AdSlot slotName="Sponsored Skyscraper" type="160x600" />
       </aside>
 
@@ -361,7 +369,7 @@ export const ToolView: React.FC<ToolViewProps> = ({
         <AdSlot slotName="Sponsored Recommendations" type="native" />
       </div>
 
-      <aside className="hidden 2xl:flex flex-col items-center sticky top-24">
+      <aside className="hidden xl:flex flex-col items-center sticky top-24">
         <AdSlot slotName="Sponsored Sidebar" type="160x300" />
       </aside>
     </div>

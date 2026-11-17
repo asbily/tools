@@ -939,7 +939,7 @@ export default function App() {
                           Browse Categories
                         </h2>
                         <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                          Explore all 15 dedicated tool suites organized by domain.
+                          Explore all {CATEGORIES.filter((c) => c.id !== 'all').length} dedicated tool suites organized by domain.
                         </p>
                       </div>
 
@@ -1042,6 +1042,10 @@ export default function App() {
                       </div>
                     </section>
                   )}
+
+                  <div className="flex justify-center w-full max-w-full overflow-hidden">
+                    <AdSlot slotName="Sponsored Recommendations" type="native" />
+                  </div>
 
                   {/* Complete Directory Grid / Filtered Results */}
                   <section id="tools-grid-section" className="space-y-6 w-full max-w-full overflow-hidden">
@@ -1160,7 +1164,7 @@ export default function App() {
                           {
                             icon: Layers,
                             title: 'Unified Directory',
-                            desc: `${TOOLS.length} practical utilities across 15 categories in one consistent workspace without switching sites.`,
+                            desc: `${TOOLS.length} practical utilities across ${CATEGORIES.filter((c) => c.id !== 'all').length} categories in one consistent workspace without switching sites.`,
                           },
                           {
                             icon: Cpu,
@@ -1328,10 +1332,6 @@ export default function App() {
                       </div>
                     </section>
                   )}
-
-                  <div className="flex justify-center w-full max-w-full overflow-hidden">
-                    <AdSlot slotName="Sponsored Recommendations" type="native" />
-                  </div>
                 </div>
               </div>
             )}

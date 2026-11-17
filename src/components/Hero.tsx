@@ -134,7 +134,7 @@ export const Hero: React.FC<HeroProps> = ({
                     Asbily Tools · {totalToolsCount} Utilities
                   </span>
                   <span aria-hidden="true">·</span>
-                  <span>15 Categories</span>
+                  <span>{CATEGORIES.filter((c) => c.id !== 'all').length} Categories</span>
                   <span aria-hidden="true">·</span>
                   <span>Free Tools. Simple Solutions.</span>
                 </div>
